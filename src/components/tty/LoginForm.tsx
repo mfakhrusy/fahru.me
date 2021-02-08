@@ -20,7 +20,7 @@ export function LoginForm({ setUsernameHistory }: Props) {
   useEffect(() => {
     const eventHandler = (event: KeyboardEvent) => {
       if (event.key === "Enter") {
-        if (username === "Guest" && password === "Guest") {
+        if (username === "guest" && password === "guest") {
           router.push("/home");
         } else {
           setUsername("");

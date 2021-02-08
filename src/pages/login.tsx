@@ -24,10 +24,10 @@ export default function LoginScreen() {
     <BlackTerminalPage>
       <ASCIITitle />
       <Flex flexDir="column">
-        <Text>Guest account:</Text>
+        <Text>guest account:</Text>
         <UnorderedList>
-          <ListItem>Username: Guest </ListItem>
-          <ListItem>Password: Guest </ListItem>
+          <ListItem>Username: guest </ListItem>
+          <ListItem>Password: guest </ListItem>
         </UnorderedList>
       </Flex>
       <Box as="pre">===================================</Box>
