@@ -43,3 +43,4 @@ export function DesktopMainView({ setDesktopApp }: Props) {
     </Flex>
   );
 }
+
