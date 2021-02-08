@@ -1,7 +1,7 @@
 import { AppTerminal } from "@/components/desktop/apps/AppTerminal";
 import { DesktopMainView } from "@/components/desktop/DesktopMainView";
 import { DesktopTaskbar } from "@/components/desktop/DesktopTaskbar";
-import { DesktopApp } from "@/lib/terminal/desktop";
+import { DesktopApp } from "@/lib/desktop/desktop";
 import { Flex, useMediaQuery } from "@chakra-ui/react";
 import { useState } from "react";
 

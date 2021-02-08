@@ -1,4 +1,4 @@
-import { DesktopApp } from "@/lib/terminal/desktop";
+import { DesktopApp } from "@/lib/desktop/desktop";
 import { Flex } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import { useRef, useState } from "react";
