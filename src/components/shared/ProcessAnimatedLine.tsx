@@ -1,4 +1,4 @@
-import { Text } from "@chakra-ui/react";
+import { Text, useMediaQuery } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 
 export type Status = "Ok" | "Error" | "Loading";
@@ -31,6 +31,8 @@ export function ProcessAnimatedLine({
   status,
   duration = 1,
 }: Props) {
+  const [isSmallerThan500] = useMediaQuery("(max-width: 500px)")
+
   return (
     <motion.p
       style={{
@@ -38,7 +40,7 @@ export function ProcessAnimatedLine({
         whiteSpace: "nowrap",
         opacity: "0%",
         fontFamily: "DOS VGA",
-        fontSize: "18px",
+        fontSize: isSmallerThan500 ? '10px' : '18px',
       }}
       animate={{
         opacity: ["0%", "100%"],
@@ -50,7 +52,7 @@ export function ProcessAnimatedLine({
       }}
     >
       {status !== "Loading" && (
-        <Text as="span" mr={4}>
+        <Text as="span" mr={isSmallerThan500 ? 0 : 4}>
           [
         </Text>
       )}
@@ -64,11 +66,11 @@ export function ProcessAnimatedLine({
         {makeStatusText(status)}
       </Text>
       {status !== "Loading" && (
-        <Text as="span" ml={4} mr={2}>
+        <Text as="span" ml={isSmallerThan500 ? 0 : 4} mr={2}>
           ]
         </Text>
       )}
-      <Text as="span" ml={status === "Loading" ? "60px" : 0}>
+      <Text as="span" ml={status === "Loading" ? (isSmallerThan500 ? '19px' : '60px') : 0}>
         {text}
       </Text>
     </motion.p>

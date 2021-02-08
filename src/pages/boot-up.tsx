@@ -1,4 +1,3 @@
-import { Flex } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { BootUpView } from "@/components/bootUp/BootUpView";
@@ -11,13 +10,17 @@ export default function BootUpScreen() {
   useEffect(() => {
     const eventHandler = (event: KeyboardEvent) => {
       if (event.key === "Enter") {
-        router.push("/tty/1");
+        router.replace("/tty/1");
       }
     };
 
     window.addEventListener("keypress", eventHandler);
+    window.addEventListener("ontouchend", eventHandler);
 
-    return () => window.removeEventListener("keypress", eventHandler);
+    return () => {
+      window.removeEventListener("keypress", eventHandler);
+      window.removeEventListener("ontouchend", eventHandler);
+    }
   });
 
   return (

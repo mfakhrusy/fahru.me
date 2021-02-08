@@ -12,25 +12,33 @@ const makeText: () => Array<Text> = () => [
   { value: "Weird error resolved", status: "Ok" },
   { value: "Starting another thing", status: "Loading" },
   {
-    value: "Starting another else in parallel with another thing",
+    value: "Starting another else in parallel",
     status: "Loading",
   },
   {
-    value: "This is just a nonsensical text, don't worry about me",
+    value: "with another thing",
+    status: "Loading",
+  },
+  {
+    value: "This is just a nonsensical text",
     status: "Ok",
   },
   { value: "Can I just throw error here", status: "Error" },
   { value: "Started the site, I guess", status: "Ok" },
   { value: "bip bop I'm a robot", status: "Ok" },
   { value: "I want some food", status: "Error" },
-  { value: "The definition of insanity is", status: "Loading" },
+  { value: "The definition of insanity is", status: "Ok" },
   { value: ". . .", status: "Loading" },
   { value: ". . .", status: "Loading" },
   { value: ". . .", status: "Loading" },
   { value: ". . .", status: "Loading" },
   {
-    value: "Keep repeating the same thing, and expect a different outcome",
+    value: "Keep repeating the same thing,",
     status: "Error",
+  },
+  {
+    value: "and expect a different outcome",
+    status: "Loading",
   },
   { value: "Uh, oh, will this stop", status: "Ok" },
   { value: "This cannot continue", status: "Error" },
@@ -39,7 +47,15 @@ const makeText: () => Array<Text> = () => [
   { value: "This cannot continue", status: "Ok" },
   { value: "", status: "Loading" },
   {
-    value: "Please press ENTER to continue (or RETURN, I think)",
+    value: "Please press ENTER to continue",
+    status: "Ok",
+  },
+  {
+    value: "or RETURN if you're on macOS",
+    status: "Ok",
+  },
+  {
+    value: "or tap the screen if you're on phone",
     status: "Ok",
   },
 ];
