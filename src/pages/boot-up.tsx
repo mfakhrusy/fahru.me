@@ -14,13 +14,17 @@ export default function BootUpScreen() {
       }
     };
 
+    const touchEventHandler = () => {
+      router.replace("/tty/1");
+    };
+
     window.addEventListener("keypress", eventHandler);
-    window.addEventListener("touchend", eventHandler);
+    window.addEventListener("touchend", touchEventHandler);
 
     return () => {
       window.removeEventListener("keypress", eventHandler);
-      window.removeEventListener("touchend", eventHandler);
-    }
+      window.removeEventListener("touchend", touchEventHandler);
+    };
   });
 
   return (

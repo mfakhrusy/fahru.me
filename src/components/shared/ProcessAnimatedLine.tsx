@@ -1,3 +1,4 @@
+import useIsTouchDevice from "@/lib/useIsTouchDevice";
 import { Text, useMediaQuery } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 
@@ -31,7 +32,7 @@ export function ProcessAnimatedLine({
   status,
   duration = 1,
 }: Props) {
-  const [isSmallerThan500] = useMediaQuery("(max-width: 500px)")
+  const isTouchDevice = useIsTouchDevice();
 
   return (
     <motion.p
@@ -40,7 +41,7 @@ export function ProcessAnimatedLine({
         whiteSpace: "nowrap",
         opacity: "0%",
         fontFamily: "DOS VGA",
-        fontSize: isSmallerThan500 ? '10px' : '18px',
+        fontSize: isTouchDevice ? "12px" : "18px",
       }}
       animate={{
         opacity: ["0%", "100%"],
@@ -52,7 +53,7 @@ export function ProcessAnimatedLine({
       }}
     >
       {status !== "Loading" && (
-        <Text as="span" mr={isSmallerThan500 ? 0 : 4}>
+        <Text as="span" mr={isTouchDevice ? 0 : 4}>
           [
         </Text>
       )}
@@ -66,11 +67,20 @@ export function ProcessAnimatedLine({
         {makeStatusText(status)}
       </Text>
       {status !== "Loading" && (
-        <Text as="span" ml={isSmallerThan500 ? 0 : 4} mr={2}>
+        <Text as="span" ml={isTouchDevice ? 0 : 4} mr={2}>
           ]
         </Text>
       )}
-      <Text as="span" ml={status === "Loading" ? (isSmallerThan500 ? '19px' : '60px') : 0}>
+      <Text
+        as="span"
+        ml={
+          status === "Loading"
+            ? isTouchDevice
+              ? "19px"
+              : "60px"
+            : 0
+        }
+      >
         {text}
       </Text>
     </motion.p>
