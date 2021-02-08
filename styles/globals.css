@@ -14,3 +14,11 @@ a {
 * {
   box-sizing: border-box;
 }
+
+@font-face {
+  font-family: "DOS VGA";
+  src: url("/fonts/dos_vga.ttf");
+  font-style: medium;
+  font-weight: 500;
+  font-display: swap;
+}
