@@ -1,3 +1,5 @@
+// https://stackoverflow.com/a/61519537/5835100
+
 import { useEffect, useState } from "react";
 
 function isTouchDevice() {
