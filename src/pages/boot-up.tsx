@@ -15,11 +15,11 @@ export default function BootUpScreen() {
     };
 
     window.addEventListener("keypress", eventHandler);
-    window.addEventListener("ontouchend", eventHandler);
+    window.addEventListener("touchend", eventHandler);
 
     return () => {
       window.removeEventListener("keypress", eventHandler);
-      window.removeEventListener("ontouchend", eventHandler);
+      window.removeEventListener("touchend", eventHandler);
     }
   });
 
