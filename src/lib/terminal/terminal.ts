@@ -56,7 +56,6 @@ export function executeCommand({ command, terminal, router }: Config) {
       router.replace("/shutdown/process?reboot=true");
       break;
     case "clear":
-      newline;
       terminal.write("\x1bc");
       break;
     default:

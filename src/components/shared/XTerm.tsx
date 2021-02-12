@@ -12,7 +12,11 @@ const checkIfArrowKey = (str) => {
   return arrowKeys.includes(str);
 };
 
-export function XTerm() {
+type Props = {
+  withHelp: boolean;
+};
+
+export default function XTerm(props: Props) {
   const ref = useRef<HTMLDivElement>(null);
   const router = useRouter();
 
@@ -22,6 +26,7 @@ export function XTerm() {
         cursorStyle: "bar",
         cursorBlink: true,
         lineHeight: isAndroid ? 1.4 : 1.2,
+        fontFamily: "DOS VGA",
       });
       const fitAddon = new FitAddon();
 
@@ -30,26 +35,29 @@ export function XTerm() {
       terminal.open(ref.current);
       fitAddon.fit();
       terminal.focus();
+      if (props.withHelp) {
+        terminal.write("to see available commands\r\n");
+        terminal.write("type 'help' and hit ENTER or RETURN\r\n\r\n");
+      }
       if (isAndroid) {
-        terminal.write("\r\n");
-        terminal.write("\x1b[1;37m" + "guest@fakhrusy.com ~$");
+        terminal.write("guest@fakhrusy.com ~$ ");
         terminal.write("\x1b[?25l"); // remove cursor
         terminal.onData((data) => {
           executeCommand({ command: data, terminal, router });
-          terminal.write("\r\x1b[1;37m" + "guest@fakhrusy.com ~$");
+          terminal.write("\r" + "guest@fakhrusy.com ~$ ");
         });
       } else {
         terminal.write("\r\n");
-        terminal.write("\x1b[1;37m" + "guest@fakhrusy.com ~$ ");
+        terminal.write("guest@fakhrusy.com ~$ ");
         terminal.onKey((e) => {
           const ev = e.domEvent;
 
           if (ev.key === "Enter") {
             executeCommand({ command, terminal, router });
             if (command === "") {
-              terminal.write("\x1b[1;37m" + "guest@fakhrusy.com ~$ ");
+              terminal.write("guest@fakhrusy.com ~$ ");
             } else {
-              terminal.write("\r\n\x1b[1;37m" + "guest@fakhrusy.com ~$ ");
+              terminal.write("\r\n" + "guest@fakhrusy.com ~$ ");
             }
             command = "";
           } else if (ev.key === "Backspace") {

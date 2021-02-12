@@ -5,17 +5,19 @@ import { PropsWithChildren } from "react";
 type Props = {
   title: string;
   onClose: () => void;
+  isOpen: boolean;
 };
 
 export function AppLayout({
   title,
   children,
   onClose,
+  isOpen,
 }: PropsWithChildren<Props>) {
   return (
     <Modal
       onClose={onClose}
-      isOpen={true}
+      isOpen={isOpen}
       size="full"
       styleConfig={{ marginTop: 0 }}
     >

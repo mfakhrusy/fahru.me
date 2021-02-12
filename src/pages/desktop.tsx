@@ -1,18 +1,27 @@
 import { AppTerminal } from "@/components/desktop/apps/AppTerminal";
 import { DesktopMainView } from "@/components/desktop/DesktopMainView";
 import { DesktopTaskbar } from "@/components/desktop/DesktopTaskbar";
+import { DesktopTouchView } from "@/components/desktop/DesktopTouchView";
 import { DesktopApp } from "@/lib/desktop/desktop";
+import useIsTouchDevice from "@/lib/useIsTouchDevice";
 import { Flex, useMediaQuery } from "@chakra-ui/react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import dynamic from "next/dynamic";
+import { isMobile } from "react-device-detect";
 
-export default function DesktopScreen() {
+function DesktopScreen() {
   let [state, setState] = useState<DesktopApp>("DesktopMainView");
-  const isBigScreen = useMediaQuery("(min-width: 961px)");
+  const [isBigScreen] = useMediaQuery("(min-width: 961px)");
 
   const renderContent = (state: DesktopApp) => {
     switch (state) {
       case "AppTerminal":
-        return <AppTerminal onClose={() => setState("DesktopMainView")} />;
+        return (
+          <AppTerminal
+            isOpen={state === "AppTerminal"}
+            onClose={() => setState("DesktopMainView")}
+          />
+        );
       default:
         return null;
     }
@@ -20,9 +29,17 @@ export default function DesktopScreen() {
 
   return (
     <Flex flexDir="column" h="100vh" w="100vw" overflowY="hidden">
-      <DesktopMainView setDesktopApp={(app: DesktopApp) => setState(app)} />
+      {isMobile ? (
+        <DesktopTouchView setDesktopApp={(app: DesktopApp) => setState(app)} />
+      ) : (
+        <DesktopMainView setDesktopApp={(app: DesktopApp) => setState(app)} />
+      )}
       {renderContent(state)}
-      {isBigScreen[0] ? <DesktopTaskbar /> : null}
+      {isBigScreen && !isMobile ? <DesktopTaskbar /> : null}
     </Flex>
   );
 }
+
+export default dynamic(() => Promise.resolve(DesktopScreen), {
+  ssr: false,
+});

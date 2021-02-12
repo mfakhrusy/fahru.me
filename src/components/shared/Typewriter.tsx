@@ -39,7 +39,7 @@ export function Typewriter({
             <motion.span
               key={index}
               style={{
-                width: "9px",
+                width: "8px",
                 display: "inline-flex",
               }}
               animate={{

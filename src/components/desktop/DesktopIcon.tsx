@@ -1,10 +1,10 @@
-import { Flex, Image } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import { MutableRefObject } from "react";
 
 type Props = {
   iconName: string;
-  dragConstraintRef: MutableRefObject<HTMLDivElement>;
+  dragConstraintRef?: MutableRefObject<HTMLDivElement>;
   onClick?: () => void;
   onDoubleClick?: () => void;
   isActive?: boolean;
@@ -17,10 +17,13 @@ export function DesktopIcon({
   onDoubleClick,
   isActive = false,
 }: Props) {
+  const isMobileIcon = dragConstraintRef ? true : false;
+  const isDraggable = isMobileIcon;
+
   return (
     <motion.div
       style={{ width: "70px", height: "70px" }}
-      drag
+      drag={isDraggable}
       dragConstraints={dragConstraintRef}
       dragElastic={0}
       dragTransition={{
