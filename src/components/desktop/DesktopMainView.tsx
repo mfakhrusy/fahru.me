@@ -31,6 +31,7 @@ export function DesktopMainView({ setDesktopApp }: Props) {
           dragConstraintRef={dragConstraintRef}
           onClick={() => setFocusedApp("AppConfigUsers")}
           isActive={focusedApp === "AppConfigUsers"}
+          title="About me"
         />
         <DesktopIcon
           iconName="terminal.png"
@@ -38,6 +39,7 @@ export function DesktopMainView({ setDesktopApp }: Props) {
           onClick={() => setFocusedApp("AppTerminal")}
           onDoubleClick={() => setDesktopApp("AppTerminal")}
           isActive={focusedApp === "AppTerminal"}
+          title="Terminal"
         />
       </motion.div>
     </Flex>

@@ -1,6 +1,7 @@
-import { Flex } from "@chakra-ui/react";
+import { Flex, Text } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import { MutableRefObject } from "react";
+import { isMobile } from "react-device-detect";
 
 type Props = {
   iconName: string;
@@ -8,6 +9,7 @@ type Props = {
   onClick?: () => void;
   onDoubleClick?: () => void;
   isActive?: boolean;
+  title: string;
 };
 
 export function DesktopIcon({
@@ -16,13 +18,20 @@ export function DesktopIcon({
   onClick,
   onDoubleClick,
   isActive = false,
+  title,
 }: Props) {
-  const isMobileIcon = dragConstraintRef ? true : false;
-  const isDraggable = isMobileIcon;
+  const isDraggable = dragConstraintRef ? true : false;
+  const isMobileIcon = !isDraggable;
 
   return (
     <motion.div
-      style={{ width: "70px", height: "70px" }}
+      style={{
+        width: isMobileIcon ? "80px" : "70px",
+        height: isMobileIcon ? "100px" : "90px",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+      }}
       drag={isDraggable}
       dragConstraints={dragConstraintRef}
       dragElastic={0}
@@ -41,12 +50,18 @@ export function DesktopIcon({
         w="70px"
         h="70px"
         p="5px"
+        m={isMobileIcon ? "5px" : "0"}
         bgColor={isActive ? "rgba(0, 0, 255, 0.2)" : "rgba(0, 0, 0, 0.05)"}
         borderRadius="8px"
         cursor="pointer"
         backgroundImage={`url(/icons/${iconName})`}
         backgroundSize="100%"
+        backgroundRepeat="no-repeat"
+        flexGrow={1}
       />
+      <Text fontSize="13px" fontWeight="600">
+        {title}
+      </Text>
     </motion.div>
   );
 }
