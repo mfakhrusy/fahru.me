@@ -28,7 +28,7 @@ export function AppTerminal({ onClose, isOpen }: Props) {
       onClose={() => setIsClosingDown(true)}
       isOpen={isOpen}
     >
-      <Flex w="100%" h="100%" bgColor="black" color="white" p={1}>
+      <Flex w="100%" h="auto" minH="calc(100vh - 30px)" bgColor="black" color="white" p={1} overflowX="hidden">
         {shouldRenderTerminal ? (
           !isClosingDown && <Terminal withHelp={true} />
         ) : (

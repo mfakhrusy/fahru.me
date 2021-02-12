@@ -22,7 +22,7 @@ export function AppLayout({
       styleConfig={{ marginTop: 0 }}
     >
       <ModalContent overflowY="auto">
-        <Flex flexDir="column" w="100%" h="100%">
+        <Flex flexDir="column" w="100%" h="auto" overflowY="auto">
           <Flex pos="relative" bgColor="#5a595c" h="30px" w="100%">
             <Text
               flexGrow={1}
@@ -51,8 +51,9 @@ export function AppLayout({
             borderBottom="1px solid #5a595c"
             borderRight="1px solid #5a595c"
             borderLeft="1px solid #5a595c"
-            h="100%"
+            h="auto"
             w="100%"
+            flexGrow={1}
           >
             {children}
           </Flex>

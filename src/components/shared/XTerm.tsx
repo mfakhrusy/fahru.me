@@ -74,5 +74,5 @@ export default function XTerm(props: Props) {
     }
   }, [ref]);
 
-  return <Box ref={ref} bgColor="black" />;
+  return <Box ref={ref} bgColor="black" w="100%" />;
 }

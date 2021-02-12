@@ -13,13 +13,13 @@ export function AppConfigUsers({onClose, isOpen}: Props) {
       onClose={onClose}
       isOpen={isOpen}
     >
-      <Flex bgColor="white" w="100%" h="100%" flexDir="column" pl={3} pr={3} pt={2} pb={2}>
+      <Flex bgColor="white" w="100%" h="auto" minH="calc(100vh - 30px)" flexDir="column" pl={3} pr={3} pt={2} pb={2}>
         <Text fontWeight="bold">About me</Text>
         <Text>Fahru, Indonesia</Text>
-        <Box h="16px" />
+        <Box minH="16px" />
         <Text fontWeight="bold">What I do</Text>
         <Text>Software Engineer, end to end, frontend strong</Text>
-        <Box h="16px" />
+        <Box minH="16px" />
         <Text fontWeight="bold">My stacks, currently:</Text>
         <UnorderedList>
           <ListItem>Web stack: HTML5, CSS3, Javascript</ListItem>
@@ -31,7 +31,7 @@ export function AppConfigUsers({onClose, isOpen}: Props) {
           <ListItem>Basic cloud (AWS/Azure)</ListItem>
           <ListItem>easily learn others depending on the problem</ListItem>
         </UnorderedList>
-        <Box h="16px" />
+        <Box minH="16px" />
         <Text fontWeight="bold">Other skills:</Text>
         <UnorderedList>
           <ListItem>CI with gitlab CI or azure devops </ListItem>
@@ -41,7 +41,7 @@ export function AppConfigUsers({onClose, isOpen}: Props) {
           <ListItem>Web animation & SVGs</ListItem>
           <ListItem>Semantic HTML</ListItem>
         </UnorderedList>
-        <Box h="16px" />
+        <Box minH="16px" />
         <Text fontWeight="bold">My take on software engineering</Text>
         <UnorderedList>
           <ListItem>problem solving at its core</ListItem>
@@ -50,7 +50,7 @@ export function AppConfigUsers({onClose, isOpen}: Props) {
           <ListItem>programming language is just a tool</ListItem>
           <ListItem>strong type unless you can't</ListItem>
         </UnorderedList>
-        <Box h="16px" />
+        <Box minH="16px" />
       </Flex>
     </AppLayout>
   );
