@@ -3,20 +3,25 @@ import { Box } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect, useRef } from "react";
 import { Terminal as Terminal_ } from "xterm";
+import { FitAddon } from "xterm-addon-fit";
 
 export function XTerm() {
   const ref = useRef<HTMLDivElement>(null);
   const router = useRouter();
-  const terminal = new Terminal_({
-    cursorStyle: "bar",
-    cursorBlink: true,
-    lineHeight: 1.2,
-  });
 
   useEffect(() => {
     if (ref.current) {
+      const terminal = new Terminal_({
+        cursorStyle: "bar",
+        cursorBlink: true,
+        lineHeight: 1.2,
+      });
+      const fitAddon = new FitAddon();
+
+      terminal.loadAddon(fitAddon);
       let command = "";
       terminal.open(ref.current);
+      fitAddon.fit();
       terminal.focus();
       terminal.write("\r\n");
       terminal.write("\x1b[1;37m" + "guest@fakhrusy.com ~$ ");
