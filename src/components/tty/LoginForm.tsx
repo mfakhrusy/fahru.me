@@ -1,6 +1,7 @@
 import { Flex, Input, Text } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
+import { isMobile } from "react-device-detect";
 
 type Props = {
   setUsernameHistory: (value: string) => void;
@@ -66,9 +67,9 @@ export function LoginForm({ setUsernameHistory }: Props) {
         >
           <Input
             style={{ caretColor: "white" }}
-            color="black"
+            // color={isMobile ? "white" : "black"}
             variant="flushed"
-            w="1px"
+            // w={isMobile ? "100%" : "1px"}
             borderBottomColor="black"
             _focus={{ borderBottomColor: "black" }}
             onChange={(e) => setPassword(e.target.value)}
