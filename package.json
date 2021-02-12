@@ -19,7 +19,8 @@
     "react": "17.0.1",
     "react-device-detect": "^1.15.0",
     "react-dom": "17.0.1",
-    "xterm": "^4.10.0"
+    "xterm": "^4.10.0",
+    "xterm-addon-fit": "^0.5.0"
   },
   "devDependencies": {
     "@types/node": "^14.14.25",
