@@ -3,11 +3,11 @@ import { DesktopMainView } from "@/components/desktop/DesktopMainView";
 import { DesktopTaskbar } from "@/components/desktop/DesktopTaskbar";
 import { DesktopTouchView } from "@/components/desktop/DesktopTouchView";
 import { DesktopApp } from "@/lib/desktop/desktop";
-import useIsTouchDevice from "@/lib/useIsTouchDevice";
 import { Flex, useMediaQuery } from "@chakra-ui/react";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import dynamic from "next/dynamic";
 import { isMobile } from "react-device-detect";
+import { AppConfigUsers } from "@/components/desktop/apps/AppConfigUsers";
 
 function DesktopScreen() {
   let [state, setState] = useState<DesktopApp>("DesktopMainView");
@@ -22,6 +22,13 @@ function DesktopScreen() {
             onClose={() => setState("DesktopMainView")}
           />
         );
+      case "AppConfigUsers":
+        return (
+          <AppConfigUsers
+          isOpen={state === "AppConfigUsers"}
+          onClose={() => setState("DesktopMainView")}
+          />
+        )
       default:
         return null;
     }

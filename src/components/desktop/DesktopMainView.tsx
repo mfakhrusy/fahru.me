@@ -30,6 +30,7 @@ export function DesktopMainView({ setDesktopApp }: Props) {
           iconName="config-users.png"
           dragConstraintRef={dragConstraintRef}
           onClick={() => setFocusedApp("AppConfigUsers")}
+          onDoubleClick={() => setDesktopApp("AppConfigUsers")}
           isActive={focusedApp === "AppConfigUsers"}
           title="About me"
         />

@@ -21,7 +21,7 @@ export function AppLayout({
       size="full"
       styleConfig={{ marginTop: 0 }}
     >
-      <ModalContent>
+      <ModalContent overflowY="auto">
         <Flex flexDir="column" w="100%" h="100%">
           <Flex pos="relative" bgColor="#5a595c" h="30px" w="100%">
             <Text
@@ -31,6 +31,8 @@ export function AppLayout({
               justifyContent="center"
               color="aliceblue"
               pt="2px"
+              fontWeight="600"
+              letterSpacing="wider"
             >
               {title}
             </Text>

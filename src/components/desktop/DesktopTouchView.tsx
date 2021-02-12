@@ -23,7 +23,7 @@ export function DesktopTouchView({ setDesktopApp }: Props) {
         onClick={() => setDesktopApp("AppTerminal")}
         title="Terminal"
       />
-      <DesktopIcon iconName="config-users.png" title="About me" />
+      <DesktopIcon iconName="config-users.png" title="About me" onClick={() => setDesktopApp("AppConfigUsers")}/>
     </Flex>
   );
 }
