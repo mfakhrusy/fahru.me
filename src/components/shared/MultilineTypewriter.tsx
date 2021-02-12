@@ -17,6 +17,7 @@ export function MultilineTypewriter({ texts, onFinish }: Props) {
           if (index < texts.length - 1) {
             return (
               <Typewriter
+                key={index}
                 text={text}
                 onFinish={() =>
                   setCurrentLine((currentLineState) => currentLineState + 1)
@@ -28,6 +29,7 @@ export function MultilineTypewriter({ texts, onFinish }: Props) {
           } else {
             return (
               <Typewriter
+                key={index}
                 text={text}
                 onFinish={onFinish}
                 stepTimeSecond={0.07}

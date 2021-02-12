@@ -2,7 +2,13 @@ import { NextRouter } from "next/router";
 import { Terminal as Terminal_ } from "xterm";
 import { isMobileOnly } from "react-device-detect";
 
-export type TerminalCommand = "help" | "startx" | "reboot" | "shutdown" | "clear" | string;
+export type TerminalCommand =
+  | "help"
+  | "startx"
+  | "reboot"
+  | "shutdown"
+  | "clear"
+  | string;
 
 type Config = {
   command: TerminalCommand;
@@ -11,9 +17,10 @@ type Config = {
 };
 
 export function executeCommand({ command, terminal, router }: Config) {
+  const trimmedCommand = command.trim();
   const newline = terminal.write("\r\n");
 
-  switch (command) {
+  switch (trimmedCommand) {
     case "help":
       if (isMobileOnly) {
         newline;
@@ -50,7 +57,7 @@ export function executeCommand({ command, terminal, router }: Config) {
       break;
     case "clear":
       newline;
-      terminal.write("\x1bc")
+      terminal.write("\x1bc");
       break;
     default:
       if (command !== "") {
