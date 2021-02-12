@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 
 type Props = {
   text: string;
@@ -22,40 +22,41 @@ export function Typewriter({
     setTimeout(() => onFinish(), duration * 1000 + onFinishDelay);
   }, []);
 
-  return (
-    <motion.p
-      style={{
-        opacity: 0,
-      }}
-      animate={{ opacity: [0, 1] }}
-      transition={{
-        duration: stepTimeSecond,
-        times: [0, 1],
-      }}
-    >
-      {textArr.map((letter, index) => {
-        return (
-          <motion.span
-            key={index}
-            style={{
-              width: "9px",
-              whiteSpace: "nowrap",
-              overflow: "hidden",
-              display: "inline-flex",
-            }}
-            animate={{
-              opacity: ["0", "1"],
-            }}
-            transition={{
-              times: [index * stepSize, index * stepSize + stepSize],
-              duration,
-              ease: [0.16, 1, 0.3, 1],
-            }}
-          >
-            {letter}
-          </motion.span>
-        );
-      })}
-    </motion.p>
+  return useMemo(
+    () => (
+      <motion.p
+        style={{
+          opacity: 0,
+        }}
+        animate={{ opacity: [0, 1] }}
+        transition={{
+          duration: stepTimeSecond,
+          times: [0, 1],
+        }}
+      >
+        {textArr.map((letter, index) => {
+          return (
+            <motion.span
+              key={index}
+              style={{
+                width: "9px",
+                display: "inline-flex",
+              }}
+              animate={{
+                opacity: ["0", "1"],
+              }}
+              transition={{
+                times: [index * stepSize, index * stepSize + stepSize],
+                duration,
+                ease: [0.16, 1, 0.3, 1],
+              }}
+            >
+              {letter}
+            </motion.span>
+          );
+        })}
+      </motion.p>
+    ),
+    []
   );
 }

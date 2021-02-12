@@ -5,6 +5,12 @@ import { useEffect, useRef } from "react";
 import { Terminal as Terminal_ } from "xterm";
 import { FitAddon } from "xterm-addon-fit";
 
+const checkIfArrowKey = (str) => {
+  const arrowKeys = ['\u001b[A', '\u001b[B', '\u001b[C' , '\u001b[D']
+
+  return arrowKeys.includes(str);
+};
+
 export function XTerm() {
   const ref = useRef<HTMLDivElement>(null);
   const router = useRouter();
@@ -18,8 +24,8 @@ export function XTerm() {
       });
       const fitAddon = new FitAddon();
 
-      terminal.loadAddon(fitAddon);
       let command = "";
+      terminal.loadAddon(fitAddon);
       terminal.open(ref.current);
       fitAddon.fit();
       terminal.focus();
@@ -41,7 +47,7 @@ export function XTerm() {
             command = command.slice(0, -1);
             terminal.write("\b \b");
           }
-        } else {
+        } else if (!checkIfArrowKey(e.key)) {
           command += e.key;
           terminal.write(e.key);
         }

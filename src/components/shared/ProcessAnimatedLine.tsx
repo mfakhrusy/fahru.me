@@ -73,13 +73,7 @@ export function ProcessAnimatedLine({
       )}
       <Text
         as="span"
-        ml={
-          status === "Loading"
-            ? isTouchDevice
-              ? "19px"
-              : "60px"
-            : 0
-        }
+        ml={status === "Loading" ? (isTouchDevice ? "19px" : "60px") : 0}
       >
         {text}
       </Text>
