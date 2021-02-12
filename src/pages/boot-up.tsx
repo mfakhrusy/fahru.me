@@ -18,11 +18,11 @@ export default function BootUpScreen() {
       router.replace("/tty/1");
     };
 
-    window.addEventListener("keypress", eventHandler);
+    window.addEventListener("keydown", eventHandler);
     window.addEventListener("touchend", touchEventHandler);
 
     return () => {
-      window.removeEventListener("keypress", eventHandler);
+      window.removeEventListener("keydown", eventHandler);
       window.removeEventListener("touchend", touchEventHandler);
     };
   });

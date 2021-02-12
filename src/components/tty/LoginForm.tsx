@@ -22,6 +22,8 @@ export function LoginForm({ setUsernameHistory }: Props) {
       if (event.key === "Enter") {
         if (username === "guest" && password === "guest") {
           router.push("/home");
+        } else if (username === "Guest" && password === "Guest") {
+          router.push("/home");
         } else {
           setUsername("");
           setPassword("");
@@ -31,9 +33,9 @@ export function LoginForm({ setUsernameHistory }: Props) {
       }
     };
 
-    window.addEventListener("keypress", eventHandler);
+    window.addEventListener("keydown", eventHandler);
 
-    return () => window.removeEventListener("keypress", eventHandler);
+    return () => window.removeEventListener("keydown", eventHandler);
   });
 
   return (

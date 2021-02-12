@@ -16,7 +16,6 @@ export function DesktopTouchView({ setDesktopApp }: Props) {
       backgroundRepeat="no-repeat"
       pos="relative"
       backgroundPosition={{ base: "left -20px center", lg: "center center" }}
-      className="not-drag-area"
     >
       <DesktopIcon
         iconName="terminal.png"

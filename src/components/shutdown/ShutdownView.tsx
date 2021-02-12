@@ -20,9 +20,9 @@ export function ShutdownView() {
       }
     };
 
-    window.addEventListener("keypress", eventHandler);
+    window.addEventListener("keydown", eventHandler);
 
-    return () => window.removeEventListener("keypress", eventHandler);
+    return () => window.removeEventListener("keydown", eventHandler);
   });
 
   return (

@@ -1,7 +1,7 @@
 import { DesktopApp } from "@/lib/desktop/desktop";
 import { Flex } from "@chakra-ui/react";
 import { motion } from "framer-motion";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { DesktopIcon } from "./DesktopIcon";
 
 type Props = {
@@ -11,6 +11,20 @@ type Props = {
 export function DesktopMainView({ setDesktopApp }: Props) {
   const [focusedApp, setFocusedApp] = useState<DesktopApp>("DesktopMainView");
   const dragConstraintRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const eventHandler = (event: KeyboardEvent) => {
+      if (focusedApp !== 'DesktopMainView') {
+        console.log("yey", focusedApp)
+        setDesktopApp(focusedApp);
+      }
+    };
+
+
+    window.addEventListener('keydown', eventHandler)
+
+    return () => window.removeEventListener('keydown', eventHandler)
+  }, [focusedApp])
 
   return (
     <Flex

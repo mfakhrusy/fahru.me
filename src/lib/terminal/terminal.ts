@@ -43,7 +43,11 @@ export function executeCommand({ command, terminal, router }: Config) {
       }
       break;
     case "startx":
-      router.replace("/desktop");
+      if (router.pathname.includes('desktop')) {
+        terminal.write("you're already on desktop");
+      } else {
+        router.replace("/desktop");
+      }
       break;
     case "shutdown":
       newline;
