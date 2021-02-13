@@ -19,8 +19,6 @@ export default function HomeScreen() {
           "I'm a software engineer",
           "and this is my personal site",
           ". . .",
-          // "to see available commands",
-          // "type 'help' and hit ENTER or RETURN",
         ]}
         onFinish={() => setState("interactive")}
       />
@@ -35,7 +33,7 @@ export default function HomeScreen() {
       <Flex w="100%" flexDir="column">
         {intro}
       </Flex>
-      {state === "interactive" && <Terminal withHelp={true} />}
+      {state === "interactive" && <Terminal withHelp />}
     </BlackTerminalPage>
   );
 }

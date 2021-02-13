@@ -1,4 +1,4 @@
-import { DesktopApp } from "@/lib/desktop/desktop";
+import { DesktopApp, makeDesktopIcons } from "@/lib/desktop/desktop";
 import { Flex } from "@chakra-ui/react";
 import { useState } from "react";
 import { DesktopIcon } from "./DesktopIcon";
@@ -17,12 +17,13 @@ export function DesktopTouchView({ setDesktopApp }: Props) {
       pos="relative"
       backgroundPosition={{ base: "left -20px center", lg: "center center" }}
     >
-      <DesktopIcon
-        iconName="terminal.png"
-        onClick={() => setDesktopApp("AppTerminal")}
-        title="Terminal"
-      />
-      <DesktopIcon iconName="config-users.png" title="About me" onClick={() => setDesktopApp("AppConfigUsers")}/>
+      {makeDesktopIcons().map((desktopIcon) => (
+        <DesktopIcon
+          iconName={desktopIcon.iconName}
+          onClick={() => setDesktopApp(desktopIcon.appName)}
+          title={desktopIcon.title}
+        />
+      ))}
     </Flex>
   );
 }

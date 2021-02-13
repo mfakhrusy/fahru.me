@@ -1,4 +1,11 @@
-import { Flex, IconButton, Modal, ModalContent, Text } from "@chakra-ui/react";
+import {
+  BackgroundProps,
+  Flex,
+  IconButton,
+  Modal,
+  ModalContent,
+  Text,
+} from "@chakra-ui/react";
 import { CloseIcon } from "@chakra-ui/icons";
 import { PropsWithChildren } from "react";
 
@@ -6,6 +13,9 @@ type Props = {
   title: string;
   onClose: () => void;
   isOpen: boolean;
+  isScrollable?: boolean;
+  noPadding?: boolean;
+  bgColor?: BackgroundProps["bgColor"];
 };
 
 export function AppLayout({
@@ -13,6 +23,9 @@ export function AppLayout({
   children,
   onClose,
   isOpen,
+  isScrollable = true,
+  noPadding = false,
+  bgColor = "white",
 }: PropsWithChildren<Props>) {
   return (
     <Modal
@@ -22,7 +35,12 @@ export function AppLayout({
       styleConfig={{ marginTop: 0 }}
     >
       <ModalContent overflowY="auto">
-        <Flex flexDir="column" w="100%" h="auto" overflowY="auto">
+        <Flex
+          flexDir="column"
+          w="100%"
+          h="auto"
+          overflowY={isScrollable ? "auto" : "hidden"}
+        >
           <Flex pos="relative" bgColor="#5a595c" h="30px" w="100%">
             <Text
               flexGrow={1}
@@ -54,6 +72,11 @@ export function AppLayout({
             h="auto"
             w="100%"
             flexGrow={1}
+            bgColor={bgColor}
+            pl={noPadding ? 0 : 3}
+            pr={noPadding ? 0 : 3}
+            pt={noPadding ? 0 : 2}
+            pb={noPadding ? 0 : 2}
           >
             {children}
           </Flex>

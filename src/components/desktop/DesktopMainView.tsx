@@ -1,4 +1,4 @@
-import { DesktopApp } from "@/lib/desktop/desktop";
+import { DesktopApp, makeDesktopIcons } from "@/lib/desktop/desktop";
 import { Flex } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
@@ -14,17 +14,16 @@ export function DesktopMainView({ setDesktopApp }: Props) {
 
   useEffect(() => {
     const eventHandler = (event: KeyboardEvent) => {
-      if (focusedApp !== 'DesktopMainView') {
-        console.log("yey", focusedApp)
+      if (focusedApp !== "DesktopMainView") {
+        console.log("yey", focusedApp);
         setDesktopApp(focusedApp);
       }
     };
 
+    window.addEventListener("keydown", eventHandler);
 
-    window.addEventListener('keydown', eventHandler)
-
-    return () => window.removeEventListener('keydown', eventHandler)
-  }, [focusedApp])
+    return () => window.removeEventListener("keydown", eventHandler);
+  }, [focusedApp]);
 
   return (
     <Flex
@@ -40,22 +39,16 @@ export function DesktopMainView({ setDesktopApp }: Props) {
         className="drag-area"
         ref={dragConstraintRef}
       >
-        <DesktopIcon
-          iconName="config-users.png"
-          dragConstraintRef={dragConstraintRef}
-          onClick={() => setFocusedApp("AppConfigUsers")}
-          onDoubleClick={() => setDesktopApp("AppConfigUsers")}
-          isActive={focusedApp === "AppConfigUsers"}
-          title="About me"
-        />
-        <DesktopIcon
-          iconName="terminal.png"
-          dragConstraintRef={dragConstraintRef}
-          onClick={() => setFocusedApp("AppTerminal")}
-          onDoubleClick={() => setDesktopApp("AppTerminal")}
-          isActive={focusedApp === "AppTerminal"}
-          title="Terminal"
-        />
+        {makeDesktopIcons().map((desktopIcon) => (
+          <DesktopIcon
+            iconName={desktopIcon.iconName}
+            dragConstraintRef={dragConstraintRef}
+            onClick={() => setFocusedApp(desktopIcon.appName)}
+            onDoubleClick={() => setDesktopApp(desktopIcon.appName)}
+            isActive={focusedApp === desktopIcon.appName}
+            title={desktopIcon.title}
+          />
+        ))}
       </motion.div>
     </Flex>
   );

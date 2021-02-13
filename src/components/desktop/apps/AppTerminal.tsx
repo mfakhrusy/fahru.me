@@ -13,7 +13,7 @@ export function AppTerminal({ onClose, isOpen }: Props) {
   const [isClosingDown, setIsClosingDown] = useState(false);
 
   useEffect(() => {
-    setTimeout(() => setShouldRenderTerminal(true), 700);
+    setTimeout(() => setShouldRenderTerminal(true), 300);
   }, []);
 
   useEffect(() => {
@@ -27,8 +27,18 @@ export function AppTerminal({ onClose, isOpen }: Props) {
       title="Terminal"
       onClose={() => setIsClosingDown(true)}
       isOpen={isOpen}
+      isScrollable={false}
+      noPadding
+      bgColor="black"
     >
-      <Flex w="100%" h="auto" minH="calc(100vh - 30px)" bgColor="black" color="white" p={1} overflowX="hidden">
+      <Flex
+        w="100%"
+        h="auto"
+        minH="calc(100vh - 30px)"
+        color="white"
+        p={1}
+        overflow="hidden"
+      >
         {shouldRenderTerminal ? (
           !isClosingDown && <Terminal withHelp={true} />
         ) : (

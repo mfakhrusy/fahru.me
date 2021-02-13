@@ -1,4 +1,3 @@
-import { AppTerminal } from "@/components/desktop/apps/AppTerminal";
 import { DesktopMainView } from "@/components/desktop/DesktopMainView";
 import { DesktopTaskbar } from "@/components/desktop/DesktopTaskbar";
 import { DesktopTouchView } from "@/components/desktop/DesktopTouchView";
@@ -7,10 +6,14 @@ import { Flex, useMediaQuery } from "@chakra-ui/react";
 import { useState } from "react";
 import dynamic from "next/dynamic";
 import { isMobile } from "react-device-detect";
-import { AppConfigUsers } from "@/components/desktop/apps/AppConfigUsers";
+import {
+  AppTerminal,
+  AppAboutMe,
+  AppAboutSite,
+} from "@/components/desktop/apps";
 
 function DesktopScreen() {
-  let [state, setState] = useState<DesktopApp>("DesktopMainView");
+  const [state, setState] = useState<DesktopApp>("DesktopMainView");
   const [isBigScreen] = useMediaQuery("(min-width: 961px)");
 
   const renderContent = (state: DesktopApp) => {
@@ -22,13 +25,20 @@ function DesktopScreen() {
             onClose={() => setState("DesktopMainView")}
           />
         );
-      case "AppConfigUsers":
+      case "AppAboutMe":
         return (
-          <AppConfigUsers
-          isOpen={state === "AppConfigUsers"}
-          onClose={() => setState("DesktopMainView")}
+          <AppAboutMe
+            isOpen={state === "AppAboutMe"}
+            onClose={() => setState("DesktopMainView")}
           />
-        )
+        );
+      case "AppAboutSite":
+        return (
+          <AppAboutSite
+            isOpen={state === "AppAboutSite"}
+            onClose={() => setState("DesktopMainView")}
+          />
+        );
       default:
         return null;
     }
