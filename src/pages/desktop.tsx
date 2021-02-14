@@ -11,6 +11,8 @@ import {
   AppAboutMe,
   AppAboutSite,
   AppWorkHistory,
+  AppContacts,
+  AppEducation,
 } from "@/components/desktop/apps";
 
 function DesktopScreen() {
@@ -44,6 +46,20 @@ function DesktopScreen() {
         return (
           <AppWorkHistory
             isOpen={state === "AppWorkHistory"}
+            onClose={() => setState("DesktopMainView")}
+          />
+        );
+      case "AppEducation":
+        return (
+          <AppEducation
+            isOpen={state === "AppEducation"}
+            onClose={() => setState("DesktopMainView")}
+          />
+        );
+      case "AppContacts":
+        return (
+          <AppContacts
+            isOpen={state === "AppContacts"}
             onClose={() => setState("DesktopMainView")}
           />
         );

@@ -50,8 +50,9 @@ export function AppWorkHistory({ onClose, isOpen }: Props) {
               <small>2019 - 2020</small>
               <UnorderedList mt="10px">
                 <ListItem>
-                  Built a document management system for an indonesian airline using react, react-native,
-                  node, postgreSQL, and azure for web and android
+                  Built a document management system for an indonesian airline
+                  using react, react-native, node, postgreSQL, and azure for web
+                  and android
                 </ListItem>
               </UnorderedList>
             </ListItem>
@@ -61,11 +62,12 @@ export function AppWorkHistory({ onClose, isOpen }: Props) {
               <small>2018 - 2019, Full-time</small>
               <UnorderedList mt="10px">
                 <ListItem>
-                  Developed and maintained learning management system
-                  frontend in javascript & reactJS, both client side and admin dashboard
+                  Developed and maintained learning management system frontend
+                  in javascript & reactJS, both client side and admin dashboard
                 </ListItem>
                 <ListItem>
-                  Developed an online course platform frontend using javascript & reactJS
+                  Developed an online course platform frontend using javascript
+                  & reactJS
                 </ListItem>
               </UnorderedList>
             </ListItem>
@@ -81,8 +83,8 @@ export function AppWorkHistory({ onClose, isOpen }: Props) {
                   Bandung Institute of Technology
                 </ListItem>
                 <ListItem>
-                  Taught programming (C++) & engineering course to a second year student at Bandung
-                  Institute of Technology
+                  Taught programming (C++) & engineering course to a second year
+                  student at Bandung Institute of Technology
                 </ListItem>
               </UnorderedList>
             </ListItem>

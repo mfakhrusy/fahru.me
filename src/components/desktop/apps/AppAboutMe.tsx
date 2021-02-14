@@ -30,7 +30,7 @@ export function AppAboutMe({ onClose, isOpen }: Props) {
             <Text fontWeight="bold">What I do</Text>
             <Text>Software Engineer, end to end, frontend strong</Text>
             <Box minH="16px" />
-            <Text fontWeight="bold">My stacks, currently:</Text>
+            <Text fontWeight="bold">Tech stacks I worked on</Text>
             <UnorderedList>
               <ListItem>Web stack: HTML5, CSS3, Javascript</ListItem>
               <ListItem>Typescript</ListItem>
@@ -38,12 +38,11 @@ export function AppAboutMe({ onClose, isOpen }: Props) {
               <ListItem>ReactJS</ListItem>
               <ListItem>Node</ListItem>
               <ListItem>PostgreSQL</ListItem>
-              <ListItem>Basic cloud (AWS/Azure)</ListItem>
-              <ListItem>easily learn others depending on the problem</ListItem>
             </UnorderedList>
             <Box minH="16px" />
-            <Text fontWeight="bold">Other skills:</Text>
+            <Text fontWeight="bold">Other skills</Text>
             <UnorderedList>
+              <ListItem>Basic Azure cloud</ListItem>
               <ListItem>CI with gitlab CI or azure devops </ListItem>
               <ListItem>Platform as a service (e.g vercel) </ListItem>
               <ListItem>Linux web server (nginx/apache) config</ListItem>
@@ -61,6 +60,28 @@ export function AppAboutMe({ onClose, isOpen }: Props) {
               <ListItem>strong type unless you can't</ListItem>
             </UnorderedList>
             <Box minH="16px" />
+            <Text fontWeight="bold">Hobbies</Text>
+            <UnorderedList>
+              <ListItem>
+                Writing, mostly on twitter but I'm preparing a blog!
+              </ListItem>
+              <ListItem>
+                Building something for the web. Indie hacker? maybe.
+              </ListItem>
+              <ListItem>
+                Learning (yep, learning as a hobby). Math, Science, and Space
+                stuffs, don't "<Text as="b">math and space IS science</Text>"
+                me.
+              </ListItem>
+              <ListItem>
+                Reading. Articles on the web & cool stuffs on twitter, still
+                working on developing reading books as a habit
+              </ListItem>
+              <ListItem>
+                Open source things. I am a linux geek (debian FTW) and I was
+                into linux so hard until I realized I have a family to feed
+              </ListItem>
+            </UnorderedList>
           </>
         )}
       </Flex>
