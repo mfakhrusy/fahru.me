@@ -1,5 +1,6 @@
 import {
   BackgroundProps,
+  Box,
   Flex,
   IconButton,
   Modal,
@@ -27,9 +28,11 @@ export function AppLayout({
   noPadding = false,
   bgColor = "white",
 }: PropsWithChildren<Props>) {
+  console.log(isOpen, "isOpen");
   return (
     <Modal
       onClose={onClose}
+      // onClose={() => console.log("close")}
       isOpen={isOpen}
       size="full"
       styleConfig={{ marginTop: 0 }}
@@ -54,16 +57,9 @@ export function AppLayout({
             >
               {title}
             </Text>
-            <IconButton
-              icon={<CloseIcon w="15px" h="15px" />}
-              aria-label={`Close ${title} Icon`}
-              onClick={onClose}
-              w="30px"
-              maxW="30px"
-              minW="30px"
-              h="30px"
-              borderRadius="0"
-            />
+            <Flex alignItems="center" cursor="pointer" onClick={onClose}>
+              <CloseIcon w="12px" h="12px" color="white" mr={5} />
+            </Flex>
           </Flex>
           <Flex
             borderBottom="1px solid #5a595c"

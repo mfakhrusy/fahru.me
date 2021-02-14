@@ -27,10 +27,12 @@ export function DesktopIcon({
     <motion.div
       style={{
         width: isMobileIcon ? "80px" : "70px",
-        height: isMobileIcon ? "100px" : "90px",
+        height: isMobileIcon ? "100px" : "unset",
+        minHeight: isMobileIcon ? "unset" : "90px",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
+        cursor: "pointer",
       }}
       drag={isDraggable}
       dragConstraints={dragConstraintRef}
@@ -59,7 +61,7 @@ export function DesktopIcon({
         backgroundRepeat="no-repeat"
         flexGrow={1}
       />
-      <Text fontSize="13px" fontWeight="600">
+      <Text fontSize="12px" fontWeight="600" textAlign="center">
         {title}
       </Text>
     </motion.div>

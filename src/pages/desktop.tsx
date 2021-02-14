@@ -10,6 +10,7 @@ import {
   AppTerminal,
   AppAboutMe,
   AppAboutSite,
+  AppWorkHistory,
 } from "@/components/desktop/apps";
 
 function DesktopScreen() {
@@ -36,6 +37,13 @@ function DesktopScreen() {
         return (
           <AppAboutSite
             isOpen={state === "AppAboutSite"}
+            onClose={() => setState("DesktopMainView")}
+          />
+        );
+      case "AppWorkHistory":
+        return (
+          <AppWorkHistory
+            isOpen={state === "AppWorkHistory"}
             onClose={() => setState("DesktopMainView")}
           />
         );

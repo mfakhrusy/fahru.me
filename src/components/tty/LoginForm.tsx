@@ -1,7 +1,6 @@
 import { Flex, Input, Text } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
-import { isMobile } from "react-device-detect";
 
 type Props = {
   setUsernameHistory: (value: string) => void;

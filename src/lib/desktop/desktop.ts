@@ -2,7 +2,8 @@ export type DesktopApp =
   | "DesktopMainView"
   | "AppTerminal"
   | "AppAboutMe"
-  | "AppAboutSite";
+  | "AppAboutSite"
+  | "AppWorkHistory";
 
 type DesktopIcon = {
   iconName: string;
@@ -12,6 +13,11 @@ type DesktopIcon = {
 
 export function makeDesktopIcons(): Array<DesktopIcon> {
   return [
+    {
+      iconName: "resume.png",
+      appName: "AppWorkHistory",
+      title: "Work History",
+    },
     {
       iconName: "config-users.png",
       appName: "AppAboutMe",

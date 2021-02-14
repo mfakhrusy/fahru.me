@@ -14,8 +14,7 @@ export function DesktopMainView({ setDesktopApp }: Props) {
 
   useEffect(() => {
     const eventHandler = (event: KeyboardEvent) => {
-      if (focusedApp !== "DesktopMainView") {
-        console.log("yey", focusedApp);
+      if (focusedApp !== "DesktopMainView" && event.key === "Enter") {
         setDesktopApp(focusedApp);
       }
     };

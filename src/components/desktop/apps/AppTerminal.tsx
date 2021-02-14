@@ -12,6 +12,8 @@ export function AppTerminal({ onClose, isOpen }: Props) {
   const [shouldRenderTerminal, setShouldRenderTerminal] = useState(false);
   const [isClosingDown, setIsClosingDown] = useState(false);
 
+  console.log(isClosingDown);
+
   useEffect(() => {
     setTimeout(() => setShouldRenderTerminal(true), 300);
   }, []);
