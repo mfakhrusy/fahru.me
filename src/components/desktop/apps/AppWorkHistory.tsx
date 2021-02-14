@@ -27,15 +27,15 @@ export function AppWorkHistory({ onClose, isOpen }: Props) {
             <ListItem mb="15px">
               <Text fontWeight="600">Software Engineer (Frontend)</Text>
               <Text>Ruangguru, Indonesia</Text>
-              <small>2019 - Present, Fulltime</small>
+              <small>2019 - Present, Full-time</small>
               <UnorderedList mt="10px">
+                <ListItem>
+                  Built and maintained skillacademy frontend codebase in
+                  ReasonML & ReasonReact for web and mobile platform in cordova
+                </ListItem>
                 <ListItem>
                   Initiated the migration from javascript to typescript for
                   skillacademy content management system (CMS)
-                </ListItem>
-                <ListItem>
-                  Built and maintained skillacademy frontend codebase in
-                  ReasonML for both web and mobile platform in cordova
                 </ListItem>
                 <ListItem>
                   Helped enhancing frontend tools on typescript language after
@@ -50,22 +50,22 @@ export function AppWorkHistory({ onClose, isOpen }: Props) {
               <small>2019 - 2020</small>
               <UnorderedList mt="10px">
                 <ListItem>
-                  Built a document management system for an airline using react,
-                  node, postgreSQL, and azure.
+                  Built a document management system for an indonesian airline using react, react-native,
+                  node, postgreSQL, and azure for web and android
                 </ListItem>
               </UnorderedList>
             </ListItem>
             <ListItem mb="15px">
               <Text fontWeight="600">Frontend Engineer</Text>
               <Text>Codemi, Indonesia</Text>
-              <small>2018 - 2019</small>
+              <small>2018 - 2019, Full-time</small>
               <UnorderedList mt="10px">
                 <ListItem>
-                  Developed & maintained learning management system product
-                  frontend in reactJS, both client side and admin dashboard
+                  Developed and maintained learning management system
+                  frontend in javascript & reactJS, both client side and admin dashboard
                 </ListItem>
                 <ListItem>
-                  Developed an online course platform from scratch using reactJS
+                  Developed an online course platform frontend using javascript & reactJS
                 </ListItem>
               </UnorderedList>
             </ListItem>
@@ -74,14 +74,14 @@ export function AppWorkHistory({ onClose, isOpen }: Props) {
                 Math, Physics, & Engineering course Tutor
               </Text>
               <Text>Smart Privat, Indonesia</Text>
-              <small>2014 - 2017</small>
+              <small>2014 - 2017, Part-time</small>
               <UnorderedList mt="10px">
                 <ListItem>
-                  Taught Mathematics & Physics to a first year student at
+                  Taught mathematics & physics to a first year students at
                   Bandung Institute of Technology
                 </ListItem>
                 <ListItem>
-                  Taught Programming (C++) to a second year student at Bandung
+                  Taught programming (C++) & engineering course to a second year student at Bandung
                   Institute of Technology
                 </ListItem>
               </UnorderedList>

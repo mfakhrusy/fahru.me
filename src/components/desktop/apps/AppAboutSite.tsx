@@ -47,6 +47,7 @@ export function AppAboutSite({ onClose, isOpen }: Props) {
             <Text fontWeight="bold">Tech Stack & Libraries</Text>
             <UnorderedList>
               <ListItem>typescript</ListItem>
+              <ListItem>reactJS</ListItem>
               <ListItem>nextJS</ListItem>
               <ListItem>vercel</ListItem>
               <ListItem>xtermjs</ListItem>
