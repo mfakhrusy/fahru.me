@@ -17,13 +17,15 @@ export function DesktopTouchView({ setDesktopApp }: Props) {
       pos="relative"
       backgroundPosition={{ base: "left -20px center", lg: "center center" }}
     >
-      {makeDesktopIcons().map((desktopIcon) => (
-        <DesktopIcon
-          iconName={desktopIcon.iconName}
-          onClick={() => setDesktopApp(desktopIcon.appName)}
-          title={desktopIcon.title}
-        />
-      ))}
+      <Flex flexWrap="wrap" h="30%">
+        {makeDesktopIcons().map((desktopIcon) => (
+          <DesktopIcon
+            iconName={desktopIcon.iconName}
+            onClick={() => setDesktopApp(desktopIcon.appName)}
+            title={desktopIcon.title}
+          />
+        ))}
+      </Flex>
     </Flex>
   );
 }

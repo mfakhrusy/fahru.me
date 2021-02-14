@@ -48,6 +48,7 @@ export function AppAboutMe({ onClose, isOpen }: Props) {
               <ListItem>Linux web server (nginx/apache) config</ListItem>
               <ListItem>DNS config</ListItem>
               <ListItem>Web animation & SVGs</ListItem>
+              <ListItem>Docker</ListItem>
               <ListItem>Semantic HTML</ListItem>
             </UnorderedList>
             <Box minH="16px" />
@@ -57,7 +58,6 @@ export function AppAboutMe({ onClose, isOpen }: Props) {
               <ListItem>maintainable and readable code is important</ListItem>
               <ListItem>pragmatism on tight deadline</ListItem>
               <ListItem>programming language is just a tool</ListItem>
-              <ListItem>strong type unless you can't</ListItem>
             </UnorderedList>
             <Box minH="16px" />
             <Text fontWeight="bold">Hobbies</Text>
@@ -79,7 +79,7 @@ export function AppAboutMe({ onClose, isOpen }: Props) {
               </ListItem>
               <ListItem>
                 Open source things. I am a linux geek (debian FTW) and I was
-                into linux so hard until I realized I have a family to feed
+                into linux so hard until I realized I have a toddler to feed
               </ListItem>
             </UnorderedList>
           </>

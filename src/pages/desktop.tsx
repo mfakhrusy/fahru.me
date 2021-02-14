@@ -13,6 +13,7 @@ import {
   AppWorkHistory,
   AppContacts,
   AppEducation,
+  AppProjects,
 } from "@/components/desktop/apps";
 
 function DesktopScreen() {
@@ -60,6 +61,13 @@ function DesktopScreen() {
         return (
           <AppContacts
             isOpen={state === "AppContacts"}
+            onClose={() => setState("DesktopMainView")}
+          />
+        );
+      case "AppProjects":
+        return (
+          <AppProjects
+            isOpen={state === "AppProjects"}
             onClose={() => setState("DesktopMainView")}
           />
         );

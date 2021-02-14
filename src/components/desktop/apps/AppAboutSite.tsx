@@ -1,3 +1,4 @@
+import { ExternalLinkIcon } from "@chakra-ui/icons";
 import {
   Box,
   Flex,
@@ -41,7 +42,7 @@ export function AppAboutSite({ onClose, isOpen }: Props) {
               target="_blank"
               href="https://github.com/mfakhrusy/fakhrusy.com"
             >
-              https://github.com/mfakhrusy/fakhrusy.com
+              https://github.com/mfakhrusy/fakhrusy.com <ExternalLinkIcon />
             </Link>
             <Box minH={4} />
             <Text fontWeight="bold">Tech Stack & Libraries</Text>
@@ -62,7 +63,7 @@ export function AppAboutSite({ onClose, isOpen }: Props) {
                 target="_blank"
                 href="https://snwh.org/moka"
               >
-                Moka Icons
+                Moka Icons <ExternalLinkIcon />
               </Link>
               &nbsp;by&nbsp;
               <Link
@@ -70,7 +71,7 @@ export function AppAboutSite({ onClose, isOpen }: Props) {
                 target="_blank"
                 href="https://samuelhewitt.com"
               >
-                Sam Hewitt
+                Sam Hewitt <ExternalLinkIcon />
               </Link>
             </Text>
             <Box minH={4} />
@@ -81,7 +82,7 @@ export function AppAboutSite({ onClose, isOpen }: Props) {
                 target="_blank"
                 href="https://creativecommons.org/licenses/by-sa/4.0/"
               >
-                CC-SA-4.0
+                CC-SA-4.0 <ExternalLinkIcon />
               </Link>
             </Text>
           </>

@@ -1,8 +1,6 @@
 import {
   BackgroundProps,
-  Box,
   Flex,
-  IconButton,
   Modal,
   ModalContent,
   Text,
@@ -28,11 +26,9 @@ export function AppLayout({
   noPadding = false,
   bgColor = "white",
 }: PropsWithChildren<Props>) {
-  console.log(isOpen, "isOpen");
   return (
     <Modal
       onClose={onClose}
-      // onClose={() => console.log("close")}
       isOpen={isOpen}
       size="full"
       styleConfig={{ marginTop: 0 }}

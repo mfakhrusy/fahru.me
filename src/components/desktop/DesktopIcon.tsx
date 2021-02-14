@@ -1,7 +1,21 @@
 import { Flex, Text } from "@chakra-ui/react";
+import styled from "@emotion/styled";
 import { motion } from "framer-motion";
 import { MutableRefObject } from "react";
-import { isMobile } from "react-device-detect";
+
+type ContainerProps = {
+  isMobileIcon: boolean;
+};
+
+const Container = styled(motion.div)<ContainerProps>`
+  width: ${({ isMobileIcon }) => (isMobileIcon ? "80px" : "70px")};
+  height: ${({ isMobileIcon }) => (isMobileIcon ? "100px" : "")};
+  min-height: ${({ isMobileIcon }) => (isMobileIcon ? "" : "90px")};
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+`;
 
 type Props = {
   iconName: string;
@@ -24,16 +38,8 @@ export function DesktopIcon({
   const isMobileIcon = !isDraggable;
 
   return (
-    <motion.div
-      style={{
-        width: isMobileIcon ? "80px" : "70px",
-        height: isMobileIcon ? "100px" : "unset",
-        minHeight: isMobileIcon ? "unset" : "90px",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        cursor: "pointer",
-      }}
+    <Container
+      isMobileIcon={isMobileIcon}
       drag={isDraggable}
       dragConstraints={dragConstraintRef}
       dragElastic={0}
@@ -64,6 +70,6 @@ export function DesktopIcon({
       <Text fontSize="12px" fontWeight="600" textAlign="center">
         {title}
       </Text>
-    </motion.div>
+    </Container>
   );
 }

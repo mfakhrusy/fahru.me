@@ -1,3 +1,4 @@
+import { ExternalLinkIcon } from "@chakra-ui/icons";
 import {
   Box,
   Flex,
@@ -33,23 +34,23 @@ export function AppContacts({ onClose, isOpen }: Props) {
         {shouldRenderContent && (
           <>
             <Text fontWeight="bold">Email</Text>
-            <Link
-              href="mailto:fakhrusy.m@gmail.com"
-              target="_blank"
-              outline="none"
-            >
-              fakhrusy.m@gmail.com
+            <Link href="mailto:fakhrusy.m@gmail.com" target="_blank">
+              fakhrusy.m@gmail.com <ExternalLinkIcon />
             </Link>
             <Box minH="16px" />
             <Text fontWeight="bold">Twitter</Text>
+            <Link href="https://twitter.com/f_fakhrusy" target="_blank">
+              @f_fakhrusy <ExternalLinkIcon />
+            </Link>
+            <Box minH="16px" />
+            <Text fontWeight="bold">LinkedIn</Text>
             <Link
-              href="https://twitter.com/f_fakhrusy"
+              href="https://www.linkedin.com/in/mfakhrusy/"
               target="_blank"
               outline="none"
             >
-              @f_fakhrusy
+              Muhamad Fakhrusy <ExternalLinkIcon />
             </Link>
-            <Box minH="16px" />
           </>
         )}
       </Flex>
