@@ -1,5 +1,5 @@
 import { Terminal } from "@/components/shared/Terminal";
-import { Flex, Text, VStack } from "@chakra-ui/react";
+import { Flex, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { AppLayout } from "./AppLayout";
 

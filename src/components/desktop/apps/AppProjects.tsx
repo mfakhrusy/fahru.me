@@ -1,14 +1,11 @@
 import { ExternalLinkIcon } from "@chakra-ui/icons";
 import {
-  Box,
   Divider,
   Flex,
   Heading,
   Image,
-  ListItem,
   Text,
   Link,
-  UnorderedList,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { AppLayout } from "./AppLayout";
@@ -74,7 +71,7 @@ export function AppProjects({ onClose, isOpen }: Props) {
                 react, and mathjs.
               </Text>
               <Text>
-                This is part of my ongoing project of mathematic learning platform
+                This is part of my ongoing project of mathematic learning platform (mathematic-hub), stay tune!
               </Text>
             </Flex>
           </>
