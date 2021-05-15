@@ -1,21 +1,35 @@
 import { DesktopApp, makeDesktopIcons } from "@/lib/desktop/desktop";
+import { RootState } from "@/store";
+import {
+  SetActiveDesktopAppAction,
+  SetFocusedDesktopAppAction,
+  setActiveDesktopApp as setActiveDesktopAppAction,
+  setFocusedDesktopApp as setFocusedDesktopAppAction,
+} from "@/store/desktop";
 import { Flex } from "@chakra-ui/react";
 import { motion } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { DesktopIcon } from "./DesktopIcon";
 
-type Props = {
-  setDesktopApp: (app: DesktopApp) => void;
-};
-
-export function DesktopMainView({ setDesktopApp }: Props) {
-  const [focusedApp, setFocusedApp] = useState<DesktopApp>("DesktopMainView");
+export function DesktopMainView() {
   const dragConstraintRef = useRef<HTMLDivElement>(null);
+  const dispatch = useDispatch();
+
+  const focusedApp = useSelector<RootState, DesktopApp>(
+    (state) => state.desktop.activeDesktopApp
+  );
+  const setFocusedDesktopApp = useCallback<
+    (args: DesktopApp) => SetFocusedDesktopAppAction
+  >((payload) => dispatch(setFocusedDesktopAppAction(payload)), []);
+  const setActiveDesktopApp = useCallback<
+    (args: DesktopApp) => SetActiveDesktopAppAction
+  >((payload) => dispatch(setActiveDesktopAppAction(payload)), []);
 
   useEffect(() => {
     const eventHandler = (event: KeyboardEvent) => {
       if (focusedApp !== "DesktopMainView" && event.key === "Enter") {
-        setDesktopApp(focusedApp);
+        setActiveDesktopApp(focusedApp);
       }
     };
 
@@ -23,6 +37,8 @@ export function DesktopMainView({ setDesktopApp }: Props) {
 
     return () => window.removeEventListener("keydown", eventHandler);
   }, [focusedApp]);
+
+  console.log(focusedApp, "esss");
 
   return (
     <Flex
@@ -40,10 +56,11 @@ export function DesktopMainView({ setDesktopApp }: Props) {
       >
         {makeDesktopIcons().map((desktopIcon) => (
           <DesktopIcon
+            key={`mainview-${desktopIcon.appName}`}
             iconName={desktopIcon.iconName}
             dragConstraintRef={dragConstraintRef}
-            onClick={() => setFocusedApp(desktopIcon.appName)}
-            onDoubleClick={() => setDesktopApp(desktopIcon.appName)}
+            onClick={() => setFocusedDesktopApp(desktopIcon.appName)}
+            onDoubleClick={() => setActiveDesktopApp(desktopIcon.appName)}
             isActive={focusedApp === desktopIcon.appName}
             title={desktopIcon.title}
           />

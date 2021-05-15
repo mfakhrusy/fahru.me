@@ -3,9 +3,10 @@ import { DesktopTaskbar } from "@/components/desktop/DesktopTaskbar";
 import { DesktopTouchView } from "@/components/desktop/DesktopTouchView";
 import { DesktopApp } from "@/lib/desktop/desktop";
 import { Flex, useMediaQuery } from "@chakra-ui/react";
-import { useState } from "react";
+import { Dispatch, useCallback, useState } from "react";
 import dynamic from "next/dynamic";
 import { isMobile } from "react-device-detect";
+import { RootState } from "@/store";
 import {
   AppTerminal,
   AppAboutMe,
@@ -15,60 +16,71 @@ import {
   AppEducation,
   AppProjects,
 } from "@/components/desktop/apps";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  setActiveDesktopApp as setActiveDesktopAppAction,
+  SetActiveDesktopAppAction,
+} from "@/store/desktop";
 
 function DesktopScreen() {
-  const [state, setState] = useState<DesktopApp>("DesktopMainView");
   const [isBigScreen] = useMediaQuery("(min-width: 961px)");
+  const dispatch = useDispatch();
+  const activeDesktopApp = useSelector<RootState, DesktopApp>(
+    (state) => state.desktop.activeDesktopApp
+  );
+  const setActiveDesktopApp = useCallback<
+    (args: DesktopApp) => SetActiveDesktopAppAction
+  >((payload) => dispatch(setActiveDesktopAppAction(payload)), []);
 
-  const renderContent = (state: DesktopApp) => {
-    switch (state) {
+  const renderContent = (activeDesktopApp: DesktopApp) => {
+    switch (activeDesktopApp) {
       case "AppTerminal":
         return (
           <AppTerminal
-            isOpen={state === "AppTerminal"}
-            onClose={() => setState("DesktopMainView")}
+            isOpen={activeDesktopApp === "AppTerminal"}
+            onClose={() => setActiveDesktopApp("DesktopMainView")}
           />
         );
       case "AppAboutMe":
         return (
           <AppAboutMe
-            isOpen={state === "AppAboutMe"}
-            onClose={() => setState("DesktopMainView")}
+            isOpen={activeDesktopApp === "AppAboutMe"}
+            onClose={() => setActiveDesktopApp("DesktopMainView")}
           />
         );
       case "AppAboutSite":
         return (
           <AppAboutSite
-            isOpen={state === "AppAboutSite"}
-            onClose={() => setState("DesktopMainView")}
+            isOpen={activeDesktopApp === "AppAboutSite"}
+            onClose={() => setActiveDesktopApp("DesktopMainView")}
           />
         );
       case "AppWorkHistory":
         return (
           <AppWorkHistory
-            isOpen={state === "AppWorkHistory"}
-            onClose={() => setState("DesktopMainView")}
+            isOpen={activeDesktopApp === "AppWorkHistory"}
+            onClose={() => setActiveDesktopApp("DesktopMainView")}
           />
         );
       case "AppEducation":
         return (
           <AppEducation
-            isOpen={state === "AppEducation"}
-            onClose={() => setState("DesktopMainView")}
+            isOpen={activeDesktopApp === "AppEducation"}
+            onClose={() => setActiveDesktopApp("DesktopMainView")}
           />
         );
       case "AppContacts":
         return (
           <AppContacts
-            isOpen={state === "AppContacts"}
-            onClose={() => setState("DesktopMainView")}
+            isOpen={activeDesktopApp === "AppContacts"}
+            onClose={() => setActiveDesktopApp("DesktopMainView")}
           />
         );
       case "AppProjects":
         return (
           <AppProjects
-            isOpen={state === "AppProjects"}
-            onClose={() => setState("DesktopMainView")}
+            isOpen={activeDesktopApp === "AppProjects"}
+            onClose={() => setActiveDesktopApp("DesktopMainView")}
           />
         );
       default:
@@ -78,12 +90,8 @@ function DesktopScreen() {
 
   return (
     <Flex flexDir="column" h="100vh" w="100vw" overflowY="hidden">
-      {isMobile ? (
-        <DesktopTouchView setDesktopApp={(app: DesktopApp) => setState(app)} />
-      ) : (
-        <DesktopMainView setDesktopApp={(app: DesktopApp) => setState(app)} />
-      )}
-      {renderContent(state)}
+      {isMobile ? <DesktopTouchView /> : <DesktopMainView />}
+      {renderContent(activeDesktopApp)}
       {isBigScreen && !isMobile ? <DesktopTaskbar /> : null}
     </Flex>
   );

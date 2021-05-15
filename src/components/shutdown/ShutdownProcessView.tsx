@@ -1,13 +1,11 @@
+import {
+  AnimatedText,
+  TerminalProcessAnimation,
+} from "@/components/shared/TerminalProcessAnimation";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
-import { ProcessAnimatedLine, Status } from "../shared/ProcessAnimatedLine";
 
-type Text = {
-  value: string;
-  status: Status;
-};
-
-const makeText: () => Array<Text> = () => [
+const makeText: () => Array<AnimatedText> = () => [
   { value: "Shutdown process is started", status: "Ok" },
   {
     value: "Shutdown process is halting due to unforeseen circumstances",
@@ -25,10 +23,9 @@ const makeText: () => Array<Text> = () => [
 ];
 
 export function ShutdownProcessView() {
-  const stepTimeSecond = 0.25;
+  const stepTimeInSecond = 0.25;
   const text = makeText();
-  const duration = text.length * stepTimeSecond;
-  const stepSize = 1 / text.length;
+  const duration = text.length * stepTimeInSecond;
   const router = useRouter();
   const reboot = router.query.reboot;
 
@@ -41,19 +38,6 @@ export function ShutdownProcessView() {
   }, []);
 
   return (
-    <>
-      {text.map((val, i) => {
-        return (
-          <ProcessAnimatedLine
-            key={i}
-            text={val.value}
-            startTime={i * stepSize}
-            endTime={i * stepSize + stepSize}
-            status={val.status}
-            duration={duration}
-          />
-        );
-      })}
-    </>
+    <TerminalProcessAnimation text={text} stepTimeInSecond={stepTimeInSecond} />
   );
 }

@@ -1,85 +1,46 @@
-import { ProcessAnimatedLine, Status } from "../shared/ProcessAnimatedLine";
+import {
+  TerminalProcessAnimation,
+  AnimatedText,
+} from "@/components/shared/TerminalProcessAnimation";
+import useIsTouchDevice from "@/lib/useIsTouchDevice";
 
-type Text = {
-  value: string;
-  status: Status;
+const makeText: (isTouchDevice: boolean) => Array<AnimatedText> = (
+  isTouchDevice
+) => {
+  const lastElement: AnimatedText = isTouchDevice
+    ? {
+        value: "Please tap anywhere to continue",
+        status: "Ok",
+      }
+    : {
+        value: "Please press ENTER/RETURN to continue",
+        status: "Ok",
+      };
+
+  return [
+    { value: "Starting the site", status: "Ok" },
+    { value: "Loading . . .", status: "Loading" },
+    { value: "Unexpected error occurred", status: "Error" },
+    { value: "Retrying", status: "Ok" },
+    { value: "Loading . . .", status: "Loading" },
+    { value: "Retrying", status: "Ok" },
+    { value: "Loading . . .", status: "Loading" },
+    { value: "Retrying", status: "Ok" },
+    { value: "Loading . . .", status: "Loading" },
+    { value: "Retrying", status: "Ok" },
+    { value: "Loading . . .", status: "Loading" },
+    { value: "It's failed", status: "Error" },
+    { value: ". . .", status: "Loading" },
+    { value: ". . .", status: "Loading" },
+    { value: "Still fai-", status: "Error" },
+    { value: "It's successful now", status: "Ok" },
+    { value: "bip bop I'm a robot", status: "Ok" },
+    lastElement,
+  ];
 };
 
-const makeText: () => Array<Text> = () => [
-  { value: "Started something important", status: "Ok" },
-  { value: "Loading . . .", status: "Loading" },
-  { value: "Some weird error occurred", status: "Error" },
-  { value: "Weird error resolved", status: "Ok" },
-  { value: "Starting another thing", status: "Loading" },
-  {
-    value: "Starting another else in parallel",
-    status: "Loading",
-  },
-  {
-    value: "with another thing",
-    status: "Loading",
-  },
-  {
-    value: "This is just a nonsensical text",
-    status: "Ok",
-  },
-  { value: "Can I just throw error here", status: "Error" },
-  { value: "Started the site, I guess", status: "Ok" },
-  { value: "bip bop I'm a robot", status: "Ok" },
-  { value: "I want some food", status: "Error" },
-  { value: "The definition of insanity is", status: "Ok" },
-  { value: ". . .", status: "Loading" },
-  { value: ". . .", status: "Loading" },
-  { value: ". . .", status: "Loading" },
-  { value: ". . .", status: "Loading" },
-  {
-    value: "Keep repeating the same thing,",
-    status: "Error",
-  },
-  {
-    value: "and expect a different outcome",
-    status: "Loading",
-  },
-  { value: "Uh, oh, will this stop", status: "Ok" },
-  { value: "This cannot continue", status: "Error" },
-  { value: "This cannot continue", status: "Error" },
-  { value: "This cannot continue", status: "Loading" },
-  { value: "This cannot continue", status: "Ok" },
-  { value: "", status: "Loading" },
-  {
-    value: "Please press ENTER to continue",
-    status: "Ok",
-  },
-  {
-    value: "or RETURN if you're on macOS",
-    status: "Ok",
-  },
-  {
-    value: "or tap the screen if you're on phone",
-    status: "Ok",
-  },
-];
-
 export function BootUpView() {
-  const stepTimeSecond = 0.25;
-  const text = makeText();
-  const duration = text.length * stepTimeSecond;
-  const stepSize = 1 / text.length;
+  const isTouchDevice = useIsTouchDevice();
 
-  return (
-    <>
-      {text.map((val, i) => {
-        return (
-          <ProcessAnimatedLine
-            key={i}
-            text={val.value}
-            startTime={i * stepSize}
-            endTime={i * stepSize + stepSize}
-            status={val.status}
-            duration={duration}
-          />
-        );
-      })}
-    </>
-  );
+  return <TerminalProcessAnimation text={makeText(isTouchDevice)} />;
 }

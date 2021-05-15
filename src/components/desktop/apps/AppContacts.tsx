@@ -49,7 +49,10 @@ export function AppContacts({ onClose, isOpen }: Props) {
             </Link>
             <Box minH="16px" />
             <Text fontWeight="bold">Stack Overflow</Text>
-            <Link href="https://stackoverflow.com/users/5835100/mfakhrusy" target="_blank">
+            <Link
+              href="https://stackoverflow.com/users/5835100/mfakhrusy"
+              target="_blank"
+            >
               mfakhrusy <ExternalLinkIcon />
             </Link>
             <Box minH="16px" />

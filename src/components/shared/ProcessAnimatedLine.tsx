@@ -1,5 +1,5 @@
 import useIsTouchDevice from "@/lib/useIsTouchDevice";
-import { Text, useMediaQuery } from "@chakra-ui/react";
+import { Text } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 
 export type Status = "Ok" | "Error" | "Loading";
@@ -73,7 +73,7 @@ export function ProcessAnimatedLine({
       )}
       <Text
         as="span"
-        ml={status === "Loading" ? (isTouchDevice ? "19px" : "60px") : 0}
+        ml={status === "Loading" ? (isTouchDevice ? "22px" : "60px") : 0}
       >
         {text}
       </Text>

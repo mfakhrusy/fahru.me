@@ -5,17 +5,16 @@ import { BlackTerminalPage } from "@/components/shared/BlackTerminalPage";
 
 export default function BootUpScreen() {
   const router = useRouter();
-  const ttyIndex = router.query.ttyIndex;
 
   useEffect(() => {
     const eventHandler = (event: KeyboardEvent) => {
       if (event.key === "Enter") {
-        router.replace("/tty/1");
+        router.replace("/home");
       }
     };
 
     const touchEventHandler = () => {
-      router.replace("/tty/1");
+      router.replace("/home");
     };
 
     window.addEventListener("keydown", eventHandler);

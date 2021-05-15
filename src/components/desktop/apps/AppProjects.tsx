@@ -1,12 +1,5 @@
 import { ExternalLinkIcon } from "@chakra-ui/icons";
-import {
-  Divider,
-  Flex,
-  Heading,
-  Image,
-  Text,
-  Link,
-} from "@chakra-ui/react";
+import { Divider, Flex, Heading, Image, Text, Link } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { AppLayout } from "./AppLayout";
 
@@ -45,7 +38,7 @@ export function AppProjects({ onClose, isOpen }: Props) {
             </Heading>
             <Image
               src="/images/eq-vis-math-hub-demo.png"
-              maxW={{base: "90%", md: "70%"}}
+              maxW={{ base: "90%", md: "70%" }}
               h="auto"
               mb={3}
             />
@@ -71,7 +64,8 @@ export function AppProjects({ onClose, isOpen }: Props) {
                 react, and mathjs.
               </Text>
               <Text>
-                This is part of my ongoing project of mathematic learning platform (mathematic-hub), stay tune!
+                This is part of my ongoing project of mathematic learning
+                platform (mathematic-hub), stay tune!
               </Text>
             </Flex>
           </>
