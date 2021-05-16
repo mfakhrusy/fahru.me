@@ -67,15 +67,15 @@ export function executeCommand({ command, terminal, router }: Config) {
     case "hep":
     case "helpp":
     case "gelp":
-        newline;
-        terminal.write("command not found: " + command);
-        terminal.write("\r\ndid you mean 'help' ?\r\n");
-        break;
+      newline;
+      terminal.write("command not found: " + command);
+      terminal.write("\r\ndid you mean 'help' ?\r\n");
+      break;
     case "start":
-        newline;
-        terminal.write("command not found: " + command);
-        terminal.write("\r\ndid you mean 'startx' ?\r\n");
-        break;
+      newline;
+      terminal.write("command not found: " + command);
+      terminal.write("\r\ndid you mean 'startx' ?\r\n");
+      break;
     default:
       if (command !== "") {
         newline;
