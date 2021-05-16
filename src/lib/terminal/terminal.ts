@@ -27,7 +27,7 @@ export function executeCommand({ command, terminal, router }: Config) {
         terminal.write("\r\nAvailable commands:");
         newline;
         terminal.write(`\r\n  help\t\tgetting this help`);
-        terminal.write(`\r\n  startx\taccess desktop`);
+        terminal.write(`\r\n  startx\taccess GUI`);
         terminal.write(`\r\n  shutdown\tshut the site down`);
         terminal.write(`\r\n  reboot\trestart the site`);
         terminal.write("\r\n  clear\t\tclear the terminal\r\n");
@@ -36,7 +36,7 @@ export function executeCommand({ command, terminal, router }: Config) {
         terminal.write("\r\nAvailable commands:");
         newline;
         terminal.write("\r\n\thelp\t\tgetting this help");
-        terminal.write("\r\n\tstartx\t\taccess desktop");
+        terminal.write("\r\n\tstartx\t\taccess GUI");
         terminal.write("\r\n\tshutdown\tshut the site down");
         terminal.write("\r\n\treboot\t\trestart the site");
         terminal.write("\r\n\tclear\t\tclear the terminal\r\n");
@@ -44,7 +44,7 @@ export function executeCommand({ command, terminal, router }: Config) {
       break;
     case "startx":
       if (router.pathname.includes("desktop")) {
-        terminal.write("you're already on desktop");
+        terminal.write("you're already accessing the GUI");
       } else {
         router.replace("/desktop");
       }
@@ -62,6 +62,20 @@ export function executeCommand({ command, terminal, router }: Config) {
     case "clear":
       terminal.write("\x1bc");
       break;
+    case "helo":
+    case "hepl":
+    case "hep":
+    case "helpp":
+    case "gelp":
+        newline;
+        terminal.write("command not found: " + command);
+        terminal.write("\r\ndid you mean 'help' ?\r\n");
+        break;
+    case "start":
+        newline;
+        terminal.write("command not found: " + command);
+        terminal.write("\r\ndid you mean 'startx' ?\r\n");
+        break;
     default:
       if (command !== "") {
         newline;
