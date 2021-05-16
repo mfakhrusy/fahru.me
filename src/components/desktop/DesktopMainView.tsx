@@ -11,6 +11,15 @@ import { motion } from "framer-motion";
 import { useCallback, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { DesktopIcon } from "./DesktopIcon";
+import styled from "@emotion/styled";
+
+const DragArea = styled(motion.div)`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+`;
 
 export function DesktopMainView() {
   const dragConstraintRef = useRef<HTMLDivElement>(null);
@@ -53,13 +62,9 @@ export function DesktopMainView() {
       backgroundImage="url(/images/debian-nyaa.png)"
       backgroundRepeat="no-repeat"
       pos="relative"
-      backgroundPosition="center center"
+      backgroundPosition="center"
     >
-      <motion.div
-        style={{ width: "100%", height: "100%" }}
-        className="drag-area"
-        ref={dragConstraintRef}
-      >
+      <DragArea className="drag-area" ref={dragConstraintRef}>
         {makeDesktopIcons().map((desktopIcon) => (
           <DesktopIcon
             key={`mainview-${desktopIcon.appName}`}
@@ -71,7 +76,7 @@ export function DesktopMainView() {
             title={desktopIcon.title}
           />
         ))}
-      </motion.div>
+      </DragArea>
     </Flex>
   );
 }

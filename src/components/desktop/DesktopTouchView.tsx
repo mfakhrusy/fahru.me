@@ -21,7 +21,7 @@ export function DesktopTouchView() {
       backgroundImage="url(/images/debian-nyaa.png)"
       backgroundRepeat="no-repeat"
       pos="relative"
-      backgroundPosition="center center"
+      backgroundPosition="center"
     >
       <Flex flexWrap="wrap" h="30%">
         {makeDesktopIcons().map((desktopIcon) => (

@@ -1,12 +1,15 @@
-export type DesktopApp =
-  | "DesktopMainView"
-  | "AppTerminal"
-  | "AppAboutMe"
-  | "AppAboutSite"
-  | "AppWorkHistory"
-  | "AppEducation"
-  | "AppContacts"
-  | "AppProjects";
+export const desktopApp = [
+  "DesktopMainView",
+  "AppTerminal",
+  "AppAboutMe",
+  "AppAboutSite",
+  "AppWorkHistory",
+  "AppEducation",
+  "AppContacts",
+  "AppProjects",
+] as const;
+
+export type DesktopApp = typeof desktopApp[number];
 
 type DesktopIcon = {
   iconName: string;

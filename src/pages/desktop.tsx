@@ -3,7 +3,7 @@ import { DesktopTaskbar } from "@/components/desktop/DesktopTaskbar";
 import { DesktopTouchView } from "@/components/desktop/DesktopTouchView";
 import { DesktopApp } from "@/lib/desktop/desktop";
 import { Flex, useMediaQuery } from "@chakra-ui/react";
-import { useCallback } from "react";
+import { useCallback, useRef } from "react";
 import dynamic from "next/dynamic";
 import { isMobile } from "react-device-detect";
 import { RootState } from "@/store";
@@ -18,9 +18,13 @@ import {
 } from "@/components/desktop/apps";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  AppMenuState,
   setActiveDesktopApp as setActiveDesktopAppAction,
   SetActiveDesktopAppAction,
+  disableAppMenu as disableAppMenuAction,
 } from "@/store/desktop";
+import { DesktopAppMenu } from "@/components/desktop/DesktopAppMenu";
+import { useClickOutside } from "@/lib/useClickOutside";
 
 function DesktopScreen() {
   const [isBigScreen] = useMediaQuery("(min-width: 961px)");
@@ -28,6 +32,11 @@ function DesktopScreen() {
   const activeDesktopApp = useSelector<RootState, DesktopApp>(
     (state) => state.desktop.activeDesktopApp
   );
+
+  const appMenuState = useSelector<RootState, AppMenuState>(
+    (state) => state.desktop.appMenu
+  );
+
   const setActiveDesktopApp = useCallback<
     (args: DesktopApp) => SetActiveDesktopAppAction
   >((payload) => dispatch(setActiveDesktopAppAction(payload)), []);
@@ -90,9 +99,29 @@ function DesktopScreen() {
     }
   };
 
+  const disableAppMenu = useCallback<() => void>(
+    () => dispatch(disableAppMenuAction()),
+    []
+  );
+
+  const appMenuRef = useRef<HTMLDivElement>(null);
+  const taskbarRef = useRef<HTMLDivElement>(null);
+
+  useClickOutside({
+    targetRef: appMenuRef,
+    fn: () => disableAppMenu(),
+    exceptionRef: taskbarRef,
+  });
+
   return (
     <Flex flexDir="column" h="100vh" w="100vw" overflowY="hidden">
-      {isBigScreen && !isMobile ? <DesktopTaskbar /> : null}
+      {isBigScreen && !isMobile ? (
+        <DesktopTaskbar forwardRef={taskbarRef} />
+      ) : null}
+      <DesktopAppMenu
+        isActive={appMenuState.isActive}
+        forwardRef={appMenuRef}
+      />
       {isMobile ? <DesktopTouchView /> : <DesktopMainView />}
       {renderContent(activeDesktopApp)}
     </Flex>
