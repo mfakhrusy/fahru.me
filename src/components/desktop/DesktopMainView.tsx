@@ -44,10 +44,10 @@ export function DesktopMainView() {
     <Flex
       flexGrow={1}
       bgColor="aliceblue"
-      backgroundImage="url(/images/butterfly-colorful.svg)"
+      backgroundImage="url(/images/debian-nyaa.png)"
       backgroundRepeat="no-repeat"
       pos="relative"
-      backgroundPosition={{ base: "left -20px center", lg: "center center" }}
+      backgroundPosition="center center"
     >
       <motion.div
         style={{ width: "100%", height: "100%" }}

@@ -18,10 +18,10 @@ export function DesktopTouchView() {
     <Flex
       flexGrow={1}
       bgColor="aliceblue"
-      backgroundImage="url(/images/butterfly-colorful.svg)"
+      backgroundImage="url(/images/debian-nyaa.png)"
       backgroundRepeat="no-repeat"
       pos="relative"
-      backgroundPosition={{ base: "left -20px center", lg: "center center" }}
+      backgroundPosition="center center"
     >
       <Flex flexWrap="wrap" h="30%">
         {makeDesktopIcons().map((desktopIcon) => (

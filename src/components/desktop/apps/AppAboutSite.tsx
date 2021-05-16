@@ -85,6 +85,40 @@ export function AppAboutSite({ onClose, isOpen }: Props) {
                 CC-SA-4.0 <ExternalLinkIcon />
               </Link>
             </Text>
+            <Box minH={4} />
+            <Text fontWeight="bold">Background</Text>
+            <Text>
+              <Link
+                textDecor="underline"
+                target="_blank"
+                href="https://github.com/PineAndApplePizza/open-wallpapers/"
+              >
+                GitHub <ExternalLinkIcon />
+              </Link>
+              &nbsp;by&nbsp;
+                PineAndApplePizza
+            </Text>
+            <Box minH={4} />
+            <Text>
+              licensed under&nbsp;
+              <Link
+                textDecor="underline"
+                target="_blank"
+                href="https://www.gnu.org/licenses/gpl-3.0.html"
+              >
+                GPL <ExternalLinkIcon />
+              </Link>
+            </Text>
+            <Text>
+              original logo creator&nbsp;
+              <Link
+                textDecor="underline"
+                target="_blank"
+                href="https://www.reddit.com/user/Ishaan_P/"
+              >
+                u/Ishaan_P <ExternalLinkIcon />
+              </Link>
+            </Text>
           </>
         )}
       </Flex>

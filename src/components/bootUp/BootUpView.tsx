@@ -29,7 +29,7 @@ const makeText: (isTouchDevice: boolean) => Array<AnimatedText> = (
     { value: "Loading . . .", status: "Loading" },
     { value: "Retrying", status: "Ok" },
     { value: "Loading . . .", status: "Loading" },
-    { value: "It's failed", status: "Error" },
+    { value: "It's failed, sorry :(", status: "Error" },
     { value: ". . .", status: "Loading" },
     { value: ". . .", status: "Loading" },
     { value: "Still fai-", status: "Error" },
