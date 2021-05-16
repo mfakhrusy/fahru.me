@@ -1,4 +1,8 @@
-import { DesktopApp, desktopApp, makeDesktopIcons } from "@/lib/desktop/desktop";
+import {
+  DesktopApp,
+  desktopApp,
+  makeDesktopIcons,
+} from "@/lib/desktop/desktop";
 import { Image } from "@chakra-ui/image";
 import { Box, Flex, Text } from "@chakra-ui/layout";
 import { Ref, useCallback } from "react";
@@ -6,7 +10,7 @@ import {
   SetActiveDesktopAppAction,
   setActiveDesktopApp as setActiveDesktopAppAction,
   disableAppMenu as disableAppMenuAction,
-} from "@/store/desktop"
+} from "@/store/desktop";
 import { useDispatch } from "react-redux";
 
 type Props = {

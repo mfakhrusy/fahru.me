@@ -118,10 +118,12 @@ function DesktopScreen() {
       {isBigScreen && !isMobile ? (
         <DesktopTaskbar forwardRef={taskbarRef} />
       ) : null}
-      <DesktopAppMenu
-        isActive={appMenuState.isActive}
-        forwardRef={appMenuRef}
-      />
+      {!isMobile && (
+        <DesktopAppMenu
+          isActive={appMenuState.isActive}
+          forwardRef={appMenuRef}
+        />
+      )}
       {isMobile ? <DesktopTouchView /> : <DesktopMainView />}
       {renderContent(activeDesktopApp)}
     </Flex>
