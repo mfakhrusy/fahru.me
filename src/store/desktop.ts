@@ -38,7 +38,6 @@ const desktopSlice = createSlice<State, Action, "desktop">({
       state.activeDesktopApp = action.payload;
     },
     setFocusedDesktopApp(state, action) {
-      console.log("focused", state, action);
       state.focusedDesktopApp = action.payload;
     },
   },

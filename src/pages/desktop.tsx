@@ -3,7 +3,7 @@ import { DesktopTaskbar } from "@/components/desktop/DesktopTaskbar";
 import { DesktopTouchView } from "@/components/desktop/DesktopTouchView";
 import { DesktopApp } from "@/lib/desktop/desktop";
 import { Flex, useMediaQuery } from "@chakra-ui/react";
-import { Dispatch, useCallback, useState } from "react";
+import { useCallback } from "react";
 import dynamic from "next/dynamic";
 import { isMobile } from "react-device-detect";
 import { RootState } from "@/store";
@@ -33,54 +33,56 @@ function DesktopScreen() {
   >((payload) => dispatch(setActiveDesktopAppAction(payload)), []);
 
   const renderContent = (activeDesktopApp: DesktopApp) => {
+    const onCloseApp = () => setActiveDesktopApp("DesktopMainView");
+
     switch (activeDesktopApp) {
       case "AppTerminal":
         return (
           <AppTerminal
             isOpen={activeDesktopApp === "AppTerminal"}
-            onClose={() => setActiveDesktopApp("DesktopMainView")}
+            onClose={onCloseApp}
           />
         );
       case "AppAboutMe":
         return (
           <AppAboutMe
             isOpen={activeDesktopApp === "AppAboutMe"}
-            onClose={() => setActiveDesktopApp("DesktopMainView")}
+            onClose={onCloseApp}
           />
         );
       case "AppAboutSite":
         return (
           <AppAboutSite
             isOpen={activeDesktopApp === "AppAboutSite"}
-            onClose={() => setActiveDesktopApp("DesktopMainView")}
+            onClose={onCloseApp}
           />
         );
       case "AppWorkHistory":
         return (
           <AppWorkHistory
             isOpen={activeDesktopApp === "AppWorkHistory"}
-            onClose={() => setActiveDesktopApp("DesktopMainView")}
+            onClose={onCloseApp}
           />
         );
       case "AppEducation":
         return (
           <AppEducation
             isOpen={activeDesktopApp === "AppEducation"}
-            onClose={() => setActiveDesktopApp("DesktopMainView")}
+            onClose={onCloseApp}
           />
         );
       case "AppContacts":
         return (
           <AppContacts
             isOpen={activeDesktopApp === "AppContacts"}
-            onClose={() => setActiveDesktopApp("DesktopMainView")}
+            onClose={onCloseApp}
           />
         );
       case "AppProjects":
         return (
           <AppProjects
             isOpen={activeDesktopApp === "AppProjects"}
-            onClose={() => setActiveDesktopApp("DesktopMainView")}
+            onClose={onCloseApp}
           />
         );
       default:
@@ -90,9 +92,9 @@ function DesktopScreen() {
 
   return (
     <Flex flexDir="column" h="100vh" w="100vw" overflowY="hidden">
+      {isBigScreen && !isMobile ? <DesktopTaskbar /> : null}
       {isMobile ? <DesktopTouchView /> : <DesktopMainView />}
       {renderContent(activeDesktopApp)}
-      {isBigScreen && !isMobile ? <DesktopTaskbar /> : null}
     </Flex>
   );
 }

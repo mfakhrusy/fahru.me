@@ -17,19 +17,27 @@ export function DesktopMainView() {
   const dispatch = useDispatch();
 
   const focusedApp = useSelector<RootState, DesktopApp>(
-    (state) => state.desktop.activeDesktopApp
+    (state) => state.desktop.focusedDesktopApp
   );
+
   const setFocusedDesktopApp = useCallback<
     (args: DesktopApp) => SetFocusedDesktopAppAction
   >((payload) => dispatch(setFocusedDesktopAppAction(payload)), []);
+
   const setActiveDesktopApp = useCallback<
     (args: DesktopApp) => SetActiveDesktopAppAction
   >((payload) => dispatch(setActiveDesktopAppAction(payload)), []);
 
   useEffect(() => {
     const eventHandler = (event: KeyboardEvent) => {
-      if (focusedApp !== "DesktopMainView" && event.key === "Enter") {
-        setActiveDesktopApp(focusedApp);
+      if (focusedApp !== "DesktopMainView") {
+        // set active app upon pressing enter when there is a focused app
+        if (event.key === "Enter") {
+          setActiveDesktopApp(focusedApp);
+        } else if (event.key === "Escape") {
+          // release focused app
+          setFocusedDesktopApp("DesktopMainView");
+        }
       }
     };
 
@@ -37,8 +45,6 @@ export function DesktopMainView() {
 
     return () => window.removeEventListener("keydown", eventHandler);
   }, [focusedApp]);
-
-  console.log(focusedApp, "esss");
 
   return (
     <Flex
@@ -61,7 +67,7 @@ export function DesktopMainView() {
             dragConstraintRef={dragConstraintRef}
             onClick={() => setFocusedDesktopApp(desktopIcon.appName)}
             onDoubleClick={() => setActiveDesktopApp(desktopIcon.appName)}
-            isActive={focusedApp === desktopIcon.appName}
+            isFocused={focusedApp === desktopIcon.appName}
             title={desktopIcon.title}
           />
         ))}

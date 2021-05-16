@@ -22,7 +22,7 @@ type Props = {
   dragConstraintRef?: MutableRefObject<HTMLDivElement>;
   onClick?: () => void;
   onDoubleClick?: () => void;
-  isActive?: boolean;
+  isFocused?: boolean;
   title: string;
 };
 
@@ -31,11 +31,12 @@ export function DesktopIcon({
   dragConstraintRef,
   onClick,
   onDoubleClick,
-  isActive = false,
+  isFocused = false,
   title,
 }: Props) {
   const isDraggable = dragConstraintRef ? true : false;
   const isMobileIcon = !isDraggable;
+  const bgColor = isFocused ? "rgba(0, 0, 0, 0.3)" : "rgba(0, 0, 0, 0)";
 
   return (
     <Container
@@ -59,15 +60,24 @@ export function DesktopIcon({
         h="70px"
         p="5px"
         m={isMobileIcon ? "5px" : "0"}
-        // bgColor={isActive ? "rgba(0, 0, 255, 0.2)" : "rgba(0, 0, 0, 0.05)"}
-        borderRadius="8px"
+        bgColor={bgColor}
+        borderTopRadius="8px"
         cursor="pointer"
         backgroundImage={`url(/icons/${iconName})`}
         backgroundSize="100%"
         backgroundRepeat="no-repeat"
         flexGrow={1}
       />
-      <Text fontSize="12px" fontWeight="600" textAlign="center" color="#FFFFFF" textShadow="1px 1px 1px black">
+      <Text
+        fontSize="12px"
+        fontWeight="600"
+        textAlign="center"
+        color="#FFFFFF"
+        textShadow="1px 1px 1px black"
+        bgColor={bgColor}
+        w="100%"
+        borderBottomRadius="8px"
+      >
         {title}
       </Text>
     </Container>

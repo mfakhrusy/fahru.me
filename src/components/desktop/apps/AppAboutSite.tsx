@@ -95,8 +95,7 @@ export function AppAboutSite({ onClose, isOpen }: Props) {
               >
                 GitHub <ExternalLinkIcon />
               </Link>
-              &nbsp;by&nbsp;
-                PineAndApplePizza
+              &nbsp;by&nbsp; PineAndApplePizza
             </Text>
             <Box minH={4} />
             <Text>

@@ -28,7 +28,9 @@ export function AppAboutMe({ onClose, isOpen }: Props) {
             <Text>Fahru, Indonesia</Text>
             <Box minH="16px" />
             <Text fontWeight="bold">What I do</Text>
-            <Text>Software Engineer, end to end, strong at frontend currently</Text>
+            <Text>
+              Software Engineer, end to end, strong at frontend currently
+            </Text>
             <Box minH="16px" />
             <Text fontWeight="bold">Tech stacks I worked on</Text>
             <UnorderedList>
