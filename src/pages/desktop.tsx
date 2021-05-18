@@ -24,9 +24,12 @@ import {
   disableAppMenu as disableAppMenuAction,
 } from "@/store/desktop";
 import { DesktopAppMenu } from "@/components/desktop/DesktopAppMenu";
-import { useClickOutside } from "@/lib/useClickOutside";
+import useClickOutside from "@/lib/useClickOutside";
+import usePageViewTracking from "@/lib/usePageViewTracking";
 
 function DesktopScreen() {
+  usePageViewTracking();
+
   const [isBigScreen] = useMediaQuery("(min-width: 961px)");
   const dispatch = useDispatch();
   const activeDesktopApp = useSelector<RootState, DesktopApp>(

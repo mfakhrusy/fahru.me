@@ -6,7 +6,11 @@ type Config = {
   exceptionRef?: any;
 };
 
-export const useClickOutside = ({ targetRef, fn, exceptionRef }: Config) => {
+export default function useClickOutside({
+  targetRef,
+  fn,
+  exceptionRef,
+}: Config) {
   const handleClick = (e) => {
     if (targetRef.current) {
       if (exceptionRef) {
@@ -29,4 +33,4 @@ export const useClickOutside = ({ targetRef, fn, exceptionRef }: Config) => {
       document.removeEventListener("click", handleClick);
     };
   });
-};
+}
