@@ -9,12 +9,10 @@ const usePageViewTracking = () => {
 
   useEffect(() => {
     const fetchId = async () => {
-      // const userAgent = new Userwindow.navigator.userAgent;
       const parser = new UAParser();
       parser.setUA(window.navigator.userAgent);
       const result = parser.getResult();
-      console.log(result.device);
-      const { data, error } = await client.from("pageview").insert([
+      await client.from("pageview").insert([
         {
           uri: router.pathname,
           ua_cpu: isEmptyObject(result.cpu) ? "" : result.cpu.architecture,
@@ -26,8 +24,6 @@ const usePageViewTracking = () => {
             : `${result.device.vendor ?? ""} ${result.device.model ?? ""}`,
         },
       ]);
-
-      console.log(result);
     };
 
     fetchId();
