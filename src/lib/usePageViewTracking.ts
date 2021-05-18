@@ -8,7 +8,7 @@ const usePageViewTracking = () => {
   const router = useRouter();
 
   useEffect(() => {
-    const fetchId = async () => {
+    const postPageView = async () => {
       const parser = new UAParser();
       parser.setUA(window.navigator.userAgent);
       const result = parser.getResult();
@@ -26,7 +26,7 @@ const usePageViewTracking = () => {
       ]);
     };
 
-    fetchId();
+    postPageView();
   }, []);
 }
 
