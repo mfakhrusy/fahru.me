@@ -12,6 +12,7 @@ import { MutableRefObject, useCallback, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { DesktopIcon } from "./DesktopIcon";
 import styled from "@emotion/styled";
+import { DesktopInfoPopover } from "@/components/desktop/DesktopInfoPopover";
 
 const DragArea = styled(motion.div)`
   width: 100%;
@@ -93,6 +94,9 @@ export function DesktopMainView({ renderActiveApp }: Props) {
           ))}
         </Flex>
       </DragArea>
+      <Flex alignSelf="flex-end" m={4}>
+        <DesktopInfoPopover />
+      </Flex>
     </Flex>
   );
 }
