@@ -1,14 +1,15 @@
+import { AppLayout } from "@/components/desktop/apps/AppLayout";
 import { Terminal } from "@/components/shared/Terminal";
 import { Flex, Text } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
-import { AppLayout } from "./AppLayout";
+import { MutableRefObject, useEffect, useState } from "react";
 
 type Props = {
   onClose: () => void;
   isOpen: boolean;
+  dragConstraintRef?: MutableRefObject<HTMLDivElement>;
 };
 
-export function AppTerminal({ onClose, isOpen }: Props) {
+export function AppTerminal({ onClose, isOpen, dragConstraintRef }: Props) {
   const [shouldRenderTerminal, setShouldRenderTerminal] = useState(false);
   const [isClosingDown, setIsClosingDown] = useState(false);
 
@@ -30,15 +31,9 @@ export function AppTerminal({ onClose, isOpen }: Props) {
       isScrollable={false}
       noPadding
       bgColor="black"
+      dragConstraintRef={dragConstraintRef}
     >
-      <Flex
-        w="100%"
-        h="auto"
-        minH="calc(100vh - 30px)"
-        color="white"
-        p={1}
-        overflow="hidden"
-      >
+      <Flex color="white" overflow="hidden" p={2}>
         {shouldRenderTerminal ? (
           !isClosingDown && <Terminal withHelp={true} />
         ) : (

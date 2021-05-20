@@ -3,7 +3,7 @@ import { DesktopTaskbar } from "@/components/desktop/DesktopTaskbar";
 import { DesktopTouchView } from "@/components/desktop/DesktopTouchView";
 import { DesktopApp } from "@/lib/desktop/desktop";
 import { Flex, useMediaQuery } from "@chakra-ui/react";
-import { useCallback, useRef } from "react";
+import { MutableRefObject, useCallback, useRef } from "react";
 import dynamic from "next/dynamic";
 import { isMobile } from "react-device-detect";
 import { RootState } from "@/store";
@@ -26,9 +26,12 @@ import {
 import { DesktopAppMenu } from "@/components/desktop/DesktopAppMenu";
 import useClickOutside from "@/lib/useClickOutside";
 import usePageViewTracking from "@/lib/usePageViewTracking";
+import useIsTouchDevice from "@/lib/useIsTouchDevice";
 
 function DesktopScreen() {
   usePageViewTracking();
+  const isTouchDevice = useIsTouchDevice();
+  console.log(isTouchDevice);
 
   const [isBigScreen] = useMediaQuery("(min-width: 961px)");
   const dispatch = useDispatch();
@@ -44,13 +47,16 @@ function DesktopScreen() {
     (args: DesktopApp) => SetActiveDesktopAppAction
   >((payload) => dispatch(setActiveDesktopAppAction(payload)), []);
 
-  const renderContent = (activeDesktopApp: DesktopApp) => {
+  const renderContent = (
+    dragConstraintRef?: MutableRefObject<HTMLDivElement>
+  ) => {
     const onCloseApp = () => setActiveDesktopApp("DesktopMainView");
 
     switch (activeDesktopApp) {
       case "AppTerminal":
         return (
           <AppTerminal
+            dragConstraintRef={dragConstraintRef}
             isOpen={activeDesktopApp === "AppTerminal"}
             onClose={onCloseApp}
           />
@@ -58,6 +64,7 @@ function DesktopScreen() {
       case "AppAboutMe":
         return (
           <AppAboutMe
+            dragConstraintRef={dragConstraintRef}
             isOpen={activeDesktopApp === "AppAboutMe"}
             onClose={onCloseApp}
           />
@@ -65,6 +72,7 @@ function DesktopScreen() {
       case "AppAboutSite":
         return (
           <AppAboutSite
+            dragConstraintRef={dragConstraintRef}
             isOpen={activeDesktopApp === "AppAboutSite"}
             onClose={onCloseApp}
           />
@@ -72,6 +80,7 @@ function DesktopScreen() {
       case "AppWorkHistory":
         return (
           <AppWorkHistory
+            dragConstraintRef={dragConstraintRef}
             isOpen={activeDesktopApp === "AppWorkHistory"}
             onClose={onCloseApp}
           />
@@ -79,6 +88,7 @@ function DesktopScreen() {
       case "AppEducation":
         return (
           <AppEducation
+            dragConstraintRef={dragConstraintRef}
             isOpen={activeDesktopApp === "AppEducation"}
             onClose={onCloseApp}
           />
@@ -86,6 +96,7 @@ function DesktopScreen() {
       case "AppContacts":
         return (
           <AppContacts
+            dragConstraintRef={dragConstraintRef}
             isOpen={activeDesktopApp === "AppContacts"}
             onClose={onCloseApp}
           />
@@ -93,6 +104,7 @@ function DesktopScreen() {
       case "AppProjects":
         return (
           <AppProjects
+            dragConstraintRef={dragConstraintRef}
             isOpen={activeDesktopApp === "AppProjects"}
             onClose={onCloseApp}
           />
@@ -118,17 +130,20 @@ function DesktopScreen() {
 
   return (
     <Flex flexDir="column" h="100vh" w="100vw" overflowY="hidden">
-      {isBigScreen && !isMobile ? (
+      {isBigScreen && !isTouchDevice ? (
         <DesktopTaskbar forwardRef={taskbarRef} />
       ) : null}
-      {!isMobile && (
+      {!isTouchDevice && (
         <DesktopAppMenu
           isActive={appMenuState.isActive}
           forwardRef={appMenuRef}
         />
       )}
-      {isMobile ? <DesktopTouchView /> : <DesktopMainView />}
-      {renderContent(activeDesktopApp)}
+      {isTouchDevice ? (
+        <DesktopTouchView renderActiveApp={() => renderContent()} />
+      ) : (
+        <DesktopMainView renderActiveApp={(ref) => renderContent(ref)} />
+      )}
     </Flex>
   );
 }

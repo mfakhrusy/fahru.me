@@ -1,18 +1,25 @@
+import { AppLayout } from "@/components/desktop/apps/AppLayout";
+import useIsTouchDevice from "@/lib/useIsTouchDevice";
 import { ExternalLinkIcon } from "@chakra-ui/icons";
 import { Divider, Flex, Heading, Image, Text, Link } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
-import { AppLayout } from "./AppLayout";
+import { MutableRefObject, useEffect, useState } from "react";
 
 type Props = {
   onClose: () => void;
   isOpen: boolean;
+  dragConstraintRef?: MutableRefObject<HTMLDivElement>;
 };
 
-export function AppProjects({ onClose, isOpen }: Props) {
+export function AppProjects({ onClose, isOpen, dragConstraintRef }: Props) {
+  const isTouchDevice = useIsTouchDevice();
   const [shouldRenderContent, setshouldRenderContent] = useState(false);
 
   useEffect(() => {
-    setTimeout(() => setshouldRenderContent(true), 150);
+    if (isTouchDevice) {
+      setTimeout(() => setshouldRenderContent(true), 150);
+    } else {
+      setshouldRenderContent(true);
+    }
   }, []);
 
   return (
@@ -20,21 +27,15 @@ export function AppProjects({ onClose, isOpen }: Props) {
       title="Projects"
       onClose={onClose}
       isOpen={isOpen}
-      bgColor="white"
+      dragConstraintRef={dragConstraintRef}
     >
-      <Flex
-        w="100%"
-        h="auto"
-        minH="calc(100vh - 30px)"
-        flexDir="column"
-        alignItems="center"
-      >
+      <Flex flexDir="column" alignItems="center">
         {shouldRenderContent && (
           <>
             <Text>Past & current projects</Text>
             <Divider mt={4} mb={4} />
-            <Heading size="sm" as="h1" mb={4}>
-              Mathematic Hub: Equation Visualizer
+            <Heading size="sm" as="h1">
+              <Text mb={4}>Mathematic Hub: Equation Visualizer</Text>
             </Heading>
             <Image
               src="/images/eq-vis-math-hub-demo.png"

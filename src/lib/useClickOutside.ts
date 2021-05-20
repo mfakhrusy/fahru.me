@@ -14,7 +14,7 @@ export default function useClickOutside({
   const handleClick = (e) => {
     if (targetRef.current) {
       if (exceptionRef) {
-        if (!exceptionRef.current.contains(e.target)) {
+        if (!exceptionRef.current?.contains(e.target)) {
           if (!targetRef.current.contains(e.target)) {
             fn();
           }

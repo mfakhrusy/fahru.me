@@ -8,20 +8,27 @@ import {
 } from "@/store/desktop";
 import { Flex } from "@chakra-ui/react";
 import { motion } from "framer-motion";
-import { useCallback, useEffect, useRef } from "react";
+import { MutableRefObject, useCallback, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { DesktopIcon } from "./DesktopIcon";
 import styled from "@emotion/styled";
 
 const DragArea = styled(motion.div)`
   width: 100%;
-  height: 100%;
+  height: 200%;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: flex-end;
+  position: absolute;
 `;
 
-export function DesktopMainView() {
+type Props = {
+  renderActiveApp: (
+    dragConstraintRef: MutableRefObject<HTMLDivElement>
+  ) => React.ReactNode;
+};
+
+export function DesktopMainView({ renderActiveApp }: Props) {
   const dragConstraintRef = useRef<HTMLDivElement>(null);
   const dispatch = useDispatch();
 
@@ -58,24 +65,33 @@ export function DesktopMainView() {
   return (
     <Flex
       flexGrow={1}
-      bgColor="aliceblue"
       backgroundImage="url(/images/debian-nyaa.png)"
       backgroundRepeat="no-repeat"
       pos="relative"
       backgroundPosition="center"
     >
       <DragArea className="drag-area" ref={dragConstraintRef}>
-        {makeDesktopIcons().map((desktopIcon) => (
-          <DesktopIcon
-            key={`mainview-${desktopIcon.appName}`}
-            iconName={desktopIcon.iconName}
-            dragConstraintRef={dragConstraintRef}
-            onClick={() => setFocusedDesktopApp(desktopIcon.appName)}
-            onDoubleClick={() => setActiveDesktopApp(desktopIcon.appName)}
-            isFocused={focusedApp === desktopIcon.appName}
-            title={desktopIcon.title}
-          />
-        ))}
+        {renderActiveApp(dragConstraintRef)}
+        <Flex
+          pos="absolute"
+          top="0"
+          left="0"
+          flexDir="column"
+          alignItems="flex-end"
+          w="100%"
+        >
+          {makeDesktopIcons().map((desktopIcon) => (
+            <DesktopIcon
+              key={`mainview-${desktopIcon.appName}`}
+              iconName={desktopIcon.iconName}
+              dragConstraintRef={dragConstraintRef}
+              onClick={() => setFocusedDesktopApp(desktopIcon.appName)}
+              onDoubleClick={() => setActiveDesktopApp(desktopIcon.appName)}
+              isFocused={focusedApp === desktopIcon.appName}
+              title={desktopIcon.title}
+            />
+          ))}
+        </Flex>
       </DragArea>
     </Flex>
   );

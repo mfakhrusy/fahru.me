@@ -38,7 +38,7 @@ export function DesktopAppMenu({ isActive, forwardRef }: Props) {
       position="absolute"
       top="45px"
       zIndex="2"
-      backgroundColor="#8e738d"
+      backgroundColor="primary.500"
       color="white"
       p={4}
       visibility={isActive ? "visible" : "hidden"}
@@ -65,7 +65,7 @@ export function DesktopAppMenu({ isActive, forwardRef }: Props) {
                 key={app}
                 alignItems="center"
                 p={2}
-                _hover={{ bgColor: "#7f677f" }}
+                _hover={{ bgColor: "primary.600" }}
                 borderRadius="5px"
                 cursor="pointer"
                 onClick={() => {

@@ -47,7 +47,7 @@ export function DesktopTaskbar({ forwardRef }: Props) {
     <Flex
       h="45px"
       w="100%"
-      bgColor="#8e738d"
+      bgColor="primary.500"
       color="white"
       p={1}
       borderBottom="1px solid rgba(0, 0, 0, 0.1)"
@@ -61,7 +61,7 @@ export function DesktopTaskbar({ forwardRef }: Props) {
         borderRadius="5px"
         justifyContent="space-between"
         onClick={onClickApplications}
-        bgColor={appMenuState.isActive ? "#7f677f" : "#8e738d"}
+        bgColor={appMenuState.isActive ? "primary.600" : "primary.500"}
       >
         <Image src="/icons/app-other.png" w={10} h={8} pr={2} />
         <Text mr={2} userSelect="none">

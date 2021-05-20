@@ -28,6 +28,6 @@ const usePageViewTracking = () => {
 
     postPageView();
   }, []);
-}
+};
 
 export default usePageViewTracking;

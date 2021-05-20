@@ -1,79 +1,70 @@
+import useIsTouchDevice from "@/lib/useIsTouchDevice";
+import { RootState } from "@/store";
+import { Flex } from "@chakra-ui/layout";
+import { BackgroundProps } from "@chakra-ui/styled-system";
 import {
-  BackgroundProps,
-  Flex,
-  Modal,
-  ModalContent,
-  Text,
-} from "@chakra-ui/react";
-import { CloseIcon } from "@chakra-ui/icons";
-import { PropsWithChildren } from "react";
+  MutableRefObject,
+  PropsWithChildren,
+  useEffect,
+  useState,
+} from "react";
+import { useSelector } from "react-redux";
+import { AppModalLayout } from "./AppModalLayout";
+import { AppWindowLayout } from "./AppWindowLayout";
 
 type Props = {
-  title: string;
+  dragConstraintRef: MutableRefObject<HTMLDivElement>;
   onClose: () => void;
   isOpen: boolean;
+  title: string;
+  bgColor?: BackgroundProps["bgColor"];
   isScrollable?: boolean;
   noPadding?: boolean;
-  bgColor?: BackgroundProps["bgColor"];
 };
 
 export function AppLayout({
-  title,
-  children,
+  dragConstraintRef,
   onClose,
   isOpen,
+  children,
+  title,
+  bgColor = "white",
   isScrollable = true,
   noPadding = false,
-  bgColor = "white",
 }: PropsWithChildren<Props>) {
-  return (
-    <Modal
+  const isTouchDevice = useIsTouchDevice();
+
+  const renderContent = () => (
+    <Flex
+      flexDir="column"
+      w="100%"
+      h={isTouchDevice ? "auto" : "unset"}
+      minH={isTouchDevice ? "calc(100vh - 30px)" : "500px"}
+    >
+      {children}
+    </Flex>
+  );
+
+  return isTouchDevice ? (
+    <AppModalLayout
+      title={title}
       onClose={onClose}
       isOpen={isOpen}
-      size="full"
-      styleConfig={{ marginTop: 0 }}
+      bgColor={bgColor}
+      isScrollable={isScrollable}
+      noPadding={noPadding}
     >
-      <ModalContent overflowY="auto">
-        <Flex
-          flexDir="column"
-          w="100%"
-          h="auto"
-          overflowY={isScrollable ? "auto" : "hidden"}
-        >
-          <Flex pos="relative" bgColor="#5a595c" h="30px" w="100%">
-            <Text
-              flexGrow={1}
-              textAlign="center"
-              alignItems="center"
-              justifyContent="center"
-              color="aliceblue"
-              pt="2px"
-              fontWeight="600"
-              letterSpacing="wider"
-            >
-              {title}
-            </Text>
-            <Flex alignItems="center" cursor="pointer" onClick={onClose}>
-              <CloseIcon w="12px" h="12px" color="white" mr={5} />
-            </Flex>
-          </Flex>
-          <Flex
-            borderBottom="1px solid #5a595c"
-            borderRight="1px solid #5a595c"
-            borderLeft="1px solid #5a595c"
-            h="auto"
-            w="100%"
-            flexGrow={1}
-            bgColor={bgColor}
-            pl={noPadding ? 0 : 3}
-            pr={noPadding ? 0 : 3}
-            pt={noPadding ? 0 : 2}
-            pb={noPadding ? 0 : 2}
-          >
-            {children}
-          </Flex>
-        </Flex>
-      </ModalContent>
-    </Modal>
+      {renderContent()}
+    </AppModalLayout>
+  ) : (
+    <AppWindowLayout
+      onClose={onClose}
+      title={title}
+      dragConstraintRef={dragConstraintRef}
+      bgColor={bgColor}
+      noPadding={noPadding}
+    >
+      {renderContent()}
+    </AppWindowLayout>
   );
 }

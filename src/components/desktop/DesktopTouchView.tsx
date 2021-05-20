@@ -8,7 +8,11 @@ import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { DesktopIcon } from "./DesktopIcon";
 
-export function DesktopTouchView() {
+type Props = {
+  renderActiveApp: () => React.ReactNode;
+};
+
+export function DesktopTouchView({ renderActiveApp }: Props) {
   const dispatch = useDispatch();
   const setActiveDesktopApp = useCallback<
     (args: DesktopApp) => SetActiveDesktopAppAction
@@ -33,6 +37,7 @@ export function DesktopTouchView() {
           />
         ))}
       </Flex>
+      {renderActiveApp()}
     </Flex>
   );
 }

@@ -25,26 +25,43 @@ function isTouchDevice() {
 }
 
 export default function useIsTouchDevice() {
+  const isTouchLS =
+    typeof window === "undefined"
+      ? null
+      : localStorage.getItem("isTouchDevice");
   const [isTouch, setIsTouch] = useState(false);
+
   useEffect(() => {
-    const {
-      isAndroid,
-      isIPad13,
-      isIPhone13,
-      isWinPhone,
-      isMobileSafari,
-      isTablet,
-    } = require("react-device-detect");
-    setIsTouch(
-      isAndroid ||
+    if (isTouchLS === "" || isTouchLS === null) {
+      const {
+        isAndroid,
+        isIPad13,
+        isIPhone13,
+        isWinPhone,
+        isMobileSafari,
+        isTablet,
+      } = require("react-device-detect");
+      const newIsTouch =
+        isAndroid ||
         isIPad13 ||
         isIPhone13 ||
         isWinPhone ||
         isMobileSafari ||
         isTablet ||
-        isTouchDevice()
-    );
-  }, []);
+        isTouchDevice();
+      setIsTouch(newIsTouch);
 
-  return isTouch;
+      localStorage.setItem("isTouchDevice", newIsTouch);
+    }
+  }, [isTouch]);
+
+  if (isTouchLS === "" || isTouchLS === null) {
+    return isTouch;
+  } else {
+    if (isTouchLS === "false") {
+      return false;
+    } else {
+      return true;
+    }
+  }
 }
