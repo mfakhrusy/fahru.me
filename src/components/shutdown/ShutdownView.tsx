@@ -28,14 +28,14 @@ export function ShutdownView() {
       } else if (state === "initialActivation") {
         router.replace("/boot-up");
       }
-    }
+    };
 
     window.addEventListener("keydown", eventHandler);
     window.addEventListener("touchend", clickEventHandler);
     window.addEventListener("mousedown", clickEventHandler);
 
     return () => {
-      window.removeEventListener("keydown", eventHandler)
+      window.removeEventListener("keydown", eventHandler);
       window.removeEventListener("touchend", clickEventHandler);
       window.removeEventListener("mousedown", clickEventHandler);
     };
@@ -45,7 +45,11 @@ export function ShutdownView() {
     <BlackTerminalPage>
       {state === "initialActivation" && (
         <Typewriter
-          text={isTouchDevice ? "tap the screen to start the boot process" : "hit ENTER/RETURN key to start the boot process"}
+          text={
+            isTouchDevice
+              ? "tap the screen to start the boot process"
+              : "hit ENTER/RETURN key to start the boot process"
+          }
           stepTimeSecond={0.02}
         />
       )}
