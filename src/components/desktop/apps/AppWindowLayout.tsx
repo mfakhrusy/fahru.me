@@ -72,8 +72,13 @@ export function AppWindowLayout({
           >
             {title}
           </Text>
-          <Flex alignItems="center" cursor="pointer" onClick={onClose}>
-            <CloseIcon w="12px" h="12px" color="white" mr={5} />
+          <Flex
+            alignItems="center"
+            cursor="pointer"
+            onClick={onClose}
+            _hover={{ bgColor: "primary.600" }}
+          >
+            <CloseIcon w="12px" h="12px" color="white" mr={5} ml={5} />
           </Flex>
         </Flex>
         <Flex

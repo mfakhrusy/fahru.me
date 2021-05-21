@@ -39,7 +39,11 @@ export function DesktopRebootModal({ isOpen, onClose }: Props) {
             <Button ref={cancelRef} onClick={onClose}>
               Cancel
             </Button>
-            <Button colorScheme="red" onClick={() => router.replace("/shutdown/process?reboot=true")} ml={3}>
+            <Button
+              colorScheme="red"
+              onClick={() => router.replace("/shutdown/process?reboot=true")}
+              ml={3}
+            >
               Reboot
             </Button>
           </AlertDialogFooter>

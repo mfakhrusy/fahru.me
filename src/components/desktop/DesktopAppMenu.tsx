@@ -33,9 +33,10 @@ export function DesktopAppMenu({ isActive, forwardRef }: Props) {
     []
   );
 
-  const setModal = useCallback<
-    (args: ModalState) => SetModalAction
-  >((payload) => dispatch(setModalAction(payload)), []);
+  const setModal = useCallback<(args: ModalState) => SetModalAction>(
+    (payload) => dispatch(setModalAction(payload)),
+    []
+  );
 
   return (
     <Flex

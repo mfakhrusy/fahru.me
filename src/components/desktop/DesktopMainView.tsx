@@ -43,7 +43,7 @@ export function DesktopMainView({ renderActiveApp }: Props) {
   );
 
   const modal = useSelector<RootState, ModalState>(
-    (state) => state.desktop.modal,
+    (state) => state.desktop.modal
   );
 
   const setFocusedDesktopApp = useCallback<
@@ -54,9 +54,10 @@ export function DesktopMainView({ renderActiveApp }: Props) {
     (args: DesktopApp) => SetActiveDesktopAppAction
   >((payload) => dispatch(setActiveDesktopAppAction(payload)), []);
 
-  const setModal = useCallback<
-    (args: ModalState) => SetModalAction
-  >((payload) => dispatch(setModalAction(payload)), []);
+  const setModal = useCallback<(args: ModalState) => SetModalAction>(
+    (payload) => dispatch(setModalAction(payload)),
+    []
+  );
 
   useEffect(() => {
     const eventHandler = (event: KeyboardEvent) => {
@@ -79,11 +80,21 @@ export function DesktopMainView({ renderActiveApp }: Props) {
   const renderModal = (modal: ModalState) => {
     switch (modal) {
       case "rebootModal":
-        return <DesktopRebootModal onClose={() => setModal("noModal")} isOpen={modal === "rebootModal"} />
+        return (
+          <DesktopRebootModal
+            onClose={() => setModal("noModal")}
+            isOpen={modal === "rebootModal"}
+          />
+        );
       case "shutdownModal":
-        return <DesktopShutdownModal onClose={() => setModal("noModal")} isOpen={modal === "shutdownModal"} />
+        return (
+          <DesktopShutdownModal
+            onClose={() => setModal("noModal")}
+            isOpen={modal === "shutdownModal"}
+          />
+        );
     }
-  }
+  };
 
   return (
     <Flex

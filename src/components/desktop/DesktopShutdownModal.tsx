@@ -39,7 +39,11 @@ export function DesktopShutdownModal({ isOpen, onClose }: Props) {
             <Button ref={cancelRef} onClick={onClose}>
               Cancel
             </Button>
-            <Button colorScheme="red" onClick={() => router.replace("/shutdown/process")} ml={3}>
+            <Button
+              colorScheme="red"
+              onClick={() => router.replace("/shutdown/process")}
+              ml={3}
+            >
               Shutdown
             </Button>
           </AlertDialogFooter>

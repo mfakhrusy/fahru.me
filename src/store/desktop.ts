@@ -37,7 +37,7 @@ export type EnableAppMenuAction = {
 export type SetModalAction = {
   type: string;
   payload: ModalState;
-}
+};
 
 type Action = {
   setActiveDesktopApp: (
@@ -85,8 +85,8 @@ const desktopSlice = createSlice<State, Action, "desktop">({
       };
     },
     setModal: (state: State, action: SetModalAction) => {
-      state.modal = action.payload
-    }
+      state.modal = action.payload;
+    },
   },
 });
 

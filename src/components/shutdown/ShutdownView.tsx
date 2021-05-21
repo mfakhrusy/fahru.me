@@ -1,3 +1,4 @@
+import useIsTouchDevice from "@/lib/useIsTouchDevice";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { BlackTerminalPage } from "../shared/BlackTerminalPage";
@@ -6,6 +7,7 @@ import { Typewriter } from "../shared/Typewriter";
 type State = "blank" | "initialActivation";
 
 export function ShutdownView() {
+  const isTouchDevice = useIsTouchDevice();
   const [state, setState] = useState<State>("blank");
   const router = useRouter();
 
@@ -20,16 +22,30 @@ export function ShutdownView() {
       }
     };
 
-    window.addEventListener("keydown", eventHandler);
+    const clickEventHandler = () => {
+      if (state === "blank") {
+        setState("initialActivation");
+      } else if (state === "initialActivation") {
+        router.replace("/boot-up");
+      }
+    }
 
-    return () => window.removeEventListener("keydown", eventHandler);
+    window.addEventListener("keydown", eventHandler);
+    window.addEventListener("touchend", clickEventHandler);
+    window.addEventListener("mousedown", clickEventHandler);
+
+    return () => {
+      window.removeEventListener("keydown", eventHandler)
+      window.removeEventListener("touchend", clickEventHandler);
+      window.removeEventListener("mousedown", clickEventHandler);
+    };
   });
 
   return (
     <BlackTerminalPage>
       {state === "initialActivation" && (
         <Typewriter
-          text="hit ENTER or RETURN key to start the boot process"
+          text={isTouchDevice ? "tap the screen to start the boot process" : "hit ENTER/RETURN key to start the boot process"}
           stepTimeSecond={0.02}
         />
       )}
