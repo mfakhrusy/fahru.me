@@ -10,10 +10,13 @@ export type AppMenuState =
       activeApp: DesktopApp;
     };
 
+export type ModalState = "noModal" | "shutdownModal" | "rebootModal";
+
 type State = {
   activeDesktopApp: DesktopApp;
   focusedDesktopApp: DesktopApp;
   appMenu: AppMenuState;
+  modal: ModalState;
 };
 
 export type SetActiveDesktopAppAction = {
@@ -31,6 +34,11 @@ export type EnableAppMenuAction = {
   payload: DesktopApp;
 };
 
+export type SetModalAction = {
+  type: string;
+  payload: ModalState;
+}
+
 type Action = {
   setActiveDesktopApp: (
     state: State,
@@ -42,6 +50,7 @@ type Action = {
   ) => void;
   enableAppMenu: (state: State, action: EnableAppMenuAction) => void;
   disableAppMenu: (state: State) => void;
+  setModal: (state: State, action: SetModalAction) => void;
 };
 
 const desktopSlice = createSlice<State, Action, "desktop">({
@@ -52,6 +61,7 @@ const desktopSlice = createSlice<State, Action, "desktop">({
     appMenu: {
       isActive: false,
     },
+    modal: "noModal",
   },
   reducers: {
     setActiveDesktopApp: (state: State, action: SetActiveDesktopAppAction) => {
@@ -74,6 +84,9 @@ const desktopSlice = createSlice<State, Action, "desktop">({
         isActive: false,
       };
     },
+    setModal: (state: State, action: SetModalAction) => {
+      state.modal = action.payload
+    }
   },
 });
 
@@ -82,6 +95,7 @@ export const {
   setFocusedDesktopApp,
   enableAppMenu,
   disableAppMenu,
+  setModal,
 } = desktopSlice.actions;
 
 export default desktopSlice.reducer;

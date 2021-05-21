@@ -5,6 +5,9 @@ import {
   SetFocusedDesktopAppAction,
   setActiveDesktopApp as setActiveDesktopAppAction,
   setFocusedDesktopApp as setFocusedDesktopAppAction,
+  ModalState,
+  setModal as setModalAction,
+  SetModalAction,
 } from "@/store/desktop";
 import { Flex } from "@chakra-ui/react";
 import { motion } from "framer-motion";
@@ -13,6 +16,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { DesktopIcon } from "./DesktopIcon";
 import styled from "@emotion/styled";
 import { DesktopInfoPopover } from "@/components/desktop/DesktopInfoPopover";
+import { DesktopRebootModal } from "@/components/desktop/DesktopRebootModal";
+import { DesktopShutdownModal } from "@/components/desktop/DesktopShutdownModal";
 
 const DragArea = styled(motion.div)`
   width: 100%;
@@ -37,6 +42,10 @@ export function DesktopMainView({ renderActiveApp }: Props) {
     (state) => state.desktop.focusedDesktopApp
   );
 
+  const modal = useSelector<RootState, ModalState>(
+    (state) => state.desktop.modal,
+  );
+
   const setFocusedDesktopApp = useCallback<
     (args: DesktopApp) => SetFocusedDesktopAppAction
   >((payload) => dispatch(setFocusedDesktopAppAction(payload)), []);
@@ -44,6 +53,10 @@ export function DesktopMainView({ renderActiveApp }: Props) {
   const setActiveDesktopApp = useCallback<
     (args: DesktopApp) => SetActiveDesktopAppAction
   >((payload) => dispatch(setActiveDesktopAppAction(payload)), []);
+
+  const setModal = useCallback<
+    (args: ModalState) => SetModalAction
+  >((payload) => dispatch(setModalAction(payload)), []);
 
   useEffect(() => {
     const eventHandler = (event: KeyboardEvent) => {
@@ -62,6 +75,15 @@ export function DesktopMainView({ renderActiveApp }: Props) {
 
     return () => window.removeEventListener("keydown", eventHandler);
   }, [focusedApp]);
+
+  const renderModal = (modal: ModalState) => {
+    switch (modal) {
+      case "rebootModal":
+        return <DesktopRebootModal onClose={() => setModal("noModal")} isOpen={modal === "rebootModal"} />
+      case "shutdownModal":
+        return <DesktopShutdownModal onClose={() => setModal("noModal")} isOpen={modal === "shutdownModal"} />
+    }
+  }
 
   return (
     <Flex
@@ -97,6 +119,7 @@ export function DesktopMainView({ renderActiveApp }: Props) {
       <Flex alignSelf="flex-end" m={4}>
         <DesktopInfoPopover />
       </Flex>
+      {renderModal(modal)}
     </Flex>
   );
 }
