@@ -15,6 +15,7 @@ import {
   ModalState,
 } from "@/store/desktop";
 import { useDispatch } from "react-redux";
+import zIndex from "@/lib/zIndex";
 
 type Props = {
   isActive: boolean;
@@ -45,7 +46,7 @@ export function DesktopAppMenu({ isActive, forwardRef }: Props) {
       minH="150px"
       position="absolute"
       top="45px"
-      zIndex="2"
+      zIndex={zIndex.appMenu}
       backgroundColor="primary.500"
       color="white"
       p={4}

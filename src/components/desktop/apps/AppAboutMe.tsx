@@ -1,8 +1,7 @@
 import { AppLayout } from "@/components/desktop/apps/AppLayout";
 import useIsTouchDevice from "@/lib/useIsTouchDevice";
-import { Box, Flex, ListItem, Text, UnorderedList } from "@chakra-ui/react";
+import { Box, ListItem, Text, UnorderedList } from "@chakra-ui/react";
 import { MutableRefObject, useEffect, useState } from "react";
-import { AppModalLayout } from "./AppModalLayout";
 
 type Props = {
   onClose: () => void;

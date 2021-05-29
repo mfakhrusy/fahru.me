@@ -2,12 +2,7 @@ import useIsTouchDevice from "@/lib/useIsTouchDevice";
 import { RootState } from "@/store";
 import { Flex } from "@chakra-ui/layout";
 import { BackgroundProps } from "@chakra-ui/styled-system";
-import {
-  MutableRefObject,
-  PropsWithChildren,
-  useEffect,
-  useState,
-} from "react";
+import { MutableRefObject, PropsWithChildren } from "react";
 import { useSelector } from "react-redux";
 import { AppModalLayout } from "./AppModalLayout";
 import { AppWindowLayout } from "./AppWindowLayout";
@@ -33,13 +28,18 @@ export function AppLayout({
   noPadding = false,
 }: PropsWithChildren<Props>) {
   const isTouchDevice = useIsTouchDevice();
+  const isFullScreen = useSelector<RootState, boolean>(
+    (state) => state.desktop.isActiveAppFullScreen
+  );
 
   const renderContent = () => (
     <Flex
       flexDir="column"
       w="100%"
-      h={isTouchDevice ? "auto" : "unset"}
-      minH={isTouchDevice ? "calc(100vh - 30px)" : "500px"}
+      h={isTouchDevice ? "auto" : isFullScreen ? "unset" : "unset"}
+      minH={isTouchDevice ? "calc(100vh - 30px)" : isFullScreen ? "unset"  : "unset"}
+      // minH={isTouchDevice ? "calc(100vh - 30px)" : isFullScreen ? "calc(100vh - 45px)"  : "unset"}
+      pb={4}
     >
       {children}
     </Flex>

@@ -65,6 +65,7 @@ export function executeCommand({ command, terminal, router }: Config) {
     case "helo":
     case "hepl":
     case "hep":
+    case "hel":
     case "helpp":
     case "gelp":
       newline;
@@ -72,14 +73,23 @@ export function executeCommand({ command, terminal, router }: Config) {
       terminal.write("\r\ndid you mean 'help' ?\r\n");
       break;
     case "start":
+    case "tartx":
       newline;
       terminal.write("command not found: " + command);
       terminal.write("\r\ndid you mean 'startx' ?\r\n");
+      break;
+    case "clea":
+    case "clera":
+    case "lear":
+      newline;
+      terminal.write("command not found: " + command);
+      terminal.write("\r\ndid you mean 'clear' ?\r\n");
       break;
     default:
       if (command !== "") {
         newline;
         terminal.write("command not found: " + command);
+      terminal.write("\r\nto see available commands, use 'help'\r\n");
       }
       break;
   }

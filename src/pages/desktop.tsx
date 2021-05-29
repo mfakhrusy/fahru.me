@@ -5,7 +5,6 @@ import { DesktopApp } from "@/lib/desktop/desktop";
 import { Flex, useMediaQuery } from "@chakra-ui/react";
 import { MutableRefObject, useCallback, useRef } from "react";
 import dynamic from "next/dynamic";
-import { isMobile } from "react-device-detect";
 import { RootState } from "@/store";
 import {
   AppTerminal,

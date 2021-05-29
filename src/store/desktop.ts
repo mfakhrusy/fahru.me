@@ -17,6 +17,7 @@ type State = {
   focusedDesktopApp: DesktopApp;
   appMenu: AppMenuState;
   modal: ModalState;
+  isActiveAppFullScreen: boolean;
 };
 
 export type SetActiveDesktopAppAction = {
@@ -39,6 +40,11 @@ export type SetModalAction = {
   payload: ModalState;
 };
 
+export type SetActiveAppFullScreen = {
+  type: string;
+  payload: boolean;
+};
+
 type Action = {
   setActiveDesktopApp: (
     state: State,
@@ -51,6 +57,10 @@ type Action = {
   enableAppMenu: (state: State, action: EnableAppMenuAction) => void;
   disableAppMenu: (state: State) => void;
   setModal: (state: State, action: SetModalAction) => void;
+  setActiveAppFullScreen: (
+    state: State,
+    action: SetActiveAppFullScreen
+  ) => void;
 };
 
 const desktopSlice = createSlice<State, Action, "desktop">({
@@ -62,6 +72,7 @@ const desktopSlice = createSlice<State, Action, "desktop">({
       isActive: false,
     },
     modal: "noModal",
+    isActiveAppFullScreen: false,
   },
   reducers: {
     setActiveDesktopApp: (state: State, action: SetActiveDesktopAppAction) => {
@@ -87,6 +98,9 @@ const desktopSlice = createSlice<State, Action, "desktop">({
     setModal: (state: State, action: SetModalAction) => {
       state.modal = action.payload;
     },
+    setActiveAppFullScreen: (state: State, action: SetActiveAppFullScreen) => {
+      state.isActiveAppFullScreen = action.payload;
+    },
   },
 });
 
@@ -96,6 +110,7 @@ export const {
   enableAppMenu,
   disableAppMenu,
   setModal,
+  setActiveAppFullScreen,
 } = desktopSlice.actions;
 
 export default desktopSlice.reducer;

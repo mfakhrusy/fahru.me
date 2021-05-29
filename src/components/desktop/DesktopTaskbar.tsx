@@ -8,7 +8,7 @@ import {
   AppMenuState,
   SetFocusedDesktopAppAction,
 } from "@/store/desktop";
-import { Flex, Image, Text } from "@chakra-ui/react";
+import { Divider, Flex, Image, Text } from "@chakra-ui/react";
 import { Ref, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -22,6 +22,10 @@ export function DesktopTaskbar({ forwardRef }: Props) {
   const appMenuState = useSelector<RootState, AppMenuState>(
     (state) => state.desktop.appMenu
   );
+
+  // const activeDesktopApp = useSelector<RootState, DesktopApp>(
+  //   (state) => state.desktop.activeDesktopApp
+  // );
 
   const enableAppMenu = useCallback<(args: DesktopApp) => EnableAppMenuAction>(
     (payload) => dispatch(enableAppMenuAction(payload)),
@@ -68,6 +72,7 @@ export function DesktopTaskbar({ forwardRef }: Props) {
           Applications
         </Text>
       </Flex>
+      <Divider orientation="vertical" ml={1} mr={1} />
     </Flex>
   );
 }
