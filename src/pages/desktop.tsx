@@ -128,7 +128,13 @@ function DesktopScreen() {
   });
 
   return (
-    <Flex flexDir="column" h="100vh" w="100vw" overflowY="hidden" overflowX="hidden">
+    <Flex
+      flexDir="column"
+      h="100vh"
+      w="100vw"
+      overflowY="hidden"
+      overflowX="hidden"
+    >
       {isBigScreen && !isTouchDevice ? (
         <DesktopTaskbar forwardRef={taskbarRef} />
       ) : null}
@@ -141,7 +147,11 @@ function DesktopScreen() {
       {isTouchDevice ? (
         <DesktopTouchView renderActiveApp={() => renderContent()} />
       ) : (
-        <DesktopMainView renderActiveApp={dragConstraintRef => renderContent(dragConstraintRef)} />
+        <DesktopMainView
+          renderActiveApp={(dragConstraintRef) =>
+            renderContent(dragConstraintRef)
+          }
+        />
       )}
     </Flex>
   );

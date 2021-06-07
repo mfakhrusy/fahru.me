@@ -23,7 +23,7 @@ const Container = styled(motion.div)`
   align-self: flex-start;
   z-index: 100;
   margin-top: 20px;
-  margin-left: 23%;
+  margin-left: 35%;
 `;
 
 type Props = {
@@ -84,29 +84,37 @@ export function AppWindowLayout({
           {title}
         </Text>
         <Flex
-          alignItems="center"
-          cursor="pointer"
-          onClick={() => {
-            setFullScreen(!isFullScreen);
-          }}
-          _hover={{ bgColor: "primary.600" }}
+          pos="absolute"
+          right={0}
+          height="100%"
+          borderTopRightRadius="10px"
         >
-          <Icon
-            as={isFullScreen ? BiExitFullscreen : BiFullscreen}
-            w={isFullScreen ? "20px" : "16px"}
-            h={isFullScreen ? "20px" : "16px"}
-            color="white"
-            mr={5}
-            ml={5}
-          />
-        </Flex>
-        <Flex
-          alignItems="center"
-          cursor="pointer"
-          onClick={onClose}
-          _hover={{ bgColor: "primary.600" }}
-        >
-          <CloseIcon w={3} h={3} color="white" mr={5} ml={5} />
+          <Flex
+            alignItems="center"
+            cursor="pointer"
+            onClick={() => {
+              setFullScreen(!isFullScreen);
+            }}
+            _hover={{ bgColor: "primary.600" }}
+          >
+            <Icon
+              as={isFullScreen ? BiExitFullscreen : BiFullscreen}
+              w={isFullScreen ? "20px" : "16px"}
+              h={isFullScreen ? "20px" : "16px"}
+              color="white"
+              mr={5}
+              ml={5}
+            />
+          </Flex>
+          <Flex
+            alignItems="center"
+            cursor="pointer"
+            onClick={onClose}
+            _hover={{ bgColor: "primary.600" }}
+            borderTopRightRadius="10px"
+          >
+            <CloseIcon w={3} h={3} color="white" mr={5} ml={5} />
+          </Flex>
         </Flex>
       </Flex>
       <Flex
@@ -116,6 +124,7 @@ export function AppWindowLayout({
         overflowY="auto"
         flexDir="column"
         h={isFullScreen ? "100%" : "unset"}
+        minH="500px"
       >
         {children}
       </Flex>
@@ -129,7 +138,7 @@ export function AppWindowLayout({
         h="100vh"
         pos="absolute"
         top="0"
-        left="14.3%"
+        left="33.3%"
         zIndex={zIndex.fullScreenAppWindow}
       >
         {renderContent()}

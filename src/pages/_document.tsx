@@ -11,7 +11,6 @@ class MyDocument extends Document {
       <Html>
         <Head>
           <link rel="shortcut icon" href="/favicon.ico" />
-          <title>Fahru Personal Site</title>
         </Head>
         <body>
           <Main />
