@@ -106,6 +106,7 @@ export function DesktopAppMenu({ isActive, forwardRef }: Props) {
           w="180px"
           borderRadius="10px"
           onClick={() => setModal("shutdownModal")}
+          alignItems="center"
         >
           <Image src="/icons/shutdown.png" w="30px" h="30px" />
           <Box w={2} />
@@ -118,6 +119,7 @@ export function DesktopAppMenu({ isActive, forwardRef }: Props) {
           w="180px"
           borderRadius="10px"
           onClick={() => setModal("rebootModal")}
+          alignItems="center"
         >
           <Image src="/icons/restart.png" w="30px" h="30px" />
           <Box w={2} />
