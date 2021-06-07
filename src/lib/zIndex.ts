@@ -1,4 +1,4 @@
-export default  {
+export default {
   appMenu: 20,
   fullScreenAppWindow: 10,
-}
+};

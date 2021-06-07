@@ -89,7 +89,7 @@ export function executeCommand({ command, terminal, router }: Config) {
       if (command !== "") {
         newline;
         terminal.write("command not found: " + command);
-      terminal.write("\r\nto see available commands, use 'help'\r\n");
+        terminal.write("\r\nto see available commands, use 'help'\r\n");
       }
       break;
   }
