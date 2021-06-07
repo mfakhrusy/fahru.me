@@ -20,8 +20,8 @@ import { DesktopRebootModal } from "@/components/desktop/DesktopRebootModal";
 import { DesktopShutdownModal } from "@/components/desktop/DesktopShutdownModal";
 
 const DragArea = styled(motion.div)`
-  width: 100%;
-  /* left: -10%; */
+  width: 140%;
+  left: -20%;
   height: 200%;
   display: flex;
   flex-direction: row;
@@ -110,7 +110,7 @@ export function DesktopMainView({ renderActiveApp }: Props) {
         <Flex
           pos="absolute"
           top="0"
-          left="0"
+          right="14.5%"
           flexDir="column"
           alignItems="flex-end"
           w="100%"

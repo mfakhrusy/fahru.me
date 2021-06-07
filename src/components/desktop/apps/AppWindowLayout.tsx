@@ -1,6 +1,6 @@
 import { CloseIcon, Icon } from "@chakra-ui/icons";
 import { BiExitFullscreen, BiFullscreen } from "react-icons/bi";
-import { Box, Flex, Text } from "@chakra-ui/layout";
+import { Flex, Text } from "@chakra-ui/layout";
 import { BackgroundProps } from "@chakra-ui/styled-system";
 import styled from "@emotion/styled";
 import { motion } from "framer-motion";
@@ -23,7 +23,7 @@ const Container = styled(motion.div)`
   align-self: flex-start;
   z-index: 100;
   margin-top: 20px;
-  margin-left: 250px;
+  margin-left: 23%;
 `;
 
 type Props = {
@@ -113,7 +113,6 @@ export function AppWindowLayout({
         bgColor={bgColor ?? "white"}
         borderBottomRadius={isFullScreen ? "0" : "10px"}
         p={noPadding ? 0 : 4}
-        // minH={isFullScreen ? "unset" : "700px"}
         overflowY="auto"
         flexDir="column"
         h={isFullScreen ? "100%" : "unset"}
@@ -130,7 +129,7 @@ export function AppWindowLayout({
         h="100vh"
         pos="absolute"
         top="0"
-        left="0"
+        left="14.3%"
         zIndex={zIndex.fullScreenAppWindow}
       >
         {renderContent()}
