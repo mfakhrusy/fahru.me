@@ -1,4 +1,6 @@
 import { DesktopApp } from "@/lib/desktop/desktop";
+import height from "@/lib/height";
+import zIndex from "@/lib/zIndex";
 import { RootState } from "@/store";
 import {
   EnableAppMenuAction,
@@ -49,13 +51,14 @@ export function DesktopTaskbar({ forwardRef }: Props) {
 
   return (
     <Flex
-      h="45px"
+      h={height.taskbar}
       w="100%"
       bgColor="primary.500"
       color="white"
       p={1}
       borderBottom="1px solid rgba(0, 0, 0, 0.1)"
       ref={forwardRef}
+      zIndex={zIndex.taskbar}
     >
       <Flex
         alignItems="center"

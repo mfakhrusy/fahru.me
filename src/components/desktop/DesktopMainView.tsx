@@ -18,15 +18,17 @@ import styled from "@emotion/styled";
 import { DesktopInfoPopover } from "@/components/desktop/DesktopInfoPopover";
 import { DesktopRebootModal } from "@/components/desktop/DesktopRebootModal";
 import { DesktopShutdownModal } from "@/components/desktop/DesktopShutdownModal";
+// import height from "@/lib/height";
 
 const DragArea = styled(motion.div)`
   width: 300%;
   left: -100%;
-  height: 200%;
+  height: 300%;
   display: flex;
   flex-direction: row;
   align-items: flex-end;
   position: absolute;
+  top: -100%;
 `;
 
 type Props = {
@@ -106,10 +108,11 @@ export function DesktopMainView({ renderActiveApp }: Props) {
       backgroundPosition="center"
     >
       <DragArea className="drag-area" ref={dragConstraintRef}>
+        {/* <Flex pos="absolute" pointerEvents="none" width="100%" height={height.taskbar} zIndex={1000} bgColor="rgba(0, 0, 0, 0.1)" top={0} left={0} /> */}
         {renderActiveApp(dragConstraintRef)}
         <Flex
           pos="absolute"
-          top="0"
+          top="33.4%"
           right="33.4%"
           flexDir="column"
           alignItems="flex-end"

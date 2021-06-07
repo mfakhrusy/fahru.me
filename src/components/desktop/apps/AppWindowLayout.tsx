@@ -21,8 +21,8 @@ const Container = styled(motion.div)`
   align-items: center;
   cursor: pointer;
   align-self: flex-start;
-  z-index: 100;
-  margin-top: 20px;
+  z-index: ${zIndex.draggableAppWindow};
+  margin-top: 22.5%;
   margin-left: 35%;
 `;
 
@@ -137,7 +137,7 @@ export function AppWindowLayout({
         w="100vw"
         h="100vh"
         pos="absolute"
-        top="0"
+        top="33.3%"
         left="33.3%"
         zIndex={zIndex.fullScreenAppWindow}
       >

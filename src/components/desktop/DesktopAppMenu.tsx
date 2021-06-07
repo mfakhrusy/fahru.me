@@ -16,6 +16,7 @@ import {
 } from "@/store/desktop";
 import { useDispatch } from "react-redux";
 import zIndex from "@/lib/zIndex";
+import height from "@/lib/height";
 
 type Props = {
   isActive: boolean;
@@ -45,7 +46,7 @@ export function DesktopAppMenu({ isActive, forwardRef }: Props) {
       w="400px"
       minH="150px"
       position="absolute"
-      top="45px"
+      top={height.taskbar}
       zIndex={zIndex.appMenu}
       backgroundColor="primary.500"
       color="white"
