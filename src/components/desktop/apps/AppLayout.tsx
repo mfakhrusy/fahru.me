@@ -36,9 +36,8 @@ export function AppLayout({
     <Flex
       flexDir="column"
       w="100%"
-      h={isTouchDevice ? "auto" : isFullScreen ? "unset" : "unset"}
-      minH={isTouchDevice ? "calc(100vh - 30px)" : isFullScreen ? "unset"  : "unset"}
-      // minH={isTouchDevice ? "calc(100vh - 30px)" : isFullScreen ? "calc(100vh - 45px)"  : "unset"}
+      h={isTouchDevice ? "auto" : "unset"}
+      minH={isTouchDevice ? "calc(100vh - 30px)" : "unset"}
       pb={4}
     >
       {children}

@@ -55,7 +55,12 @@ export function AppWindowLayout({
   );
 
   let renderContent = () => (
-    <Flex w="100%" h={isFullScreen ? "100%" : "726px"} flexDir="column" pb={isFullScreen ? "3rem" : 4}>
+    <Flex
+      w="100%"
+      h={isFullScreen ? "100%" : "726px"}
+      flexDir="column"
+      pb={isFullScreen ? "3rem" : 4}
+    >
       <Flex
         pos="relative"
         bgColor="primary.500"
@@ -120,7 +125,14 @@ export function AppWindowLayout({
 
   if (isFullScreen) {
     return (
-      <Flex w="100vw" h="100vh" pos="absolute" top="0" left="0" zIndex={zIndex.fullScreenAppWindow}>
+      <Flex
+        w="100vw"
+        h="100vh"
+        pos="absolute"
+        top="0"
+        left="0"
+        zIndex={zIndex.fullScreenAppWindow}
+      >
         {renderContent()}
       </Flex>
     );

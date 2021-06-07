@@ -1,8 +1,8 @@
 import { AppLayout } from "@/components/desktop/apps/AppLayout";
-import useIsTouchDevice from "@/lib/useIsTouchDevice";
+import useDelayRenderOnTouchDevice from "@/lib/useDelayRenderOnTouchDevice";
 import { ExternalLinkIcon } from "@chakra-ui/icons";
 import { Divider, Flex, Heading, Image, Text, Link } from "@chakra-ui/react";
-import { MutableRefObject, useEffect, useState } from "react";
+import { MutableRefObject } from "react";
 
 type Props = {
   onClose: () => void;
@@ -11,16 +11,7 @@ type Props = {
 };
 
 export function AppProjects({ onClose, isOpen, dragConstraintRef }: Props) {
-  const isTouchDevice = useIsTouchDevice();
-  const [shouldRenderContent, setshouldRenderContent] = useState(false);
-
-  useEffect(() => {
-    if (isTouchDevice) {
-      setTimeout(() => setshouldRenderContent(true), 150);
-    } else {
-      setshouldRenderContent(true);
-    }
-  }, []);
+  const shouldRenderContent = useDelayRenderOnTouchDevice({ delayAmount: 150 });
 
   return (
     <AppLayout

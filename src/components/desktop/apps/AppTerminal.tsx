@@ -1,5 +1,6 @@
 import { AppLayout } from "@/components/desktop/apps/AppLayout";
 import { Terminal } from "@/components/shared/Terminal";
+import useDelayRenderOnTouchDevice from "@/lib/useDelayRenderOnTouchDevice";
 import useIsTouchDevice from "@/lib/useIsTouchDevice";
 import { Flex, Text } from "@chakra-ui/react";
 import { MutableRefObject, useEffect, useState } from "react";
@@ -12,16 +13,11 @@ type Props = {
 
 export function AppTerminal({ onClose, isOpen, dragConstraintRef }: Props) {
   const isTouchDevice = useIsTouchDevice();
-  const [shouldRenderTerminal, setShouldRenderTerminal] = useState(false);
   const [isClosingDown, setIsClosingDown] = useState(false);
 
-  useEffect(() => {
-    if (isTouchDevice) {
-      setTimeout(() => setShouldRenderTerminal(true), 300);
-    } else {
-      setShouldRenderTerminal(true);
-    }
-  }, []);
+  const shouldRenderTerminal = useDelayRenderOnTouchDevice({
+    delayAmount: 300,
+  });
 
   useEffect(() => {
     if (isClosingDown) {

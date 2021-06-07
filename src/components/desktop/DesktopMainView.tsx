@@ -21,6 +21,7 @@ import { DesktopShutdownModal } from "@/components/desktop/DesktopShutdownModal"
 
 const DragArea = styled(motion.div)`
   width: 100%;
+  /* left: -10%; */
   height: 200%;
   display: flex;
   flex-direction: row;
