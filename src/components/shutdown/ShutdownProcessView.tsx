@@ -8,7 +8,7 @@ import { useEffect } from "react";
 const makeText: () => Array<AnimatedText> = () => [
   { value: "Shutdown process is started", status: "Ok" },
   {
-    value: "Shutdown process is halted due to unforeseen circumstances",
+    value: "Don't close the browser window...",
     status: "Loading",
   },
   { value: ". . .", status: "Loading" },
