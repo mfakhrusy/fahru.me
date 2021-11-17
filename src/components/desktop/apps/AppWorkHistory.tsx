@@ -1,6 +1,13 @@
 import { AppLayout } from "@/components/desktop/apps/AppLayout";
 import useDelayRenderOnTouchDevice from "@/lib/useDelayRenderOnTouchDevice";
-import { ListItem, Text, UnorderedList } from "@chakra-ui/react";
+import {
+  Box,
+  ListItem,
+  Text,
+  UnorderedList,
+  Heading,
+  OrderedList,
+} from "@chakra-ui/react";
 import { MutableRefObject } from "react";
 
 type Props = {
@@ -17,9 +24,17 @@ export function AppWorkHistory({ onClose, isOpen, dragConstraintRef }: Props) {
       {shouldRenderContent && (
         <UnorderedList listStyleType="none" ml="0">
           <ListItem mb="15px">
-            <Text fontWeight="600">Software Engineer (Frontend)</Text>
+            <Heading as="h1" size="lg" fontWeight="600">
+              Software Engineer (Frontend)
+            </Heading>
             <Text>Ruangguru, Indonesia</Text>
-            <small>2019 - Present, Full-time</small>
+            <small>2019 - Aug 2021, Full-time</small>
+            <Box h={4} />
+            <Text>
+              {" "}
+              Assigned to Skillacademy team. I worked on all web platforms,
+              including:
+            </Text>
             <UnorderedList mt="10px">
               <ListItem>
                 Built and maintained skillacademy frontend codebase in ReasonML
@@ -37,19 +52,43 @@ export function AppWorkHistory({ onClose, isOpen, dragConstraintRef }: Props) {
             </UnorderedList>
           </ListItem>
           <ListItem mb="15px">
-            <Text fontWeight="600">Freelance Software Developer</Text>
-            <Text>Self Employed</Text>
+            <Heading as="h1" size="lg" fontWeight="600">
+              Founder
+            </Heading>
+            <Text>Sirius Teknologi Indonesia</Text>
             <small>2019 - 2020</small>
-            <UnorderedList mt="10px">
+            <Text mt="10px">
+              A software agency focused on web and mobile application.
+            </Text>
+            <Text mt="10px">Project:</Text>
+            <OrderedList mt="10px">
               <ListItem>
                 Built a document management system for an indonesian airline
-                using react, react-native, node, postgreSQL, and azure for web
-                and android
+                <UnorderedList mt="10px">
+                  <ListItem>
+                    Backend web application. Tech stacks: Typescript, NodeJS,
+                    Azure
+                  </ListItem>
+                  <ListItem>
+                    Frontend web application. Tech stacks: Typescript, React,
+                    Redux
+                  </ListItem>
+                  <ListItem>
+                    Mobile application. Tech stacks: Typescript, React Native,
+                    Redux
+                  </ListItem>
+                  <ListItem>
+                    DevOps: Azure Web App for both frontend and backend, and
+                    Azure DevOps for CI/CD platform.
+                  </ListItem>
+                </UnorderedList>
               </ListItem>
-            </UnorderedList>
+            </OrderedList>
           </ListItem>
           <ListItem mb="15px">
-            <Text fontWeight="600">Frontend Engineer</Text>
+            <Heading as="h1" size="lg" fontWeight="600">
+              Frontend Engineer
+            </Heading>
             <Text>Codemi, Indonesia</Text>
             <small>2018 - 2019, Full-time</small>
             <UnorderedList mt="10px">
@@ -64,9 +103,9 @@ export function AppWorkHistory({ onClose, isOpen, dragConstraintRef }: Props) {
             </UnorderedList>
           </ListItem>
           <ListItem mb="15px">
-            <Text fontWeight="600">
+            <Heading as="h1" size="lg" fontWeight="600">
               Math, Physics, & Engineering course Tutor
-            </Text>
+            </Heading>
             <Text>Smart Privat, Indonesia</Text>
             <small>2014 - 2017, Part-time</small>
             <UnorderedList mt="10px">

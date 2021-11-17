@@ -22,33 +22,33 @@ export function AppAboutMe({ onClose, isOpen, dragConstraintRef }: Props) {
       {shouldRenderContent && (
         <>
           <Text fontWeight="bold">About me</Text>
-          <Text>Fahru, Indonesia</Text>
+          <Text>Fahru, Baltimore, MD, USA</Text>
+          <Text>Origin: Indonesia</Text>
           <Box minH="16px" />
           <Text fontWeight="bold">What I do</Text>
-          <Text>
-            Software Engineer, end to end, strong at frontend currently
-          </Text>
+          <Text>Software Engineer. Tinkerer. Hacker.</Text>
           <Box minH="16px" />
           <Text fontWeight="bold">Tech stacks I worked on</Text>
           <UnorderedList>
-            <ListItem>Web stack: HTML5, CSS3, Javascript</ListItem>
+            <ListItem>Web stacks: HTML5, CSS3, Javascript</ListItem>
             <ListItem>Typescript</ListItem>
             <ListItem>ReasonML</ListItem>
-            <ListItem>ReactJS</ListItem>
-            <ListItem>Node</ListItem>
+            <ListItem>React</ListItem>
+            <ListItem>NodeJS</ListItem>
             <ListItem>PostgreSQL</ListItem>
           </UnorderedList>
           <Box minH="16px" />
           <Text fontWeight="bold">Other skills</Text>
           <UnorderedList>
             <ListItem>Basic Azure cloud</ListItem>
-            <ListItem>CI with gitlab CI or azure devops </ListItem>
-            <ListItem>Platform as a service (e.g vercel) </ListItem>
+            <ListItem>
+              CI/CD with Gitlab CI, Azure devops, and GitHub Action{" "}
+            </ListItem>
             <ListItem>Linux web server (nginx/apache) config</ListItem>
             <ListItem>DNS config</ListItem>
             <ListItem>Web animation & SVGs</ListItem>
             <ListItem>Docker</ListItem>
-            <ListItem>Semantic HTML</ListItem>
+            <ListItem>Web Assembly with Rust</ListItem>
           </UnorderedList>
           <Box minH="16px" />
           <Text fontWeight="bold">My take on software engineering</Text>
@@ -61,23 +61,14 @@ export function AppAboutMe({ onClose, isOpen, dragConstraintRef }: Props) {
           <Box minH="16px" />
           <Text fontWeight="bold">Hobbies</Text>
           <UnorderedList>
+            <ListItem>Learning stuffs. Anything, really.</ListItem>
+            <ListItem>Writing. I'm preparing a blog!</ListItem>
             <ListItem>
-              Writing, mostly on twitter but I'm preparing a blog!
+              Building something cool. Tinkering about stuffs.
             </ListItem>
             <ListItem>
-              Building something for the web. Indie hacker? maybe.
-            </ListItem>
-            <ListItem>
-              Learning (yep, learning as a hobby). Math, Science, and Space
-              stuffs, don't "<Text as="b">math and space IS science</Text>" me.
-            </ListItem>
-            <ListItem>
-              Reading. Articles on the web & cool stuffs on twitter, still
-              working on developing reading books as a habit
-            </ListItem>
-            <ListItem>
-              Open source things. I am a linux geek (debian FTW) and I was into
-              linux so hard until I realized I have a toddler to feed
+              Reading articles on the web & cool stuffs on twitter, still
+              working on developing reading books as a habit.
             </ListItem>
           </UnorderedList>
         </>
