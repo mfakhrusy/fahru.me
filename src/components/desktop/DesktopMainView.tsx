@@ -108,7 +108,6 @@ export function DesktopMainView({ renderActiveApp }: Props) {
       backgroundPosition="center"
     >
       <DragArea className="drag-area" ref={dragConstraintRef}>
-        {/* <Flex pos="absolute" pointerEvents="none" width="100%" height={height.taskbar} zIndex={1000} bgColor="rgba(0, 0, 0, 0.1)" top={0} left={0} /> */}
         {renderActiveApp(dragConstraintRef)}
         <Flex
           pos="absolute"

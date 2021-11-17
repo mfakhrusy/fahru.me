@@ -1,7 +1,7 @@
 import { Flex, Text } from "@chakra-ui/react";
 import styled from "@emotion/styled";
 import { motion } from "framer-motion";
-import { MutableRefObject, useRef } from "react";
+import { MutableRefObject } from "react";
 
 type ContainerProps = {
   isMobileIcon: boolean;
