@@ -6,7 +6,6 @@ export function BlackTerminalPage({
 }: PropsWithChildren<Record<string, unknown>>) {
   return (
     <Flex
-      w="100vw"
       h="100vh"
       bgColor="black"
       p="10px"

@@ -1,10 +1,17 @@
 import { executeCommand } from "@/lib/terminal/terminal";
 import { Box } from "@chakra-ui/react";
+import styled from "@emotion/styled";
 import { useRouter } from "next/router";
 import { useEffect, useRef } from "react";
-import { isAndroid, isMobileOnly } from "react-device-detect";
+import { isAndroid } from "react-device-detect";
 import { Terminal as Terminal_ } from "xterm";
 import { FitAddon } from "xterm-addon-fit";
+
+const Container = styled(Box)`
+  .xterm-viewport {
+    overflow-y: auto;
+  }
+`;
 
 const checkIfArrowKey = (str) => {
   const arrowKeys = ["\u001b[A", "\u001b[B", "\u001b[C", "\u001b[D"];
@@ -74,5 +81,5 @@ export default function XTerm(props: Props) {
     }
   }, [ref]);
 
-  return <Box ref={ref} bgColor="black" w="100%" />;
+  return <Container ref={ref} bgColor="green" w="100%" />;
 }
