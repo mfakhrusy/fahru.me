@@ -18,7 +18,7 @@
     "@supabase/supabase-js": "^1.11.13",
     "date-fns": "^2.24.0",
     "framer-motion": "^4.1.17",
-    "next": "^11.1.2",
+    "next": "12",
     "react": "^17.0.2",
     "react-device-detect": "^2.0.0",
     "react-dom": "^17.0.2",
