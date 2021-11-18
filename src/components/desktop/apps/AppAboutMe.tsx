@@ -1,4 +1,5 @@
 import { AppLayout } from "@/components/desktop/apps/AppLayout";
+import { InlineLink } from "@/components/shared/InlineLink";
 import useDelayRenderOnTouchDevice from "@/lib/useDelayRenderOnTouchDevice";
 import { Box, ListItem, Text, UnorderedList } from "@chakra-ui/react";
 import { MutableRefObject } from "react";
@@ -48,7 +49,20 @@ export function AppAboutMe({ onClose, isOpen, dragConstraintRef }: Props) {
             <ListItem>DNS config</ListItem>
             <ListItem>Web animation & SVGs</ListItem>
             <ListItem>Docker</ListItem>
-            <ListItem>Web Assembly with Rust</ListItem>
+          </UnorderedList>
+          <Box minH="16px" />
+          <Text fontWeight="bold">Currently interested about:</Text>
+          <UnorderedList>
+            <ListItem>Web Assembly with either Rust/C++</ListItem>
+            <ListItem>Building graphic-intensive web application</ListItem>
+            <ListItem>Cyber Security (especially CTF)</ListItem>
+            <ListItem>
+              etc... follow me on{" "}
+              <InlineLink href="https://twitter.com/f_fakhrusy">
+                twitter
+              </InlineLink>
+              to find out!
+            </ListItem>
           </UnorderedList>
           <Box minH="16px" />
           <Text fontWeight="bold">My take on software engineering</Text>

@@ -1,10 +1,11 @@
-import { DesktopMainView } from "@/components/desktop/DesktopMainView";
-import { DesktopTaskbar } from "@/components/desktop/DesktopTaskbar";
-import { DesktopTouchView } from "@/components/desktop/DesktopTouchView";
-import { DesktopApp } from "@/lib/desktop/desktop";
 import { Flex, useMediaQuery } from "@chakra-ui/react";
 import { MutableRefObject, useCallback, useRef } from "react";
 import dynamic from "next/dynamic";
+import { DesktopMainView } from "@/components/desktop/DesktopMainView";
+import { DesktopTaskbar } from "@/components/desktop/taskbar/DesktopTaskbar";
+import { DesktopAppMenu } from "@/components/desktop/taskbar/DesktopAppMenu";
+import { DesktopTouchView } from "@/components/desktop/DesktopTouchView";
+import { DesktopApp } from "@/lib/desktop/desktop";
 import { RootState } from "@/store";
 import {
   AppTerminal,
@@ -22,7 +23,6 @@ import {
   SetActiveDesktopAppAction,
   disableAppMenu as disableAppMenuAction,
 } from "@/store/desktop";
-import { DesktopAppMenu } from "@/components/desktop/DesktopAppMenu";
 import useClickOutside from "@/lib/useClickOutside";
 import usePageViewTracking from "@/lib/usePageViewTracking";
 import useIsTouchDevice from "@/lib/useIsTouchDevice";
@@ -30,7 +30,6 @@ import useIsTouchDevice from "@/lib/useIsTouchDevice";
 function DesktopScreen() {
   usePageViewTracking();
   const isTouchDevice = useIsTouchDevice();
-  console.log(isTouchDevice);
 
   const [isBigScreen] = useMediaQuery("(min-width: 961px)");
   const dispatch = useDispatch();

@@ -13,8 +13,10 @@ import {
 } from "@/store/desktop";
 import { Divider, Flex, Image, Text } from "@chakra-ui/react";
 import { format } from "date-fns";
-import { Ref, useCallback } from "react";
+import { Ref, useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { DesktopAppMenuButton } from "./DesktopAppMenuButton";
+import { DesktopAppSimpleClock } from "./DesktopAppSimpleClock";
 
 const TextContainer = styled(Text)`
   animation: blinker 1s step-start infinite;
@@ -32,6 +34,15 @@ type Props = {
 
 export function DesktopTaskbar({ forwardRef }: Props) {
   const dispatch = useDispatch();
+  const [now, setTime] = useState(() => new Date());
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTime(new Date());
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   const appMenuState = useSelector<RootState, AppMenuState>(
     (state) => state.desktop.appMenu
@@ -68,30 +79,8 @@ export function DesktopTaskbar({ forwardRef }: Props) {
       ref={forwardRef}
       zIndex={zIndex.taskbar}
     >
-      <Flex
-        alignItems="center"
-        cursor="pointer"
-        p={1}
-        _hover={{ bgColor: "#7f677f" }}
-        borderRadius="5px"
-        justifyContent="space-between"
-        onClick={onClickApplications}
-        bgColor={appMenuState.isActive ? "primary.600" : "primary.500"}
-      >
-        <Image src="/icons/app-other.png" w={10} h={8} pr={2} />
-        <Text mr={2} userSelect="none">
-          Applications
-        </Text>
-      </Flex>
-      <Divider orientation="vertical" ml={1} mr={1} />
-      <Flex ml="auto" alignItems="center" pr={4}>
-        <Divider orientation="vertical" mr={4} />
-        <Text display="inline">{format(new Date(), "HH")}</Text>
-        <TextContainer display="inline" mr="2px" ml="1px">
-          :
-        </TextContainer>
-        <Text display="inline">{format(new Date(), "mm")}</Text>
-      </Flex>
+      <DesktopAppMenuButton onClick={onClickApplications} />
+      <DesktopAppSimpleClock />
     </Flex>
   );
 }

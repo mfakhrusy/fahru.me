@@ -22,8 +22,8 @@ const Container = styled(motion.div)`
   cursor: pointer;
   align-self: flex-start;
   z-index: ${zIndex.draggableAppWindow};
-  margin-top: 22.5%;
-  margin-left: 35%;
+  margin-top: 100vh;
+  margin-left: 103vw;
 `;
 
 type Props = {
@@ -64,7 +64,7 @@ export function AppWindowLayout({
       <Flex
         pos="relative"
         bgColor="primary.500"
-        h="30px"
+        minH="35px"
         w="100%"
         borderTopRadius={isFullScreen ? "0" : "10px"}
         borderTop="1px solid rgba(0, 0, 0, 0.1)"
@@ -72,12 +72,12 @@ export function AppWindowLayout({
         borderLeft="1px solid rgba(0, 0, 0, 0.1)"
       >
         <Text
+          display="flex"
           flexGrow={1}
           textAlign="center"
           alignItems="center"
           justifyContent="center"
           color="aliceblue"
-          pt="2px"
           fontWeight="600"
           letterSpacing="wider"
         >
