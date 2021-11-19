@@ -8,6 +8,8 @@ import {
   ModalState,
   setModal as setModalAction,
   SetModalAction,
+  SetCurrentTime,
+  setCurrentTime as setCurrentTimeAction,
 } from "@/store/desktop";
 import { Flex } from "@chakra-ui/react";
 import { motion } from "framer-motion";
@@ -61,6 +63,19 @@ export function DesktopMainView({ renderActiveApp }: Props) {
     (payload) => dispatch(setModalAction(payload)),
     []
   );
+
+  const setCurrentTime = useCallback<(currentTime: string) => SetCurrentTime>(
+    (payload) => dispatch(setCurrentTimeAction(payload)),
+    []
+  );
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentTime(new Date().toISOString());
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
     const eventHandler = (event: KeyboardEvent) => {

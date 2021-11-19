@@ -1,0 +1,16 @@
+@import url("react-calendar/dist/Calendar.css");
+
+.react-calendar {
+  border: none;
+}
+
+.react-calendar__tile--active {
+  /* from @/config/theme -> colors.primary */
+  background: #8e738d;
+}
+
+.react-calendar__tile--active:hover,
+.react-calendar__tile--active:focus {
+  /* from @/config/theme -> colors.secondary */
+  background: #7f677f !important;
+}

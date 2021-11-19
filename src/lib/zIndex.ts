@@ -3,4 +3,5 @@ export default {
   appMenu: 300,
   draggableAppWindow: 200,
   fullScreenAppWindow: 10,
+  timeWidget: 350,
 };

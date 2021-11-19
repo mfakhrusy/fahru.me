@@ -18,6 +18,8 @@ type State = {
   appMenu: AppMenuState;
   modal: ModalState;
   isActiveAppFullScreen: boolean;
+  isTimeWidgetActive: boolean;
+  currentTime: string; // ISO String
 };
 
 export type SetActiveDesktopAppAction = {
@@ -45,6 +47,16 @@ export type SetActiveAppFullScreen = {
   payload: boolean;
 };
 
+export type SetCurrentTime = {
+  type: string;
+  payload: string;
+};
+
+export type SetTimeWidgetActive = {
+  type: string;
+  payload: boolean;
+};
+
 type Action = {
   setActiveDesktopApp: (
     state: State,
@@ -61,6 +73,8 @@ type Action = {
     state: State,
     action: SetActiveAppFullScreen
   ) => void;
+  setCurrentTime: (state: State, action: SetCurrentTime) => void;
+  setTimeWidgetActive: (state: State, action: SetTimeWidgetActive) => void;
 };
 
 const desktopSlice = createSlice<State, Action, "desktop">({
@@ -73,6 +87,8 @@ const desktopSlice = createSlice<State, Action, "desktop">({
     },
     modal: "noModal",
     isActiveAppFullScreen: false,
+    currentTime: new Date().toISOString(),
+    isTimeWidgetActive: false,
   },
   reducers: {
     setActiveDesktopApp: (state: State, action: SetActiveDesktopAppAction) => {
@@ -101,6 +117,12 @@ const desktopSlice = createSlice<State, Action, "desktop">({
     setActiveAppFullScreen: (state: State, action: SetActiveAppFullScreen) => {
       state.isActiveAppFullScreen = action.payload;
     },
+    setCurrentTime: (state: State, action: SetCurrentTime) => {
+      state.currentTime = action.payload;
+    },
+    setTimeWidgetActive: (state: State, action: SetTimeWidgetActive) => {
+      state.isTimeWidgetActive = action.payload;
+    },
   },
 });
 
@@ -111,6 +133,8 @@ export const {
   disableAppMenu,
   setModal,
   setActiveAppFullScreen,
+  setCurrentTime,
+  setTimeWidgetActive,
 } = desktopSlice.actions;
 
 export default desktopSlice.reducer;

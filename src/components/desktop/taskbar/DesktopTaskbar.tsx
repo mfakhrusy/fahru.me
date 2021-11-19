@@ -2,7 +2,6 @@ import { DesktopApp } from "@/lib/desktop/desktop";
 import height from "@/lib/height";
 import zIndex from "@/lib/zIndex";
 import { RootState } from "@/store";
-import styled from "@emotion/styled";
 import {
   EnableAppMenuAction,
   enableAppMenu as enableAppMenuAction,
@@ -10,39 +9,20 @@ import {
   setFocusedDesktopApp as setFocusedDesktopAppAction,
   AppMenuState,
   SetFocusedDesktopAppAction,
+  SetTimeWidgetActive,
+  setTimeWidgetActive,
 } from "@/store/desktop";
-import { Divider, Flex, Image, Text } from "@chakra-ui/react";
-import { format } from "date-fns";
-import { Ref, useCallback, useEffect, useState } from "react";
+import { Flex } from "@chakra-ui/react";
+import { Ref, useCallback, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import useClickOutside from "@/lib/useClickOutside";
 import { DesktopAppMenuButton } from "./DesktopAppMenuButton";
 import { DesktopAppSimpleClock } from "./DesktopAppSimpleClock";
+import { DesktopAppMenu } from "./DesktopAppMenu";
+import { DesktopTimeWidget } from "./DesktopTimeWidget";
 
-const TextContainer = styled(Text)`
-  animation: blinker 1s step-start infinite;
-
-  @keyframes blinker {
-    50% {
-      opacity: 0;
-    }
-  }
-`;
-
-type Props = {
-  forwardRef: Ref<HTMLDivElement>;
-};
-
-export function DesktopTaskbar({ forwardRef }: Props) {
+export function DesktopTaskbar() {
   const dispatch = useDispatch();
-  const [now, setTime] = useState(() => new Date());
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setTime(new Date());
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, []);
 
   const appMenuState = useSelector<RootState, AppMenuState>(
     (state) => state.desktop.appMenu
@@ -68,19 +48,55 @@ export function DesktopTaskbar({ forwardRef }: Props) {
     appMenuState.isActive ? disableAppMenu() : enableAppMenu("DesktopMainView");
   };
 
+  const appMenuRef = useRef<HTMLDivElement>(null);
+  const appMenuButtonRef = useRef<HTMLDivElement>(null);
+
+  useClickOutside({
+    targetRef: appMenuRef,
+    fn: () => {
+      disableAppMenu();
+    },
+    exceptionRef: appMenuButtonRef,
+  });
+
+  const timeWidgetRef = useRef<HTMLDivElement>(null);
+  const clockRef = useRef<HTMLDivElement>(null);
+  const setTimeWidget = useCallback<(args: boolean) => SetTimeWidgetActive>(
+    (payload) => dispatch(setTimeWidgetActive(payload)),
+    []
+  );
+
+  useClickOutside({
+    targetRef: timeWidgetRef,
+    fn: () => {
+      setTimeWidget(false);
+    },
+    exceptionRef: clockRef,
+  });
+
   return (
-    <Flex
-      h={height.taskbar}
-      w="100%"
-      bgColor="primary.500"
-      color="white"
-      p={1}
-      borderBottom="1px solid rgba(0, 0, 0, 0.1)"
-      ref={forwardRef}
-      zIndex={zIndex.taskbar}
-    >
-      <DesktopAppMenuButton onClick={onClickApplications} />
-      <DesktopAppSimpleClock />
-    </Flex>
+    <>
+      <Flex
+        h={height.taskbar}
+        w="100%"
+        bgColor="primary.500"
+        color="white"
+        p={1}
+        borderBottom="1px solid rgba(0, 0, 0, 0.1)"
+        zIndex={zIndex.taskbar}
+        pos="relative"
+      >
+        <DesktopAppMenuButton
+          onClick={onClickApplications}
+          forwardRef={appMenuButtonRef}
+        />
+        <DesktopAppSimpleClock forwardRef={clockRef} />
+      </Flex>
+      <DesktopAppMenu
+        isActive={appMenuState.isActive}
+        forwardRef={appMenuRef}
+      />
+      <DesktopTimeWidget forwardRef={timeWidgetRef} />
+    </>
   );
 }
