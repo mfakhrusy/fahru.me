@@ -14,3 +14,7 @@
   /* from @/config/theme -> colors.secondary */
   background: #7f677f !important;
 }
+
+.react-calendar__month-view__weekdays__weekday abbr[title] {
+  text-decoration: none;
+}
