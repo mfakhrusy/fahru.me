@@ -30,6 +30,7 @@ export function DesktopTimeWidget({ forwardRef }: Props) {
       ref={forwardRef}
       flexDir="column"
       bgColor="white"
+      userSelect="none"
     >
       <Flex>
         <Flex flexDir="column" p="0 1rem">
