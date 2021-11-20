@@ -24,7 +24,7 @@ export function AppEducation({ onClose, isOpen, dragConstraintRef }: Props) {
           <ListItem mb="15px">
             <Text fontWeight="600">Undergraduate University</Text>
             <Text>Bandung Institute of Technology</Text>
-            <Text as="small">2012 - 2016</Text>
+            <Text as="small" display="flex">2012 - 2016</Text>
             <Text as="small">3.76 / 4.00 GPA</Text>
             <Text>Major: Aerospace Engineering</Text>
             <Text>
