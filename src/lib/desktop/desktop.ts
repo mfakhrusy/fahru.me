@@ -37,7 +37,7 @@ export function makeDesktopIcons(): Array<DesktopIcon> {
     {
       iconName: "games.png",
       appName: "AppProjects",
-      title: "Projects",
+      title: "Hobby Projects",
     },
     {
       iconName: "resume.png",

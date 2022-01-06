@@ -15,7 +15,7 @@ export function AppProjects({ onClose, isOpen, dragConstraintRef }: Props) {
 
   return (
     <AppLayout
-      title="Projects"
+      title="Hobby Projects"
       onClose={onClose}
       isOpen={isOpen}
       dragConstraintRef={dragConstraintRef}
@@ -23,7 +23,7 @@ export function AppProjects({ onClose, isOpen, dragConstraintRef }: Props) {
       <Flex flexDir="column" alignItems="center">
         {shouldRenderContent && (
           <>
-            <Text>Past & current projects</Text>
+            <Text>My Hobby Projects</Text>
             <Divider mt={4} mb={4} />
             <Heading size="sm" as="h1">
               <Text mb={4}>Mathematic Hub: Equation Visualizer</Text>
