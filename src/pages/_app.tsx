@@ -3,7 +3,6 @@ import Head from "next/head";
 import "xterm/css/xterm.css";
 import "@/styles/globals.css";
 import "@/styles/calendar.css";
-import theme from "@/config/theme";
 
 function MyApp({ Component, pageProps }) {
   return (
@@ -12,7 +11,7 @@ function MyApp({ Component, pageProps }) {
         <title>Fahru Personal Site</title>
         <link
           rel="preload"
-          href="https://blog.fakhrusy.com?iframe=true"
+          href="https://blog.fakhrusy.com"
           as="document"
         ></link>
       </Head>

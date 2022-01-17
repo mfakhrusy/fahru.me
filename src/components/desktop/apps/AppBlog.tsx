@@ -62,7 +62,8 @@ function IntroView({ hideIntro }: IntroViewProps) {
           w="180px"
           display="flex"
           alignItems="center"
-          href="https://blog.fakhrusy.com?iframe=true"
+          href="https://blog.fakhrusy.com"
+          target="_blank"
         >
           <Text as="span" mr={2}>
             Open In New Tab
@@ -78,7 +79,7 @@ function MainView() {
   return (
     <iframe
       style={{ width: "100%", height: "600px" }}
-      src="https://blog.fakhrusy.com?iframe=true"
+      src="https://blog.fakhrusy.com"
       title="blog"
     />
   );
