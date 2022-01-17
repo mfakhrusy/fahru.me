@@ -1,9 +1,10 @@
 import { AppLayout } from "@/components/desktop/apps/AppLayout";
-import { InlineLink } from "@/components/shared/InlineLink";
 import useDelayRenderOnTouchDevice from "@/lib/useDelayRenderOnTouchDevice";
+import { RootState } from "@/store";
 import { ExternalLinkIcon } from "@chakra-ui/icons";
 import { Button, Flex, Heading, Text } from "@chakra-ui/react";
 import { MutableRefObject, useState } from "react";
+import { useSelector } from "react-redux";
 
 type Props = {
   onClose: () => void;
@@ -38,6 +39,10 @@ type IntroViewProps = {
 };
 
 function IntroView({ hideIntro }: IntroViewProps) {
+  const isFullScreen = useSelector<RootState, boolean>(
+    (state) => state.desktop.isActiveAppFullScreen
+  );
+
   return (
     <Flex
       bgColor="white"
@@ -45,7 +50,7 @@ function IntroView({ hideIntro }: IntroViewProps) {
       top="0"
       left="0"
       w="100%"
-      h="600px"
+      h={isFullScreen ? "calc(100vh - 84px)" : "600px"}
       flexDir="column"
       justifyContent="center"
       alignItems="center"
@@ -66,7 +71,7 @@ function IntroView({ hideIntro }: IntroViewProps) {
           target="_blank"
         >
           <Text as="span" mr={2}>
-            Open In New Tab
+            Open in New Tab
           </Text>
           <ExternalLinkIcon />
         </Button>
@@ -76,9 +81,16 @@ function IntroView({ hideIntro }: IntroViewProps) {
 }
 
 function MainView() {
+  const isFullScreen = useSelector<RootState, boolean>(
+    (state) => state.desktop.isActiveAppFullScreen
+  );
+
   return (
     <iframe
-      style={{ width: "100%", height: "600px" }}
+      style={{
+        width: "100%",
+        height: isFullScreen ? "calc(100vh - 84px)" : "600px",
+      }}
       src="https://blog.fakhrusy.com"
       title="blog"
     />

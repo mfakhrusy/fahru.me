@@ -1,9 +1,7 @@
 import useIsTouchDevice from "@/lib/useIsTouchDevice";
-import { RootState } from "@/store";
 import { Flex } from "@chakra-ui/layout";
 import { BackgroundProps } from "@chakra-ui/styled-system";
 import { MutableRefObject, PropsWithChildren } from "react";
-import { useSelector } from "react-redux";
 import { AppModalLayout } from "./AppModalLayout";
 import { AppWindowLayout } from "./AppWindowLayout";
 
@@ -28,17 +26,14 @@ export function AppLayout({
   noPadding = false,
 }: PropsWithChildren<Props>) {
   const isTouchDevice = useIsTouchDevice();
-  const isFullScreen = useSelector<RootState, boolean>(
-    (state) => state.desktop.isActiveAppFullScreen
-  );
 
-  const renderContent = () => (
+  const renderContent = (noPadding: boolean) => (
     <Flex
       flexDir="column"
       w="100%"
       h={isTouchDevice ? "auto" : "unset"}
       minH={isTouchDevice ? "calc(100vh - 30px)" : "unset"}
-      pb={4}
+      pb={noPadding ? 0 : 4}
     >
       {children}
     </Flex>
@@ -53,7 +48,7 @@ export function AppLayout({
       isScrollable={isScrollable}
       noPadding={noPadding}
     >
-      {renderContent()}
+      {renderContent(noPadding)}
     </AppModalLayout>
   ) : (
     <AppWindowLayout
@@ -63,7 +58,7 @@ export function AppLayout({
       bgColor={bgColor}
       noPadding={noPadding}
     >
-      {renderContent()}
+      {renderContent(noPadding)}
     </AppWindowLayout>
   );
 }
