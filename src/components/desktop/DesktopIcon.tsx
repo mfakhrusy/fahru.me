@@ -10,7 +10,6 @@ type ContainerProps = {
 const Container = styled(motion.div)<ContainerProps>`
   width: ${({ isMobileIcon }) => (isMobileIcon ? "80px" : "70px")};
   height: ${({ isMobileIcon }) => (isMobileIcon ? "100px" : "")};
-  min-height: ${({ isMobileIcon }) => (isMobileIcon ? "" : "90px")};
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -66,7 +65,6 @@ export function DesktopIcon({
         backgroundImage={`url(/icons/${iconName})`}
         backgroundSize="100%"
         backgroundRepeat="no-repeat"
-        flexGrow={1}
       />
       <Text
         fontSize="12px"

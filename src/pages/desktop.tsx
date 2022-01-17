@@ -22,6 +22,7 @@ import {
 } from "@/store/desktop";
 import usePageViewTracking from "@/lib/usePageViewTracking";
 import useIsTouchDevice from "@/lib/useIsTouchDevice";
+import { AppBlog } from "@/components/desktop/apps/AppBlog";
 
 function DesktopScreen() {
   usePageViewTracking();
@@ -95,6 +96,14 @@ function DesktopScreen() {
           <AppProjects
             dragConstraintRef={dragConstraintRef}
             isOpen={activeDesktopApp === "AppProjects"}
+            onClose={onCloseApp}
+          />
+        );
+      case "AppBlog":
+        return (
+          <AppBlog
+            dragConstraintRef={dragConstraintRef}
+            isOpen={activeDesktopApp === "AppBlog"}
             onClose={onCloseApp}
           />
         );

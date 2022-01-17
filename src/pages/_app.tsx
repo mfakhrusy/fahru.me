@@ -10,6 +10,11 @@ function MyApp({ Component, pageProps }) {
     <Provider>
       <Head>
         <title>Fahru Personal Site</title>
+        <link
+          rel="preload"
+          href="https://blog.fakhrusy.com?iframe=true"
+          as="document"
+        ></link>
       </Head>
       <Component {...pageProps} />
     </Provider>

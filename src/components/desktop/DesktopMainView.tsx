@@ -11,7 +11,7 @@ import {
   SetCurrentTime,
   setCurrentTime as setCurrentTimeAction,
 } from "@/store/desktop";
-import { Flex } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import { MutableRefObject, useCallback, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -124,24 +124,24 @@ export function DesktopMainView({ renderActiveApp }: Props) {
     >
       <DragArea className="drag-area" ref={dragConstraintRef}>
         {renderActiveApp(dragConstraintRef)}
-        <Flex
-          pos="absolute"
-          top="33.4%"
-          right="33.4%"
-          flexDir="column"
-          alignItems="flex-end"
-          w="100%"
-        >
-          {makeDesktopIcons().map((desktopIcon) => (
-            <DesktopIcon
-              key={`mainview-${desktopIcon.appName}`}
-              iconName={desktopIcon.iconName}
-              dragConstraintRef={dragConstraintRef}
-              onClick={() => setFocusedDesktopApp(desktopIcon.appName)}
-              onDoubleClick={() => setActiveDesktopApp(desktopIcon.appName)}
-              isFocused={focusedApp === desktopIcon.appName}
-              title={desktopIcon.title}
-            />
+        <Flex pos="absolute" top="33.4%" w="100%">
+          {/* 100vw because drag area extends to left and right side of the visible screen, so we need to add some "left buffer" so desktop icons can appear in the middle */}
+          <Box w="100vw" h="100px" />
+          {makeDesktopIcons().map((desktopIcon, i) => (
+            <>
+              <DesktopIcon
+                key={`mainview-${desktopIcon.appName}`}
+                iconName={desktopIcon.iconName}
+                dragConstraintRef={dragConstraintRef}
+                onClick={() => setFocusedDesktopApp(desktopIcon.appName)}
+                onDoubleClick={() => setActiveDesktopApp(desktopIcon.appName)}
+                isFocused={focusedApp === desktopIcon.appName}
+                title={desktopIcon.title}
+              />
+              {i !== makeDesktopIcons().length - 1 ? (
+                <Box w="15px" h="1px" />
+              ) : null}
+            </>
           ))}
         </Flex>
       </DragArea>

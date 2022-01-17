@@ -7,6 +7,7 @@ export const desktopApp = [
   "AppEducation",
   "AppContacts",
   "AppProjects",
+  "AppBlog",
 ] as const;
 
 export type DesktopApp = typeof desktopApp[number];
@@ -48,6 +49,11 @@ export function makeDesktopIcons(): Array<DesktopIcon> {
       iconName: "education.png",
       appName: "AppEducation",
       title: "Education",
+    },
+    {
+      iconName: "book.png",
+      appName: "AppBlog",
+      title: "Blog",
     },
     {
       iconName: "terminal.png",
