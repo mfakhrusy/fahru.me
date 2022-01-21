@@ -14,6 +14,8 @@ import {
   AppContacts,
   AppEducation,
   AppProjects,
+  AppBlog,
+  AppTodo,
 } from "@/components/desktop/apps";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -22,7 +24,6 @@ import {
 } from "@/store/desktop";
 import usePageViewTracking from "@/lib/usePageViewTracking";
 import useIsTouchDevice from "@/lib/useIsTouchDevice";
-import { AppBlog } from "@/components/desktop/apps/AppBlog";
 
 function DesktopScreen() {
   usePageViewTracking();
@@ -104,6 +105,14 @@ function DesktopScreen() {
           <AppBlog
             dragConstraintRef={dragConstraintRef}
             isOpen={activeDesktopApp === "AppBlog"}
+            onClose={onCloseApp}
+          />
+        );
+      case "AppTodo":
+        return (
+          <AppTodo
+            dragConstraintRef={dragConstraintRef}
+            isOpen={activeDesktopApp === "AppTodo"}
             onClose={onCloseApp}
           />
         );

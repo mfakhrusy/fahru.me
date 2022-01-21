@@ -8,6 +8,7 @@ export const desktopApp = [
   "AppContacts",
   "AppProjects",
   "AppBlog",
+  "AppTodo",
 ] as const;
 
 export type DesktopApp = typeof desktopApp[number];
@@ -59,6 +60,11 @@ export function makeDesktopIcons(): Array<DesktopIcon> {
       iconName: "terminal.png",
       appName: "AppTerminal",
       title: "Terminal",
+    },
+    {
+      iconName: "puzzle.png",
+      appName: "AppTodo",
+      title: "To-Dos",
     },
   ];
 }

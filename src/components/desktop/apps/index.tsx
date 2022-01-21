@@ -5,3 +5,5 @@ export { AppWorkHistory } from "./AppWorkHistory";
 export { AppEducation } from "./AppEducation";
 export { AppContacts } from "./AppContacts";
 export { AppProjects } from "./AppProjects";
+export { AppTodo } from "./AppTodo";
+export { AppBlog } from "./AppBlog";
