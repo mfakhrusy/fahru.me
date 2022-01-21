@@ -13,7 +13,7 @@ import {
   setTimeWidgetActive,
 } from "@/store/desktop";
 import { Flex } from "@chakra-ui/react";
-import { Ref, useCallback, useRef } from "react";
+import { useCallback, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import useClickOutside from "@/lib/useClickOutside";
 import { DesktopAppMenuButton } from "./DesktopAppMenuButton";
