@@ -1,8 +1,7 @@
 import { AppLayout } from "@/components/desktop/apps/AppLayout";
 import { InlineLink } from "@/components/shared/InlineLink";
 import useDelayRenderOnTouchDevice from "@/lib/useDelayRenderOnTouchDevice";
-import { ExternalLinkIcon } from "@chakra-ui/icons";
-import { Box, Link, Text } from "@chakra-ui/react";
+import { Box, Text } from "@chakra-ui/react";
 import { MutableRefObject } from "react";
 
 type Props = {
