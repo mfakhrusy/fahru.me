@@ -8,7 +8,8 @@ type ContainerProps = {
 };
 
 const Container = styled(motion.div)<ContainerProps>`
-  width: ${({ isMobileIcon }) => (isMobileIcon ? "80px" : "70px")};
+  width: ${({ isMobileIcon }) => (isMobileIcon ? "unset" : "70px")};
+  min-width: ${({ isMobileIcon }) => (isMobileIcon ? "80px" : "unset")};
   height: ${({ isMobileIcon }) => (isMobileIcon ? "100px" : "")};
   display: flex;
   flex-direction: column;
@@ -53,6 +54,7 @@ export function DesktopIcon({
       onDoubleClick={onDoubleClick}
       onClick={onClick}
       onDragStart={onClick}
+      className="desktop-icon"
     >
       <Flex
         w="70px"
