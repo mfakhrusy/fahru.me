@@ -42,14 +42,14 @@ export function makeDesktopIcons(): Array<DesktopIcon> {
       title: "Hobby Projects",
     },
     {
-      iconName: "resume.png",
-      appName: "AppWorkHistory",
-      title: "Work History",
-    },
-    {
       iconName: "education.png",
       appName: "AppEducation",
       title: "Education",
+    },
+    {
+      iconName: "resume.png",
+      appName: "AppWorkHistory",
+      title: "Work History",
     },
     {
       iconName: "book.png",
