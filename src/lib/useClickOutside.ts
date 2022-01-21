@@ -1,16 +1,16 @@
-import { useEffect } from "react";
+import { RefObject, useEffect } from "react";
 
-type Config = {
-  targetRef: any;
-  fn: any;
-  exceptionRef?: any;
+type Config<T> = {
+  targetRef: RefObject<T>;
+  fn: () => void;
+  exceptionRef?: RefObject<T>;
 };
 
-export default function useClickOutside({
+export default function useClickOutside<T>({
   targetRef,
   fn,
   exceptionRef,
-}: Config) {
+}: Config<T extends HTMLElement ? T : HTMLElement>) {
   const handleClick = (e) => {
     if (targetRef.current) {
       if (exceptionRef) {
