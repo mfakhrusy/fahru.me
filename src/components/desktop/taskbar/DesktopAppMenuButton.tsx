@@ -19,20 +19,18 @@ export function DesktopAppMenuButton({ onClick, forwardRef }: Props) {
       <Flex
         alignItems="center"
         cursor="pointer"
-        p={1}
         _hover={{ bgColor: "#7f677f" }}
-        borderRadius="5px"
         justifyContent="space-between"
         onClick={onClick}
         bgColor={appMenuState.isActive ? "primary.600" : "primary.500"}
         ref={forwardRef}
       >
-        <Image src="/icons/app-other.png" w={10} h={8} pr={2} />
-        <Text mr={2} userSelect="none">
+        <Image src="/icons/app-other.png" w="2.18rem" h="1.55rem" pr={2} />
+        <Text fontSize="15px" mr={2} userSelect="none">
           Applications
         </Text>
       </Flex>
-      <Divider orientation="vertical" ml={1} mr={1} />
+      <Divider orientation="vertical" mr={1} />
     </>
   );
 }
