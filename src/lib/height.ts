@@ -1,5 +1,5 @@
 const height = {
-  taskbar: "45px",
+  taskbar: "35px",
 };
 
 export default height;
