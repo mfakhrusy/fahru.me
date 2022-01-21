@@ -1,5 +1,6 @@
 import { AppLayout } from "@/components/desktop/apps/AppLayout";
 import useDelayRenderOnTouchDevice from "@/lib/useDelayRenderOnTouchDevice";
+import useIsTouchDevice from "@/lib/useIsTouchDevice";
 import { RootState } from "@/store";
 import { ExternalLinkIcon } from "@chakra-ui/icons";
 import { Button, Flex, Heading, Text } from "@chakra-ui/react";
@@ -43,6 +44,15 @@ function IntroView({ hideIntro }: IntroViewProps) {
     (state) => state.desktop.isActiveAppFullScreen
   );
 
+  const isTouchDevice = useIsTouchDevice();
+
+  let height = "600px";
+  if (isFullScreen) {
+    height = "calc(100vh - 84px)";
+  } else if (isTouchDevice) {
+    height = "calc(100vh - 55px)";
+  }
+
   return (
     <Flex
       bgColor="white"
@@ -50,7 +60,7 @@ function IntroView({ hideIntro }: IntroViewProps) {
       top="0"
       left="0"
       w="100%"
-      h={isFullScreen ? "calc(100vh - 84px)" : "600px"}
+      h={height}
       flexDir="column"
       justifyContent="center"
       alignItems="center"
@@ -59,7 +69,11 @@ function IntroView({ hideIntro }: IntroViewProps) {
         My Blog
       </Heading>
       <Flex>
-        <Button onClick={() => hideIntro()} w="180px" mr={4}>
+        <Button
+          onClick={() => hideIntro()}
+          w={isTouchDevice ? "150px" : "180px"}
+          mr={4}
+        >
           Read Here
         </Button>
         <Button
@@ -85,11 +99,20 @@ function MainView() {
     (state) => state.desktop.isActiveAppFullScreen
   );
 
+  const isTouchDevice = useIsTouchDevice();
+
+  let height = "600px";
+  if (isFullScreen) {
+    height = "calc(100vh - 84px)";
+  } else if (isTouchDevice) {
+    height = "calc(100vh - 55px)";
+  }
+
   return (
     <iframe
       style={{
         width: "100%",
-        height: isFullScreen ? "calc(100vh - 84px)" : "600px",
+        height,
       }}
       src="https://blog.fakhrusy.com"
       title="blog"
