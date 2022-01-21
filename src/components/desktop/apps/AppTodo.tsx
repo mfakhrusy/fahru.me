@@ -61,7 +61,7 @@ export function AppTodo({ onClose, isOpen, dragConstraintRef }: Props) {
             myself as an exercise
           </ListItem>
           <ListItem>
-            Implement multiple app window (with perfomance in mind) and minimize
+            Implement multiple app window (with perfomance in mind) and add minimize
             capability for each window
           </ListItem>
           <ListItem>
