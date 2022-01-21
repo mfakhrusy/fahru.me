@@ -32,7 +32,7 @@ export function AppLayout({
       flexDir="column"
       w="100%"
       h={isTouchDevice ? "auto" : "unset"}
-      minH={isTouchDevice ? "calc(100vh - 30px)" : "unset"}
+      minH={isTouchDevice ? "calc(100vh - 57px)" : "unset"}
       pb={noPadding ? 0 : 4}
     >
       {children}
