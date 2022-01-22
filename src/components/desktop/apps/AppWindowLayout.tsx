@@ -59,7 +59,7 @@ export function AppWindowLayout({
       w="100%"
       h={isFullScreen ? "100%" : "726px"}
       flexDir="column"
-      pb={isFullScreen ? "3rem" : 4}
+      pb={isFullScreen ? "2.1rem" : 4}
     >
       <Flex
         pos="relative"
