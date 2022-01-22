@@ -1,5 +1,3 @@
-const height = {
+export default {
   taskbar: "35px",
 };
-
-export default height;
