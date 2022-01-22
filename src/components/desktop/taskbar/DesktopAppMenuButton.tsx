@@ -19,10 +19,10 @@ export function DesktopAppMenuButton({ onClick, forwardRef }: Props) {
       <Flex
         alignItems="center"
         cursor="pointer"
-        _hover={{ bgColor: "#7f677f" }}
+        _hover={{ bgColor: "debian.600" }}
         justifyContent="space-between"
         onClick={onClick}
-        bgColor={appMenuState.isActive ? "primary.600" : "primary.500"}
+        bgColor={appMenuState.isActive ? "debian.600" : "debian.500"}
         ref={forwardRef}
       >
         <Image src="/icons/app-other.png" w="2.18rem" h="1.55rem" pr={2} />

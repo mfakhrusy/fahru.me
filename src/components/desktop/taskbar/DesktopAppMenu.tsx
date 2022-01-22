@@ -48,7 +48,7 @@ export function DesktopAppMenu({ isActive, forwardRef }: Props) {
       position="absolute"
       top={height.taskbar}
       zIndex={zIndex.appMenu}
-      backgroundColor="primary.500"
+      backgroundColor="debian.500"
       color="white"
       p={4}
       visibility={isActive ? "visible" : "hidden"}
@@ -77,7 +77,7 @@ export function DesktopAppMenu({ isActive, forwardRef }: Props) {
                   key={app}
                   alignItems="center"
                   p={2}
-                  _hover={{ bgColor: "primary.600" }}
+                  _hover={{ bgColor: "debian.600" }}
                   borderRadius="5px"
                   cursor="pointer"
                   onClick={() => {
@@ -100,7 +100,7 @@ export function DesktopAppMenu({ isActive, forwardRef }: Props) {
         mt={3}
       >
         <Flex
-          _hover={{ bgColor: "primary.600" }}
+          _hover={{ bgColor: "debian.600" }}
           p={2}
           cursor="pointer"
           w="180px"
@@ -113,7 +113,7 @@ export function DesktopAppMenu({ isActive, forwardRef }: Props) {
           <Text userSelect="none">Shutdown</Text>
         </Flex>
         <Flex
-          _hover={{ bgColor: "primary.600" }}
+          _hover={{ bgColor: "debian.600" }}
           p={2}
           cursor="pointer"
           w="180px"

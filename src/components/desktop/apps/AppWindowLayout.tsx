@@ -63,7 +63,7 @@ export function AppWindowLayout({
     >
       <Flex
         pos="relative"
-        bgColor="primary.500"
+        bgColor="debian.500"
         minH="35px"
         w="100%"
         borderTopRadius={isFullScreen ? "0" : "10px"}
@@ -95,7 +95,7 @@ export function AppWindowLayout({
             onClick={() => {
               setFullScreen(!isFullScreen);
             }}
-            _hover={{ bgColor: "primary.600" }}
+            _hover={{ bgColor: "debian.600" }}
           >
             <Icon
               as={isFullScreen ? BiExitFullscreen : BiFullscreen}
@@ -110,7 +110,7 @@ export function AppWindowLayout({
             alignItems="center"
             cursor="pointer"
             onClick={onClose}
-            _hover={{ bgColor: "primary.600" }}
+            _hover={{ bgColor: "debian.600" }}
             borderTopRightRadius="10px"
           >
             <CloseIcon w={3} h={3} color="white" mr={5} ml={5} />

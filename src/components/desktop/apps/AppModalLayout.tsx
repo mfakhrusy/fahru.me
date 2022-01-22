@@ -40,7 +40,7 @@ export function AppModalLayout({
           h="auto"
           overflowY={isScrollable ? "auto" : "hidden"}
         >
-          <Flex pos="relative" bgColor="primary.500" minH="40px" w="100%">
+          <Flex pos="relative" bgColor="debian.500" minH="40px" w="100%">
             <Text
               display="flex"
               flexGrow={1}

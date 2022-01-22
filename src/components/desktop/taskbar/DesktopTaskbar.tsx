@@ -79,7 +79,7 @@ export function DesktopTaskbar() {
       <Flex
         h={height.taskbar}
         w="100%"
-        bgColor="primary.500"
+        bgColor="debian.500"
         color="white"
         borderBottom="1px solid rgba(0, 0, 0, 0.1)"
         zIndex={zIndex.taskbar}

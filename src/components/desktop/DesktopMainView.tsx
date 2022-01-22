@@ -20,7 +20,6 @@ import styled from "@emotion/styled";
 import { DesktopInfoPopover } from "@/components/desktop/DesktopInfoPopover";
 import { DesktopRebootModal } from "@/components/desktop/DesktopRebootModal";
 import { DesktopShutdownModal } from "@/components/desktop/DesktopShutdownModal";
-// import height from "@/lib/height";
 
 const DragArea = styled(motion.div)`
   width: 300%;
@@ -117,7 +116,7 @@ export function DesktopMainView({ renderActiveApp }: Props) {
   return (
     <Flex
       flexGrow={1}
-      backgroundImage="url(/images/debian-nyaa.png)"
+      backgroundImage="url(/images/desktop-bg/debian-uwu.png)"
       backgroundRepeat="no-repeat"
       pos="relative"
       backgroundPosition="center"

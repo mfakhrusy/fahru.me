@@ -22,7 +22,7 @@ export function DesktopTouchView({ renderActiveApp }: Props) {
     <Flex
       flexGrow={1}
       bgColor="aliceblue"
-      backgroundImage="url(/images/debian-nyaa.png)"
+      backgroundImage="url(/images/desktop-bg/debian-uwu.png)"
       backgroundRepeat="no-repeat"
       pos="relative"
       backgroundPosition="center"

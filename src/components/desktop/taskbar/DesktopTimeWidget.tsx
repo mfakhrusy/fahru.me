@@ -22,7 +22,7 @@ export function DesktopTimeWidget({ forwardRef }: Props) {
 
   return (
     <Flex
-      color="primary.500"
+      color="debian.500"
       pos="absolute"
       top={isTimeWidgetActive ? height.taskbar : "-100vh"}
       right={0}
