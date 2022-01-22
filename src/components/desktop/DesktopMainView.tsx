@@ -119,7 +119,6 @@ export function DesktopMainView({ renderActiveApp }: Props) {
       const isFocusedOnAnyApp = focusedApp !== "DesktopMainView";
 
       if (isFocusedOnAnyApp) {
-        console.log("tes");
         const isTargetNotDesktopIcon =
           (e.target as HTMLDivElement)?.className
             .split(" ")
