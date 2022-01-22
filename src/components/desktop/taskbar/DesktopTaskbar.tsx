@@ -81,7 +81,6 @@ export function DesktopTaskbar() {
         w="100%"
         bgColor="primary.500"
         color="white"
-        p={1}
         borderBottom="1px solid rgba(0, 0, 0, 0.1)"
         zIndex={zIndex.taskbar}
         pos="relative"
