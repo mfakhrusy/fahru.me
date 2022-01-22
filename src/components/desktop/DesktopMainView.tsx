@@ -20,6 +20,7 @@ import styled from "@emotion/styled";
 import { DesktopInfoPopover } from "@/components/desktop/DesktopInfoPopover";
 import { DesktopRebootModal } from "@/components/desktop/DesktopRebootModal";
 import { DesktopShutdownModal } from "@/components/desktop/DesktopShutdownModal";
+import className from "@/lib/className";
 
 const DragArea = styled(motion.div)`
   width: 300%;
@@ -113,6 +114,25 @@ export function DesktopMainView({ renderActiveApp }: Props) {
     }
   };
 
+  const unfocusApp = useCallback(
+    (e) => {
+      const isFocusedOnAnyApp = focusedApp !== "DesktopMainView";
+
+      if (isFocusedOnAnyApp) {
+        console.log("tes");
+        const isTargetNotDesktopIcon =
+          (e.target as HTMLDivElement)?.className
+            .split(" ")
+            .includes(className.desktopIcon) === false;
+
+        if (isTargetNotDesktopIcon) {
+          setFocusedDesktopApp("DesktopMainView");
+        }
+      }
+    },
+    [focusedApp]
+  );
+
   return (
     <Flex
       flexGrow={1}
@@ -120,6 +140,7 @@ export function DesktopMainView({ renderActiveApp }: Props) {
       backgroundRepeat="repeat-x"
       pos="relative"
       backgroundPosition="center"
+      onClick={unfocusApp}
     >
       <DragArea className="drag-area" ref={dragConstraintRef}>
         {renderActiveApp(dragConstraintRef)}

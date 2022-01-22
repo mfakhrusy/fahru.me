@@ -1,3 +1,4 @@
+import className from "@/lib/className";
 import { Flex, Text } from "@chakra-ui/react";
 import styled from "@emotion/styled";
 import { motion } from "framer-motion";
@@ -54,7 +55,7 @@ export function DesktopIcon({
       onDoubleClick={onDoubleClick}
       onClick={onClick}
       onDragStart={onClick}
-      className="desktop-icon"
+      className={className.desktopIcon}
     >
       <Flex
         w="70px"
@@ -67,6 +68,7 @@ export function DesktopIcon({
         backgroundImage={`url(/icons/${iconName})`}
         backgroundSize="100%"
         backgroundRepeat="no-repeat"
+        className={className.desktopIcon}
       />
       <Text
         fontSize="12px"
@@ -77,6 +79,7 @@ export function DesktopIcon({
         bgColor={bgColor}
         w="100%"
         borderBottomRadius="8px"
+        className={className.desktopIcon}
       >
         {title}
       </Text>
