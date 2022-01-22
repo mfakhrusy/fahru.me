@@ -117,7 +117,7 @@ export function DesktopMainView({ renderActiveApp }: Props) {
     <Flex
       flexGrow={1}
       backgroundImage="url(/images/desktop-bg/debian-uwu.png)"
-      backgroundRepeat="no-repeat"
+      backgroundRepeat="repeat-x"
       pos="relative"
       backgroundPosition="center"
     >
