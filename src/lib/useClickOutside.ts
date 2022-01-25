@@ -6,21 +6,23 @@ type Config<T> = {
   exceptionRef?: RefObject<T>;
 };
 
-export default function useClickOutside<T>({
+export default function useClickOutside<T extends HTMLElement>({
   targetRef,
   fn,
   exceptionRef,
-}: Config<T extends HTMLElement ? T : HTMLElement>) {
-  const handleClick = (e) => {
+}: Config<T>) {
+  const handleClick = (e: MouseEvent) => {
+    const evTarget = e.target;
+
     if (targetRef.current) {
       if (exceptionRef) {
-        if (!exceptionRef.current?.contains(e.target)) {
-          if (!targetRef.current.contains(e.target)) {
+        if (!(evTarget instanceof Node && exceptionRef.current?.contains(evTarget))) {
+          if (!(evTarget instanceof Node && targetRef.current.contains(evTarget))) {
             fn();
           }
         }
       } else {
-        if (!targetRef.current.contains(e.target)) {
+        if (!(evTarget instanceof Node && targetRef.current.contains(evTarget))) {
           fn();
         }
       }
