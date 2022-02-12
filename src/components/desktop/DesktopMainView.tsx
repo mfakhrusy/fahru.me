@@ -136,7 +136,7 @@ export function DesktopMainView({ renderActiveApp }: Props) {
     <Flex
       flexGrow={1}
       backgroundImage="url(/images/desktop-bg/debian-uwu.png)"
-      backgroundRepeat="repeat-x"
+      backgroundRepeat="repeat"
       pos="relative"
       backgroundPosition="center"
       onClick={unfocusApp}
