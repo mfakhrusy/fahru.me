@@ -16,13 +16,21 @@ export default function useClickOutside<T extends HTMLElement>({
 
     if (targetRef.current) {
       if (exceptionRef) {
-        if (!(evTarget instanceof Node && exceptionRef.current?.contains(evTarget))) {
-          if (!(evTarget instanceof Node && targetRef.current.contains(evTarget))) {
+        if (
+          !(
+            evTarget instanceof Node && exceptionRef.current?.contains(evTarget)
+          )
+        ) {
+          if (
+            !(evTarget instanceof Node && targetRef.current.contains(evTarget))
+          ) {
             fn();
           }
         }
       } else {
-        if (!(evTarget instanceof Node && targetRef.current.contains(evTarget))) {
+        if (
+          !(evTarget instanceof Node && targetRef.current.contains(evTarget))
+        ) {
           fn();
         }
       }

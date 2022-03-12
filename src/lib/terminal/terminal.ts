@@ -26,10 +26,10 @@ export function executeCommand({ command, terminal, router }: Config) {
         newline;
         terminal.write("\r\nAvailable commands:");
         newline;
-        terminal.write(`\r\n  help\t\tgetting this help`);
-        terminal.write(`\r\n  startx\taccess GUI`);
-        terminal.write(`\r\n  shutdown\tshut the site down`);
-        terminal.write(`\r\n  reboot\trestart the site`);
+        terminal.write("\r\n  help\t\tgetting this help");
+        terminal.write("\r\n  startx\taccess GUI");
+        terminal.write("\r\n  shutdown\tshut the site down");
+        terminal.write("\r\n  reboot\trestart the site");
         terminal.write("\r\n  clear\t\tclear the terminal\r\n");
       } else {
         newline;

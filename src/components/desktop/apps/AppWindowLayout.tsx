@@ -54,7 +54,7 @@ export function AppWindowLayout({
     []
   );
 
-  let renderContent = () => (
+  const renderContent = () => (
     <Flex
       w="100%"
       h={isFullScreen ? "100%" : "726px"}

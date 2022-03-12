@@ -12,6 +12,7 @@ function isTouchDevice() {
 
   if (
     "ontouchstart" in window ||
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     (window?.DocumentTouch && document instanceof DocumentTouch)
   )
@@ -40,6 +41,7 @@ export default function useIsTouchDevice() {
         isWinPhone,
         isMobileSafari,
         isTablet,
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
       } = require("react-device-detect");
       const newIsTouch =
         isAndroid ||

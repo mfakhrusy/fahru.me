@@ -1,7 +1,7 @@
 import { AppLayout } from "@/components/desktop/apps/AppLayout";
 import useDelayRenderOnTouchDevice from "@/lib/useDelayRenderOnTouchDevice";
 import { ExternalLinkIcon } from "@chakra-ui/icons";
-import { Heading, Link, ListItem, Text, UnorderedList } from "@chakra-ui/react";
+import { Link, ListItem, Text, UnorderedList } from "@chakra-ui/react";
 import { MutableRefObject } from "react";
 
 type Props = {
@@ -33,7 +33,7 @@ export function AppTodo({ onClose, isOpen, dragConstraintRef }: Props) {
               target="_blank"
               href="https://github.com/PineAndApplePizza/open-wallpapers/"
             >
-              "cute" linux-y wallpapers&nbsp;
+              &quot;cute&quot; linux-y wallpapers&nbsp;
               <ExternalLinkIcon />
             </Link>
           </ListItem>

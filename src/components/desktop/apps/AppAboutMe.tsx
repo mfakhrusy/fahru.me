@@ -76,7 +76,7 @@ export function AppAboutMe({ onClose, isOpen, dragConstraintRef }: Props) {
           <Text fontWeight="bold">Hobbies</Text>
           <UnorderedList>
             <ListItem>Learning stuffs. Anything, really.</ListItem>
-            <ListItem>Writing. I'm preparing a blog!</ListItem>
+            <ListItem>Writing. I&apos;m preparing a blog!</ListItem>
             <ListItem>
               Building something cool. Tinkering about stuffs.
             </ListItem>

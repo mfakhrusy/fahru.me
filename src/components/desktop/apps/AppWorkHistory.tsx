@@ -19,7 +19,7 @@ type Props = {
 export function AppWorkHistory({ onClose, isOpen, dragConstraintRef }: Props) {
   const shouldRenderContent = useDelayRenderOnTouchDevice({ delayAmount: 150 });
 
-  let renderContent = () => (
+  const renderContent = () => (
     <>
       {shouldRenderContent && (
         <UnorderedList listStyleType="none" ml="0">
