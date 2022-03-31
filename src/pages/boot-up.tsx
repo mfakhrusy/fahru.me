@@ -2,7 +2,6 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { BootUpView } from "@/components/bootUp/BootUpView";
 import { BlackTerminalPage } from "@/components/shared/BlackTerminalPage";
-import usePageViewTracking from "@/lib/usePageViewTracking";
 import dynamic from "next/dynamic";
 
 function BootUpScreen() {
@@ -27,8 +26,6 @@ function BootUpScreen() {
       window.removeEventListener("touchend", touchEventHandler);
     };
   });
-
-  usePageViewTracking();
 
   return (
     <BlackTerminalPage>

@@ -22,11 +22,9 @@ import {
   setActiveDesktopApp as setActiveDesktopAppAction,
   SetActiveDesktopAppAction,
 } from "@/store/desktop";
-import usePageViewTracking from "@/lib/usePageViewTracking";
 import useIsTouchDevice from "@/lib/useIsTouchDevice";
 
 function DesktopScreen() {
-  usePageViewTracking();
   const isTouchDevice = useIsTouchDevice();
 
   const dispatch = useDispatch();
