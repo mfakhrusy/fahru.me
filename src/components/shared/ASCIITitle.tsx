@@ -1,6 +1,6 @@
 import { Box } from "@chakra-ui/react";
 
-const title = String.raw`
+const fakhrusyCom = String.raw`
   /$$$$$$          /$$       /$$                                                                                    
  /$$__  $$        | $$      | $$                                                                                    
 | $$  \__//$$$$$$ | $$   /$$| $$$$$$$   /$$$$$$  /$$   /$$  /$$$$$$$ /$$   /$$      /$$$$$$$  /$$$$$$  /$$$$$$/$$$$ 
@@ -14,7 +14,25 @@ const title = String.raw`
                                                                      \______/                                               
 `;
 
+const fahruMe = String.raw`
+  ______            __                                                       
+ /      \          |  \                                                      
+|  $$$$$$\ ______  | $$____    ______   __    __      ______ ____    ______  
+| $$_  \$$|      \ | $$    \  /      \ |  \  |  \    |      \    \  /      \ 
+| $$ \     \$$$$$$\| $$$$$$$\|  $$$$$$\| $$  | $$    | $$$$$$\$$$$\|  $$$$$$\
+| $$$$    /      $$| $$  | $$| $$   \$$| $$  | $$    | $$ | $$ | $$| $$    $$
+| $$     |  $$$$$$$| $$  | $$| $$      | $$__/ $$ __ | $$ | $$ | $$| $$$$$$$$
+| $$      \$$    $$| $$  | $$| $$       \$$    $$|  \| $$ | $$ | $$ \$$     \
+ \$$       \$$$$$$$ \$$   \$$ \$$        \$$$$$$  \$$ \$$  \$$  \$$  \$$$$$$$
+                                                                             
+                                                                             
+                                                                             
+`;
+
 export function ASCIITitle() {
+  const title = window.location.host.includes("fakhrusy.com")
+    ? fakhrusyCom
+    : fahruMe;
   return (
     <Box as="pre" fontSize={{ base: "4px", sm: "6px", md: "11px" }}>
       {title}
