@@ -1,4 +1,5 @@
 import { Box } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
 
 const fakhrusyCom = String.raw`
   /$$$$$$          /$$       /$$                                                                                    
@@ -30,9 +31,16 @@ const fahruMe = String.raw`
 `;
 
 export function ASCIITitle() {
-  const title = window.location.host.includes("fahru.me")
-    ? fahruMe
-    : fakhrusyCom;
+  const [title, setTitle] = useState("");
+
+  useEffect(() => {
+    const tmp = window.location.host.includes("fahru.me")
+      ? fahruMe
+      : fakhrusyCom;
+
+    setTitle(tmp);
+  }, []);
+
   return (
     <Box as="pre" fontSize={{ base: "4px", sm: "6px", md: "11px" }}>
       {title}
