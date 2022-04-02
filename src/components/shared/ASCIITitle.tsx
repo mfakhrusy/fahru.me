@@ -30,9 +30,9 @@ const fahruMe = String.raw`
 `;
 
 export function ASCIITitle() {
-  const title = window.location.host.includes("fakhrusy.com")
-    ? fakhrusyCom
-    : fahruMe;
+  const title = window.location.host.includes("fahru.me")
+    ? fahruMe
+    : fakhrusyCom;
   return (
     <Box as="pre" fontSize={{ base: "4px", sm: "6px", md: "11px" }}>
       {title}
