@@ -39,30 +39,78 @@ export function AppWorkHistory({ onClose, isOpen, dragConstraintRef }: Props) {
             <Text>Ruangguru, Indonesia</Text>
             <small>2019 - Aug 2021, Full-time</small>
             <Box h={4} />
-            <Text>
-              {" "}
-              Assigned to Skillacademy team. I worked on all web platforms,
-              including:
-            </Text>
-            <UnorderedList mt="10px">
+            <Text> Assigned to skillacademy.com team. I worked on:</Text>
+            <Box h={4} />
+            <OrderedList>
               <ListItem>
-                Built and maintained skillacademy frontend codebase in ReasonML
-                & ReasonReact for web and mobile platform in cordova
+                Skillacademy client-facing web platform. Tech stacks: ReasonML,
+                React + ReasonReact
+                <UnorderedList mt="10px">
+                  <ListItem>
+                    Helped Build a B2C MOOC platform that includes (but is not
+                    limited to): Custom Video Player with DRM, Exam/Quiz
+                    Platform, Custom File Upload (for homework).
+                  </ListItem>
+                  <ListItem>
+                    Implement a cashless payment method (OVO Indonesia) on the
+                    frontend with a websocket. I&rsquo;m the first one to
+                    introduce websocket to the whole frontend team.
+                  </ListItem>
+                  <ListItem>
+                    Main developer for a massive government project named
+                    Pra-Kerja that, at some point, is the major contributor to
+                    our company revenue.
+                  </ListItem>
+                  <ListItem>
+                    Maintain the codebase by performing readable & maintainable
+                    code principles.
+                  </ListItem>
+                  <ListItem>
+                    Develop platitude marketing campaigns on the site, including
+                    but not limited to: numerous flash sales, referral programs,
+                    and other ad-hoc advertisement campaigns.
+                  </ListItem>
+                  <ListItem>
+                    Mentoring a few newcomers to become productive on our
+                    codebase since I have the most domain (at my engineering
+                    level) knowledge of the whole application.
+                  </ListItem>
+                </UnorderedList>
               </ListItem>
               <ListItem>
-                Initiated the migration from javascript to typescript for
-                skillacademy content management system (CMS)
+                Skillacademy Content Management System (CMS). Tech stack:
+                Typescript and React
+                <UnorderedList mt="10px">
+                  <ListItem>
+                    Initiate the rewrite of our CMS from javascript to
+                    typescript. This is one of the first typescript apps for the
+                    whole frontend team. We previously use Javascript + Flow or
+                    ReasonML for the frontend codebase.
+                  </ListItem>
+                  <ListItem>
+                    Develop dynamic UI screen project for skillacademy where
+                    admin can change some parts of the UI of skillacademy.com
+                    with drag and drop method. This is useful for marketing
+                    campaigns too. (UNRELEASE -- SAD)
+                  </ListItem>
+                </UnorderedList>
               </ListItem>
               <ListItem>
-                Helped enhancing frontend tools on typescript language after we
-                decided to migrate from reasonML due to reasonML instability on
-                enterprise products
+                Skillacademy Cordova Platform for mobile application. Tech
+                stack: Cordova.
+                <UnorderedList>
+                  <ListItem>
+                    I&rsquo;m one of the maintainers of the Cordova application
+                    that used to be our main stack for the mobile application
+                    before the app was rewritten to react-native.
+                  </ListItem>
+                </UnorderedList>
               </ListItem>
-            </UnorderedList>
+            </OrderedList>
           </ListItem>
           <ListItem mb="15px">
             <Heading as="h1" size="lg" fontWeight="600">
-              Founder
+              Technical Founder
             </Heading>
             <Text>Sirius Teknologi Indonesia</Text>
             <small>2019 - 2020</small>
