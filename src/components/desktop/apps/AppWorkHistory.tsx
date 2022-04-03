@@ -25,6 +25,15 @@ export function AppWorkHistory({ onClose, isOpen, dragConstraintRef }: Props) {
         <UnorderedList listStyleType="none" ml="0">
           <ListItem mb="15px">
             <Heading as="h1" size="lg" fontWeight="600">
+              Software Engineer
+            </Heading>
+            <Text>Overleaf</Text>
+            <small>Feb 2022 - Current, Full-time</small>
+            <Box h={4} />
+            <Text>What will I write here, I wonder?</Text>
+          </ListItem>
+          <ListItem mb="15px">
+            <Heading as="h1" size="lg" fontWeight="600">
               Software Engineer (Frontend)
             </Heading>
             <Text>Ruangguru, Indonesia</Text>
