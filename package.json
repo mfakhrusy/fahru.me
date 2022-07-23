@@ -6,7 +6,7 @@
     "dev": "next dev -p 3090",
     "build": "next build",
     "start": "next start",
-    "pretty": "yarn prettier --write ."
+    "pretty": "npm prettier --write ."
   },
   "dependencies": {
     "@chakra-ui/icons": "^1.0.15",
