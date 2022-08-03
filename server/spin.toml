@@ -1,0 +1,14 @@
+spin_version = "1"
+authors = ["M Fahru <fakhrusy.m@gmail.com>"]
+description = "fakhrusy.com server side"
+name = "server"
+trigger = { type = "http", base = "/" }
+version = "0.1.0"
+
+[[component]]
+id = "server"
+source = "target/wasm32-wasi/release/server.wasm"
+[component.trigger]
+route = "/hello"
+[component.build]
+command = "cargo build --target wasm32-wasi --release"
