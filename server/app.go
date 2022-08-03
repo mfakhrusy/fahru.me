@@ -1,33 +1,39 @@
 package main
 
 import (
-	"embed"
-	"html/template"
+	"context"
 	"log"
-	"net/http"
-	"os"
+
+	"github.com/edgedb/edgedb-go"
 )
 
-//go:embed templates/*
-var resources embed.FS
-
-var t = template.Must(template.ParseFS(resources, "templates/*"))
-
 func main() {
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = "8080"
+	ctx := context.Background()
+	db, err := edgedb.CreateClient(ctx, edgedb.Options{})
 
+	// opts := edgedb.Options{
+	// 	Database: "edgedb",
+	// 	User:     "edgedb",
+	// 	TLSOptions: edgedb.TLSOptions{
+	// 		SecurityMode: "insecure",
+	// 	},
+	// }
+
+	// db, err := edgedb.CreateClientDSN(ctx, url, opts)
+
+	if err != nil {
+		log.Fatal(err)
 	}
 
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		data := map[string]string{
-			"Region": os.Getenv("FLY_REGION"),
-		}
+	// create a user object type.
+	err = db.Execute(ctx, `
+	    CREATE TYPE User {
+	        CREATE REQUIRED PROPERTY name -> str;
+	        CREATE PROPERTY dob -> datetime;
+	    }
+	`)
 
-		t.ExecuteTemplate(w, "index.html.tmpl", data)
-	})
-
-	log.Println("listening on", port)
-	log.Fatal(http.ListenAndServe(":"+port, nil))
+	if err != nil {
+		log.Fatal(err)
+	}
 }
