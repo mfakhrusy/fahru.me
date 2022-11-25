@@ -1,0 +1,19 @@
+name = "bartholomew-template"
+spin_version = "1"
+version = "0.1.0"
+description = "Your new Bartholomew website."
+trigger = { type = "http", base = "/" }
+
+[[component]]
+source = "../bartholomew/target/wasm32-wasi/release/bartholomew.wasm"
+id = "bartholomew"
+files = [ "content/**/*" , "templates/*", "scripts/*", "config/*"]
+[component.trigger]
+route = "/..."
+
+[[component]]
+source = "../spin-fileserver/target/wasm32-wasi/release/spin_static_fs.wasm"
+id = "fileserver"
+files = [ { source = "static/", destination = "/" } ]
+[component.trigger]
+route = "/static/..."
