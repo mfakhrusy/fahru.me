@@ -1,3 +1,2 @@
-# These should not be checked in because of the repo's license.
-/fileserver.gr.wasm
-/bartholomew.wasm
+_site
+node_modules

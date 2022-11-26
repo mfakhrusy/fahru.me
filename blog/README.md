@@ -1,35 +1,77 @@
-# Bartholomew Site Template
+# Blog starter
 
-This repository is a template for creating new [Bartholomew](https://github.com/fermyon/bartholomew) websites.
+[![Netlify Status](https://api.netlify.com/api/v1/badges/a9b962b7-9df1-49db-9b40-e5fedbc8ba9e/deploy-status)](https://app.netlify.com/sites/eleventy-blog-starter/deploys)
 
-## Directory Structure:
+View the live demo [here](https://eleventy.rongying.co/), hosted on Netlify
 
-- `config/site.toml`: The main configuration file for your site. You should edit this.
-- `content/`: Your markdown files go in here.
-- `scripts/` (advanced): If you want to write your owh Rhai scripts, they go here.
-- `spin.toml`: The configuration file for the Spin application.
-- `static/`: Static assets like images, CSS, and downloads go in here.
-- `templates/`: Your handlebars templates go here. 
+![homepage](blog-v2.png)
+![darkmode](blog-dark.png)
 
-## Installation of Spin
+## Aims
+A blog that still runs without javascript. Hence, no bundlers. 
 
-To use Bartholomew, you will need to install [Spin](https://spin.fermyon.dev).
-Once you have Wagi installed, you can continue setting up Bartholomew.
 
-To start your website, run the following command from this directory:
+## Features
+- Static Site Gen - Eleventy
 
-```console
-$ spin up --follow-all
-spin up --follow-all
-Serving HTTP on address http://127.0.0.1:3000
-Available Routes:
-  bartholomew: http://127.0.0.1:3000 (wildcard)
-  fileserver: http://127.0.0.1:3000/static (wildcard)
+- Tailwind CSS v2.0 / Tailwind Typography / Dark Mode
+
+- Create excerpts using the `<!-- excerpt -->`
+
+- Custom ReadTime filter
+
+- 404 page
+
++ Tags page to view posts related to tag
+  - Use of a `tagList` collection defined in `.eleventy.js`
+  - `/tags` - show all available tags (excluding all and posts) as buttons (`tags.md`)
+  - `/tags/tag-name` - shows all posts related to that tag (`tagList.md`)
+
++ Sitemap and Robots.txt 
+  - Change site url in `_data/site.json`
+
++ Shortcode to handle images
+  - Add image under `src/assets/img/posts` and use the asset_img short code
+  - `{% asset_img 'filename' 'alt_text' %}` eg. `{% asset_img 'mailbox.jpg' 'mailbox' %}`
+
+- Draft posts using the `published` frontmatter
+
++ Posts pagination in `index.html` 
+  - change the `size` frontmatter variable
+- ESLint
+
++ Bash script to create new post (based on YYYY and MM)
+```bash
+$ ./create new blog post
+Created new post at src/posts/2021/01/new-blog-post.md
 ```
 
-Now you can point your web browser to `http://localhost:3000/` and see your new Bartholomew site.
 
-## About the License
+## Running locally
 
-This repository uses CC0. To the greatest extent possible, you are free to use this content however you want.
-You may relicense the code in this repository to your own satisfaction, including proprietary licenses.
+Create your blogpost under `src/posts`. I like to have mine sorted by YY/MM.
+
+Navigate to localhost:8080 after starting the server.
+```
+npm start
+```
+
+
+## Deployment
+[<img src="https://www.netlify.com/img/deploy/button.svg" />](
+https://app.netlify.com/start/deploy?repository=https://github.com/kohrongying/11ty-blog-starter)
+
+
+
+On Netlify / Surge / Firebase hosting / etc hosting providers
+
+Build Command: `npm run build`
+
+Output folder: `_site`
+
+<!--
+## Future Improvemeents
+
+- [ ] Minification of assets
+- [ ] Make next/prev posts
+-->
