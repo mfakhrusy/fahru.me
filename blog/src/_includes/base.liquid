@@ -31,9 +31,13 @@
     <script>
       document.getElementById("toggleDarkMode").addEventListener("click", function() {
         if (isDarkMode()) {
+          document.getElementById("toggleDarkMode").textContent = "Dark mode"
+
           localStorage.theme = 'light'
           document.documentElement.classList.remove('dark')
         } else {
+          document.getElementById("toggleDarkMode").textContent = "Light mode"
+
           localStorage.theme = 'dark'
           document.documentElement.classList.add('dark')
         }
