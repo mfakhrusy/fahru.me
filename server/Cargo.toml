@@ -19,6 +19,13 @@ tower = { version = "0.4", features = ["full"] }
 tower-http = { version = "0.3", features = ["full"] }
 axum = { version = "0.6", features = ["default", "ws", "multipart"] }
 include_dir = "0.7"
+postgres = "0.19"
+openssl = "0.10"
+postgres-openssl = "0.5"
+dotenv = "0.15.0"
+bb8 = "0.8.0"
+bb8-postgres = "0.8.1"
+tokio-postgres = "0.7.7"
 
 [profile.release]
 strip = true
