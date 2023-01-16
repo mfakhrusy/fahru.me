@@ -9,12 +9,18 @@ use bb8_postgres::PostgresConnectionManager;
 use dotenv::dotenv;
 use http::StatusCode;
 use openssl::ssl::{SslConnector, SslMethod};
-use postgres::Client;
+// use postgres::Client;
 use postgres_openssl::MakeTlsConnector;
 use serde::{Deserialize, Serialize};
 use serde_json::{json, Value};
-use std::{env, error};
-use tokio_postgres::{tls::TlsConnect, NoTls};
+// use std::{env, error};
+// use tokio_postgres::{tls::TlsConnect, NoTls};
+use argon2::{
+    password_hash::{
+        rand_core::OsRng, PasswordHash, PasswordHasher, PasswordVerifier, Salt, SaltString,
+    },
+    Argon2,
+};
 use tower_http::services::ServeDir;
 
 #[tokio::main]
@@ -49,9 +55,11 @@ async fn main() {
             "/",
             get(using_connection_pool_extractor).post(using_connection_pool_extractor),
         )
+        .route("/register", post(register))
         // .route("/", get(json))
+        // .with_state(pool);
+        // .route("/login", post(login))
         .with_state(pool);
-    // .route("/login", post(login))
     // .route("/user/:id", get(user))
     // .route("/user/save", post(save_user))
     // .route("/search", get(search))
@@ -71,7 +79,9 @@ async fn using_connection_pool_extractor(
     extract::State(pool): extract::State<ConnectionPool>,
 ) -> Result<String, (StatusCode, String)> {
     let conn = pool.get().await.map_err(internal_error)?;
+    // conn.query(statement, params)
     // println!("test");
+    // let a = conn.batch_execute(query)
 
     let row = conn
         .query_one("select * from playing_with_neon limit 1", &[])
@@ -87,6 +97,36 @@ where
     E: std::error::Error,
 {
     (StatusCode::INTERNAL_SERVER_ERROR, err.to_string())
+}
+
+async fn register(
+    extract::State(pool): extract::State<ConnectionPool>,
+    extract::Form(form): extract::Form<LoginForm>,
+) -> Result<String, (StatusCode, String)> {
+    let password = form.password.as_bytes();
+    // let password = b"hunter42";
+    let salt = SaltString::generate(&mut OsRng);
+
+    let argon2 = Argon2::default();
+
+    let password_hash = argon2.hash_password(password, &salt).unwrap().to_string();
+
+    let conn = pool.get().await.map_err(internal_error)?;
+
+    conn.query(
+        "INSERT INTO app_user(username, password_hash) VALUES ($1, $2)",
+        &[&form.username, &password_hash],
+    )
+    .await
+    .map_err(internal_error)?;
+
+    // verify
+    // let parsed_hash = PasswordHash::new(&password_hash).unwrap();
+
+    // assert!(Argon2::default().verify_password(password, &parsed_hash).is_ok());
+
+    // println!("hash: {}, salt: {}", password_hash, salt);
+    Ok("ok".to_string())
 }
 
 // async fn index() -> Html<&'static str> {
@@ -109,7 +149,10 @@ struct LoginForm {
     password: String,
 }
 
-async fn login(extract::Form(form): extract::Form<LoginForm>) -> Html<String> {
+async fn login(
+    extract::State(pool): extract::State<ConnectionPool>,
+    extract::Form(form): extract::Form<LoginForm>,
+) -> Html<String> {
     println!("username: {}, password: {}", form.username, form.password);
     Html(format!("<h1>Hello, {}!</h1>", &form.username))
 }

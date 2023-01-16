@@ -26,6 +26,8 @@ dotenv = "0.15.0"
 bb8 = "0.8.0"
 bb8-postgres = "0.8.1"
 tokio-postgres = "0.7.7"
+argon2 = "0.4.1"
+rand_core = { version = "0.6", features = ["std"] }
 
 [profile.release]
 strip = true
