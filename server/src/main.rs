@@ -58,7 +58,7 @@ async fn main() {
         .route("/register", post(register))
         // .route("/", get(json))
         // .with_state(pool);
-        // .route("/login", post(login))
+        .route("/login", post(login))
         .with_state(pool);
     // .route("/user/:id", get(user))
     // .route("/user/save", post(save_user))
@@ -152,9 +152,26 @@ struct LoginForm {
 async fn login(
     extract::State(pool): extract::State<ConnectionPool>,
     extract::Form(form): extract::Form<LoginForm>,
-) -> Html<String> {
-    println!("username: {}, password: {}", form.username, form.password);
-    Html(format!("<h1>Hello, {}!</h1>", &form.username))
+) -> Result<String, (StatusCode, String)> {
+    let conn = pool.get().await.map_err(internal_error)?;
+
+    let row = conn
+        .query_one("select password_hash from app_user where username = $1 limit 1", &[&form.username])
+        .await
+        .map_err(internal_error)?;
+    // verify
+    let password_hash: String = row.try_get(0).map_err(internal_error)?;
+    let parsed_hash = PasswordHash::new(&password_hash).unwrap();
+
+    let result = Argon2::default().verify_password(form.password.as_bytes(), &parsed_hash);
+
+    // assert!(Argon2::default().verify_password(form.password.as_bytes(), &parsed_hash).is_ok());
+
+    if result.is_ok() {
+        Ok("ok".to_string())
+    } else {
+        Err((StatusCode::UNAUTHORIZED, "login failed".to_string()))
+    }
 }
 
 #[derive(Serialize, Deserialize, Debug)]
