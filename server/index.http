@@ -14,7 +14,7 @@ username=test456&password=1234561
 POST http://localhost:3000/register
 Content-Type: application/x-www-form-urlencoded
 
-username=test456&password=123456
+username=abcdef&password=123456&registration_code=123abc
 
 
 ### user json

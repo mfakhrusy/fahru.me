@@ -99,10 +99,37 @@ where
     (StatusCode::INTERNAL_SERVER_ERROR, err.to_string())
 }
 
+#[derive(Deserialize)]
+struct RegisterForm {
+    username: String,
+    password: String,
+    registration_code: Option<String>,
+}
+
 async fn register(
     extract::State(pool): extract::State<ConnectionPool>,
-    extract::Form(form): extract::Form<LoginForm>,
+    extract::Form(form): extract::Form<RegisterForm>,
 ) -> Result<String, (StatusCode, String)> {
+    let registration_code_env =
+        std::env::var("REGISTRATION_CODE").expect("REGISTRATION_CODE must be set");
+
+    match form.registration_code {
+        None => {
+            return Err((
+                StatusCode::UNAUTHORIZED,
+                "Need registration code to register".to_string(),
+            ))
+        }
+        Some(code) => {
+            if code != registration_code_env {
+                return Err((
+                    StatusCode::UNAUTHORIZED,
+                    "Wrong registration code".to_string(),
+                ));
+            }
+        }
+    }
+
     let password = form.password.as_bytes();
     // let password = b"hunter42";
     let salt = SaltString::generate(&mut OsRng);
@@ -156,7 +183,10 @@ async fn login(
     let conn = pool.get().await.map_err(internal_error)?;
 
     let row = conn
-        .query_one("select password_hash from app_user where username = $1 limit 1", &[&form.username])
+        .query_one(
+            "select password_hash from app_user where username = $1 limit 1",
+            &[&form.username],
+        )
         .await
         .map_err(internal_error)?;
     // verify
