@@ -1,24 +1,19 @@
 use axum::{
     extract,
-    response::{Html, IntoResponse, Json},
+    response::IntoResponse,
     routing::{get, get_service, post},
     Router,
 };
-use bb8::{Pool, PooledConnection};
+use bb8::Pool;
 use bb8_postgres::PostgresConnectionManager;
 use dotenv::dotenv;
 use http::StatusCode;
 use openssl::ssl::{SslConnector, SslMethod};
-// use postgres::Client;
 use postgres_openssl::MakeTlsConnector;
 use serde::{Deserialize, Serialize};
-use serde_json::{json, Value};
-// use std::{env, error};
-// use tokio_postgres::{tls::TlsConnect, NoTls};
+
 use argon2::{
-    password_hash::{
-        rand_core::OsRng, PasswordHash, PasswordHasher, PasswordVerifier, Salt, SaltString,
-    },
+    password_hash::{rand_core::OsRng, PasswordHash, PasswordHasher, PasswordVerifier, SaltString},
     Argon2,
 };
 use tower_http::services::ServeDir;
@@ -27,17 +22,9 @@ use tower_http::services::ServeDir;
 async fn main() {
     dotenv().ok();
     let connection_string = std::env::var("DATABASE_URL").expect("DATABASE_URL must be set");
-    // let pg_password = std::env::var("PGPASSWORD").expect("PGPASSWORD must be set");
-    // let pg_host = std::env::var("PGHOST").expect("PGHOST must be set");
-    // let pg_dbname = std::env::var("PGDATABASE").expect("PGDATABASE must be set");
-
     let builder = SslConnector::builder(SslMethod::tls()).unwrap();
     let connector = MakeTlsConnector::new(builder.build());
 
-    // let connection_string = format!(
-    //     "postgresql://{}:{}@{}:5432/{}",
-    //     pg_user, pg_password, pg_host, pg_dbname
-    // );
     let manager =
         PostgresConnectionManager::new_from_stringlike(connection_string, connector).unwrap();
 
@@ -48,22 +35,13 @@ async fn main() {
 
     let app = Router::new()
         .nest_service("/assets", assets_handle)
-        // .route("/", get(index))
-        // .route("/index.html", get(index))
-        // .route("/html", get(html))
         .route(
             "/",
             get(using_connection_pool_extractor).post(using_connection_pool_extractor),
         )
         .route("/register", post(register))
-        // .route("/", get(json))
-        // .with_state(pool);
         .route("/login", post(login))
         .with_state(pool);
-    // .route("/user/:id", get(user))
-    // .route("/user/save", post(save_user))
-    // .route("/search", get(search))
-    // .route("/json", get(json));
 
     let app = app.fallback(handler_404);
     println!("Http Server started on 0.0.0.0:3000");
@@ -79,10 +57,6 @@ async fn using_connection_pool_extractor(
     extract::State(pool): extract::State<ConnectionPool>,
 ) -> Result<String, (StatusCode, String)> {
     let conn = pool.get().await.map_err(internal_error)?;
-    // conn.query(statement, params)
-    // println!("test");
-    // let a = conn.batch_execute(query)
-
     let row = conn
         .query_one("select * from playing_with_neon limit 1", &[])
         .await
@@ -96,13 +70,15 @@ fn internal_error<E>(err: E) -> (StatusCode, String)
 where
     E: std::error::Error,
 {
+    println!("{}", err.to_string());
     (StatusCode::INTERNAL_SERVER_ERROR, err.to_string())
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug)]
 struct RegisterForm {
     username: String,
     password: String,
+    confirm_password: Option<String>,
     registration_code: Option<String>,
 }
 
@@ -110,8 +86,26 @@ async fn register(
     extract::State(pool): extract::State<ConnectionPool>,
     extract::Form(form): extract::Form<RegisterForm>,
 ) -> Result<String, (StatusCode, String)> {
+    println!("{:?}", form);
     let registration_code_env =
         std::env::var("REGISTRATION_CODE").expect("REGISTRATION_CODE must be set");
+
+    match form.confirm_password {
+        None => {
+            return Err((
+                StatusCode::UNAUTHORIZED,
+                "Password confirmation not found".to_string(),
+            ))
+        }
+        Some(confirm_password) => {
+            if confirm_password != form.password {
+                return Err((
+                    StatusCode::UNAUTHORIZED,
+                    "Password doesn't match".to_string(),
+                ));
+            }
+        }
+    }
 
     match form.registration_code {
         None => {
@@ -131,7 +125,6 @@ async fn register(
     }
 
     let password = form.password.as_bytes();
-    // let password = b"hunter42";
     let salt = SaltString::generate(&mut OsRng);
 
     let argon2 = Argon2::default();
@@ -154,20 +147,6 @@ async fn register(
 
     // println!("hash: {}, salt: {}", password_hash, salt);
     Ok("ok".to_string())
-}
-
-// async fn index() -> Html<&'static str> {
-//     Html(include_str!("../static/index.html"))
-// }
-
-// `Html` gives a content-type of `text/html`
-// async fn html() -> Html<&'static str> {
-//     Html("<h1>Hello, World!</h1>")
-// }
-
-async fn save_user(extract::Json(user): extract::Json<Person>) -> Json<Value> {
-    println!("name: {}", user.name);
-    Json(json!(true))
 }
 
 #[derive(Deserialize)]
@@ -208,29 +187,6 @@ async fn login(
 pub struct Person {
     pub id: u32,
     pub name: String,
-}
-
-async fn json() -> Json<Value> {
-    Json(json!({ "data": 42 }))
-}
-
-async fn user(extract::Path((id,)): extract::Path<(u32,)>) -> Json<Person> {
-    Json(Person {
-        id,
-        name: "linux_china".to_string(),
-    })
-}
-
-#[derive(Deserialize)]
-struct SearchQuery {
-    page: Option<u32>,
-    q: Option<String>,
-}
-
-async fn search(extract::Query(query): extract::Query<SearchQuery>) -> Html<String> {
-    let q = query.q.unwrap_or("".to_string());
-    print!("q: {}, page: {}", q, query.page.unwrap_or(0));
-    Html(format!("<h1>Hello, {}!</h1>", q))
 }
 
 async fn handler_404() -> impl IntoResponse {
