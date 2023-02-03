@@ -1,4 +1,4 @@
-fakhrusy.m site repository.
+https://fahru.me site repository.
 
 ## Attribution
 
