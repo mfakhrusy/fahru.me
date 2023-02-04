@@ -21,6 +21,7 @@ use tower_http::services::ServeDir;
 #[tokio::main]
 async fn main() {
     dotenv().ok();
+
     let connection_string = std::env::var("DATABASE_URL").expect("DATABASE_URL must be set");
     let builder = SslConnector::builder(SslMethod::tls()).unwrap();
     let connector = MakeTlsConnector::new(builder.build());
@@ -70,11 +71,10 @@ fn internal_error<E>(err: E) -> (StatusCode, String)
 where
     E: std::error::Error,
 {
-    println!("{}", err.to_string());
     (StatusCode::INTERNAL_SERVER_ERROR, err.to_string())
 }
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize)]
 struct RegisterForm {
     username: String,
     password: String,
@@ -86,7 +86,6 @@ async fn register(
     extract::State(pool): extract::State<ConnectionPool>,
     extract::Form(form): extract::Form<RegisterForm>,
 ) -> Result<String, (StatusCode, String)> {
-    println!("{:?}", form);
     let registration_code_env =
         std::env::var("REGISTRATION_CODE").expect("REGISTRATION_CODE must be set");
 
@@ -140,12 +139,6 @@ async fn register(
     .await
     .map_err(internal_error)?;
 
-    // verify
-    // let parsed_hash = PasswordHash::new(&password_hash).unwrap();
-
-    // assert!(Argon2::default().verify_password(password, &parsed_hash).is_ok());
-
-    // println!("hash: {}, salt: {}", password_hash, salt);
     Ok("ok".to_string())
 }
 
