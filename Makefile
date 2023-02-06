@@ -1,6 +1,6 @@
-.PHONY: server/run server/format server/deploy server/watch admin/dev admin/format
+.PHONY: server/run server/format server/deploy server/watch admin/dev admin/format client/dev
 
-MAKEFLAGS += -j2
+MAKEFLAGS += -j3
 
 server/run: 
 	cargo run --manifest-path=server/Cargo.toml
@@ -20,4 +20,7 @@ admin/dev:
 admin/format:
 	npm run format --prefix admin
 
-dev: server/watch admin/dev
+client/dev:
+	npm run dev --prefix client
+
+dev: server/watch admin/dev client/dev
