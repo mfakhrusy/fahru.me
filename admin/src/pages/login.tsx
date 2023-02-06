@@ -1,43 +1,84 @@
-import AuthLayout from "@/components/layout/AuthLayout";
+import { useRouter } from 'next/router';
+import { type FormEventHandler, useCallback } from 'react';
+
+import { sessionStorage } from '@/lib/localStorage';
+
+import AuthLayout from '@/components/layout/AuthLayout';
+
+import { baseURL } from '@/constant/env';
 
 export default function Login() {
+  const router = useRouter();
+
+  const handleSubmit: FormEventHandler<HTMLFormElement> = useCallback(
+    async (event) => {
+      event.preventDefault();
+      const body = new URLSearchParams();
+
+      Array.from(event.currentTarget.elements).forEach((elem) => {
+        const element = elem as HTMLInputElement;
+        if (element.type !== 'submit') {
+          body.append(element.name, element.value);
+        }
+      });
+
+      try {
+        const res = await fetch(`${baseURL}/login`, {
+          method: 'post',
+          body,
+        });
+
+        if (res.ok) {
+          sessionStorage.setItem('is_login', true);
+          router.replace('/');
+        }
+      } catch (err) {
+        // eslint-disable-next-line no-console
+        console.error(err);
+      }
+    },
+    [router]
+  );
+
   return (
     <AuthLayout
       footer={{
         link: '/register',
-        text: 'Create new account'
+        text: 'Create new account',
       }}
-      headerText="Sign In"
+      headerText='Sign In'
     >
-      <form className="mt-5">
-        <div className="relative w-full mb-3">
+      <form className='mt-5' onSubmit={handleSubmit}>
+        <div className='relative mb-3 w-full'>
           <label
-            className="block uppercase text-slate-600 text-xs font-bold mb-2"
-            htmlFor="grid-password"
+            className='mb-2 block text-xs font-bold uppercase text-slate-600'
+            htmlFor='grid-password'
           >
-            Email
+            Username
           </label>
           <input
-            type="email"
-            className="border-0 px-3 py-3 placeholder-slate-300 text-slate-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-            placeholder="Email"
+            type='text'
+            className='w-full rounded border-0 bg-white px-3 py-3 text-sm text-slate-600 placeholder-slate-300 shadow transition-all duration-150 ease-linear focus:outline-none focus:ring'
+            placeholder='Username'
+            name='username'
           />
         </div>
 
-        <div className="relative w-full mb-3">
+        <div className='relative mb-3 w-full'>
           <label
-            className="block uppercase text-slate-600 text-xs font-bold mb-2"
-            htmlFor="grid-password"
+            className='mb-2 block text-xs font-bold uppercase text-slate-600'
+            htmlFor='grid-password'
           >
             Password
           </label>
           <input
-            type="password"
-            className="border-0 px-3 py-3 placeholder-slate-300 text-slate-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-            placeholder="Password"
+            type='password'
+            className='w-full rounded border-0 bg-white px-3 py-3 text-sm text-slate-600 placeholder-slate-300 shadow transition-all duration-150 ease-linear focus:outline-none focus:ring'
+            placeholder='Password'
+            name='password'
           />
         </div>
-        <div>
+        {/* <div>
           <label className="inline-flex items-center cursor-pointer">
             <input
               id="customCheckLogin"
@@ -48,18 +89,17 @@ export default function Login() {
               Remember me
             </span>
           </label>
-        </div>
+        </div> */}
 
-        <div className="text-center mt-6">
+        <div className='mt-6 text-center'>
           <button
-            className="bg-slate-800 text-white active:bg-slate-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
-            type="button"
+            className='mr-1 mb-1 w-full rounded bg-slate-800 px-6 py-3 text-sm font-bold uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-lg focus:outline-none active:bg-slate-600'
+            type='submit'
           >
             Sign In
           </button>
         </div>
       </form>
-
     </AuthLayout>
   );
 }
