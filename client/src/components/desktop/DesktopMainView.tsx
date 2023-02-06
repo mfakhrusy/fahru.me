@@ -13,7 +13,7 @@ import {
 } from "@/store/desktop";
 import { Box, Flex } from "@chakra-ui/react";
 import { motion } from "framer-motion";
-import { MutableRefObject, useCallback, useEffect, useRef } from "react";
+import React, { MutableRefObject, useCallback, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { DesktopIcon } from "./DesktopIcon";
 import styled from "@emotion/styled";
@@ -147,9 +147,8 @@ export function DesktopMainView({ renderActiveApp }: Props) {
           {/* 100vw because drag area extends to left and right side of the visible screen, so we need to add some "left buffer" so desktop icons can appear in the middle */}
           <Box w="100vw" h="100px" />
           {makeDesktopIcons().map((desktopIcon, i) => (
-            <>
+            <React.Fragment key={`mainview-${desktopIcon.appName}`}>
               <DesktopIcon
-                key={`mainview-${desktopIcon.appName}`}
                 iconName={desktopIcon.iconName}
                 dragConstraintRef={dragConstraintRef}
                 onClick={() => setFocusedDesktopApp(desktopIcon.appName)}
@@ -160,7 +159,7 @@ export function DesktopMainView({ renderActiveApp }: Props) {
               {i !== makeDesktopIcons().length - 1 ? (
                 <Box w="15px" h="1px" />
               ) : null}
-            </>
+            </React.Fragment>
           ))}
         </Flex>
       </DragArea>
