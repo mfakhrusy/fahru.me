@@ -1,0 +1,13 @@
+{
+  "name": "fakhrusy-com",
+  "workspaces": [
+    "admin",
+    "client"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm run dev --workspace=admin\" \"npm run dev --workspace=client\""
+  },
+  "dependencies": {
+    "concurrently": "^7.6.0"
+  }
+}
