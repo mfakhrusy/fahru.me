@@ -1,4 +1,0 @@
-Sitemap: https://fahru.me/sitemap.xml
-
-User-agent: *
-Disallow:

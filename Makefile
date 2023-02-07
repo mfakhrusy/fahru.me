@@ -1,6 +1,6 @@
-.PHONY: server/run server/format server/deploy server/watch frontend/dev admin/format 
+.PHONY: server/run server/format server/deploy server/watch frontend/dev admin/format blog/dev dev
 
-MAKEFLAGS += -j2
+MAKEFLAGS += -j3
 
 server/run: 
 	cargo run --manifest-path=server/Cargo.toml
@@ -20,4 +20,7 @@ admin/format:
 frontend/dev:
 	npm run dev
 
-dev: server/watch frontend/dev
+blog/dev:
+	./blog/bin/rails server
+
+dev: server/watch frontend/dev blog/dev
