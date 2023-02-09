@@ -35,10 +35,10 @@ export default function BlogPage() {
           <Editor />
         </div>
         <div
-          className='h-full w-1/2'
+          className='h-full w-1/2 blog-renderer'
           dangerouslySetInnerHTML={{
             __html: marked(
-              'aaaacccaaaaaaaaaaaaaaa\n\n\n# hello world\n\nac\nasc\nas\ncas\ncas\ndas\n\n1. 3\n2. 3\n\n3. 4\n\n* asdasd\n  * asdas\n  * asdasdsa\n'
+              'Test markdown render\n\n\n# hello world\n\nac\nasc\nas\ncas\ncas\ndas\n\n1. 3\n2. 3\n\n3. 4\n\n* asdasd\n  * asdas\n  * asdasdsa\n'
             ),
           }}
         ></div>

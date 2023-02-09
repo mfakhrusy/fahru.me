@@ -2,6 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  .blog-renderer ul, .blog-renderer ol {
+    list-style: revert;
+    margin: revert;
+    padding: revert;
+  }
+}
+
 html,
 body,
 #__next {
