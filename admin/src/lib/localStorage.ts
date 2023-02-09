@@ -1,4 +1,8 @@
-type SessionStorageKeys = 'is_login';
+type SessionStorageKeys =
+  | 'isLogin'
+  | 'editorState'
+  | 'editorDocState'
+  | 'editorValue';
 
 export const sessionStorage = {
   setItem: (key: SessionStorageKeys, value: string | boolean) => {

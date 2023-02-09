@@ -5,7 +5,7 @@ import { sessionStorage } from '@/lib/localStorage';
 
 import Layout from '@/components/layout/Layout';
 
-export default function HomePage() {
+export default function GuestbookPage() {
   const isLogin = sessionStorage.getItem('isLogin');
   const router = useRouter();
 
@@ -15,5 +15,5 @@ export default function HomePage() {
     }
   });
 
-  return <Layout>hello</Layout>;
+  return <Layout>Guest Book</Layout>;
 }

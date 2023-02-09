@@ -29,7 +29,7 @@ export default function Register() {
         });
 
         if (res.ok) {
-          sessionStorage.setItem('is_login', true);
+          sessionStorage.setItem('isLogin', true);
           router.replace('/');
         }
       } catch (err) {

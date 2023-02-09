@@ -17,7 +17,16 @@
     "postbuild": "next-sitemap --config next-sitemap.config.js"
   },
   "dependencies": {
+    "@codemirror/basic-setup": "^0.20.0",
+    "@codemirror/commands": "^6.2.0",
+    "@codemirror/lang-markdown": "^6.0.5",
+    "@codemirror/language-data": "^6.1.0",
+    "@popperjs/core": "^2.11.6",
+    "@types/marked": "^4.0.8",
+    "@uiw/react-codemirror": "^4.19.7",
     "clsx": "^1.2.1",
+    "codemirror": "^6.0.1",
+    "marked": "^4.2.12",
     "next": "^13.1.6",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
