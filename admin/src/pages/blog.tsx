@@ -1,25 +1,24 @@
 import { useRouter } from 'next/router';
-import { useCallback, useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import ReactMarkdown from 'react-markdown';
+import remarkBreaks from 'remark-breaks';
 
 import { sessionStorage } from '@/lib/localStorage';
+import { unstringify } from '@/lib/string';
 
-import Layout from '@/components/layout/Layout';
-import ReactCodeMirror from '@uiw/react-codemirror';
-import { markdown } from '@codemirror/lang-markdown';
-import { languages } from '@codemirror/language-data';
 import { Editor } from '@/components/Editor';
-import { marked } from 'marked';
+import Layout from '@/components/layout/Layout';
 
 export default function BlogPage() {
   const isLogin = sessionStorage.getItem('isLogin');
   const router = useRouter();
+  const [isMounted, setIsMounted] = useState(false);
 
   const post = (sessionStorage.getItem('editorDocState') as string) ?? '';
+  const [docState, setDocState] = useState<string>(post);
 
-  console.log(post);
-
-  const onChange = useCallback((value, viewUpdate) => {
-    console.log(value);
+  useEffect(() => {
+    setIsMounted(true);
   }, []);
 
   useEffect(() => {
@@ -28,20 +27,24 @@ export default function BlogPage() {
     }
   });
 
+  const trimmedString = unstringify(
+    docState.substring(1, post.length - 1) ?? ''
+  );
+
   return (
     <Layout>
       <div className='flex h-full'>
         <div className='h-full w-1/2'>
-          <Editor />
+          <Editor onChange={(doc) => setDocState(doc)} />
         </div>
-        <div
-          className='h-full w-1/2 blog-renderer'
-          dangerouslySetInnerHTML={{
-            __html: marked(
-              'Test markdown render\n\n\n# hello world\n\nac\nasc\nas\ncas\ncas\ndas\n\n1. 3\n2. 3\n\n3. 4\n\n* asdasd\n  * asdas\n  * asdasdsa\n'
-            ),
-          }}
-        ></div>
+        {isMounted ? (
+          <ReactMarkdown
+            className='unreset rendered-markdown'
+            remarkPlugins={[remarkBreaks]}
+          >
+            {trimmedString}
+          </ReactMarkdown>
+        ) : null}
       </div>
     </Layout>
   );

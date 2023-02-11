@@ -31,6 +31,9 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^4.7.1",
+    "react-markdown": "^8.0.5",
+    "remark-breaks": "^3.0.2",
+    "remark-rehype": "^10.1.0",
     "tailwind-merge": "^1.8.1"
   },
   "devDependencies": {
