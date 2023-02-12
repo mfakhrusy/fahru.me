@@ -1,5 +1,5 @@
 import Link, { LinkProps } from 'next/link';
-import * as React from 'react';
+import React from 'react';
 
 import clsxm from '@/lib/clsxm';
 

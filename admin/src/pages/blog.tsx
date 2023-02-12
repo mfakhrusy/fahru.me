@@ -1,10 +1,14 @@
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
-import remarkBreaks from 'remark-breaks';
+import rehypeRaw from 'rehype-raw';
 
 import { sessionStorage } from '@/lib/localStorage';
-import { unstringify } from '@/lib/string';
+import {
+  formatEndline,
+  formatStringToFilterIncompleteHtmlTag,
+  removeLeadingAndTrailingQuotes,
+} from '@/lib/string';
 
 import { Editor } from '@/components/Editor';
 import Layout from '@/components/layout/Layout';
@@ -14,8 +18,9 @@ export default function BlogPage() {
   const router = useRouter();
   const [isMounted, setIsMounted] = useState(false);
 
-  const post = (sessionStorage.getItem('editorDocState') as string) ?? '';
-  const [docState, setDocState] = useState<string>(post);
+  const state = sessionStorage.getItem('editorState');
+  const initialDoc = JSON.parse(state as string)?.doc ?? '';
+  const [docState, setDocState] = useState<string>(initialDoc);
 
   useEffect(() => {
     setIsMounted(true);
@@ -27,20 +32,26 @@ export default function BlogPage() {
     }
   });
 
-  const trimmedString = unstringify(
-    docState.substring(1, post.length - 1) ?? ''
+  const trimmedString = formatStringToFilterIncompleteHtmlTag(
+    formatEndline(removeLeadingAndTrailingQuotes(docState))
+  );
+
+  console.log(
+    // initialDoc,
+    // docState,
+    removeLeadingAndTrailingQuotes(trimmedString)
   );
 
   return (
     <Layout>
       <div className='flex h-full'>
         <div className='h-full w-1/2'>
-          <Editor onChange={(doc) => setDocState(doc)} />
+          <Editor onChange={setDocState} />
         </div>
         {isMounted ? (
           <ReactMarkdown
             className='unreset rendered-markdown'
-            remarkPlugins={[remarkBreaks]}
+            rehypePlugins={[rehypeRaw]}
           >
             {trimmedString}
           </ReactMarkdown>
