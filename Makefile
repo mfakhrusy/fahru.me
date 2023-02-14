@@ -23,4 +23,7 @@ frontend/dev:
 blog/dev:
 	./blog/bin/rails server
 
+install:
+	docker-compose -f ./dev-db/docker-compose.yml up -d
+
 dev: server/watch frontend/dev blog/dev
