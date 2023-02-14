@@ -1,43 +1,16 @@
 ### Welcome page
 GET http://localhost:3000/
 
-### json output
-GET http://localhost:3000/json
-
 ### user login form
 POST http://localhost:3000/login
 Content-Type: application/x-www-form-urlencoded
 
-username=test456&password=1234561
+username=aaaa&password=123456
 
 ### user register form
 POST http://localhost:3000/register
 Content-Type: application/x-www-form-urlencoded
 
-username=abcdef&password=123456&registration_code=123abc
-
-
-### user json
-GET http://localhost:3000/user/2
-
-### Save user
-POST https://fakhrusy-com-server.fly.dev/user/save
-Content-Type: application/json
-
-{
-  "id": 111,
-  "name": "Tevita Solares"
-}
-
-### search
-GET http://localhost:3000/search?q=java
-
-### static html
-GET http://localhost:3000/index.html
-
-### static css
-GET http://localhost:3000/assets/demo.css
-
+username=hallo&password=123456&confirm_password=123456&registration_code=123456
 ### 404 handler
 GET http://localhost:3000/demo404
-
