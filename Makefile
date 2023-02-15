@@ -1,4 +1,4 @@
-.PHONY: server/run server/format server/deploy server/watch frontend/dev admin/format blog/dev dev
+.PHONY: server/run server/format server/deploy server/watch frontend/dev admin/format blog/dev dev db
 
 MAKEFLAGS += -j3
 
@@ -23,7 +23,7 @@ frontend/dev:
 blog/dev:
 	./blog/bin/rails server
 
-install:
+db:
 	docker-compose -f ./dev-db/docker-compose.yml up -d
 
 dev: server/watch frontend/dev blog/dev
