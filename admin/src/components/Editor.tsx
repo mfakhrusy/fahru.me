@@ -1,6 +1,6 @@
 import { historyField } from '@codemirror/commands';
 import { markdown } from '@codemirror/lang-markdown';
-import type { ViewUpdate } from '@codemirror/view';
+import { type ViewUpdate, EditorView } from '@codemirror/view';
 import ReactCodeMirror from '@uiw/react-codemirror';
 
 import { sessionStorage } from '@/lib/sessionStorage';
@@ -33,7 +33,7 @@ export function Editor({ onChange }: { onChange: (doc: string) => void }) {
         sessionStorage.setItem('editorValue', value);
         onChange(formatEndline(value));
       }}
-      extensions={[markdown({ codeLanguages: [] })]}
+      extensions={[markdown({ codeLanguages: [] }), EditorView.lineWrapping]}
       height='100%'
       style={{ height: '100%' }}
     />
