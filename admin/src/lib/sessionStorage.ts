@@ -1,18 +1,21 @@
-type LocalStorageKeys =
-  | 'sidebarCollapse'
+type SessionStorageKeys =
+  | 'isLogin'
+  | 'editorState'
+  | 'editorDocState'
+  | 'editorValue';
 
-export const localStorage = {
-  setItem: (key: LocalStorageKeys, value: string | boolean) => {
+export const sessionStorage = {
+  setItem: (key: SessionStorageKeys, value: string | boolean) => {
     if (typeof window !== 'undefined') {
       if (typeof value === 'boolean') {
         value = value.toString();
       }
-      window.localStorage.setItem(key, value);
+      window.sessionStorage.setItem(key, value);
     }
   },
-  getItem: (key: LocalStorageKeys) => {
+  getItem: (key: SessionStorageKeys) => {
     if (typeof window !== 'undefined') {
-      const value = window.localStorage.getItem(key);
+      const value = window.sessionStorage.getItem(key);
 
       if (value === 'true' || value === 'false') {
         return value === 'true';

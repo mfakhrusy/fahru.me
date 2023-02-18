@@ -1,4 +1,4 @@
-import { sessionStorage } from '@/lib/localStorage';
+import { sessionStorage } from '@/lib/sessionStorage';
 
 import AuthLayout from '@/components/layout/AuthLayout';
 

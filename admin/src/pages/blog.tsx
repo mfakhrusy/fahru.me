@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import rehypeRaw from 'rehype-raw';
 
-import { sessionStorage } from '@/lib/localStorage';
+import { sessionStorage } from '@/lib/sessionStorage';
 import {
   formatEndline,
   formatStringToFilterIncompleteHtmlTag,
@@ -50,7 +50,7 @@ export default function BlogPage() {
         </div>
         {isMounted ? (
           <ReactMarkdown
-            className='unreset rendered-markdown'
+            className='unreset rendered-markdown font-primary'
             rehypePlugins={[rehypeRaw]}
           >
             {trimmedString}

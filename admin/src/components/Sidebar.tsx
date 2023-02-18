@@ -25,7 +25,7 @@ export default function Sidebar() {
   return (
     <nav className={navClassName}>
       <div className='mx-auto flex min-h-full w-full flex-col flex-wrap items-stretch justify-between px-0'>
-        <div className='flex w-full flex-row items-center justify-between'>
+        <div className='flex w-full flex-row items-center justify-between h-5'>
           {sidebarCollapse ? null : (
             <Link
               href='/'

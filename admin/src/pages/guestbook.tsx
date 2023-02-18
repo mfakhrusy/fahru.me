@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
-import { sessionStorage } from '@/lib/localStorage';
+import { sessionStorage } from '@/lib/sessionStorage';
 
 import Layout from '@/components/layout/Layout';
 

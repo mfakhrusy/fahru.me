@@ -3,7 +3,7 @@ import { markdown } from '@codemirror/lang-markdown';
 import type { ViewUpdate } from '@codemirror/view';
 import ReactCodeMirror from '@uiw/react-codemirror';
 
-import { sessionStorage } from '@/lib/localStorage';
+import { sessionStorage } from '@/lib/sessionStorage';
 import { formatEndline } from '@/lib/string';
 
 // When custom fields should be serialized, you can pass them in as an object mapping property names to fields.

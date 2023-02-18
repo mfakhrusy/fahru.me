@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import { type FormEventHandler, useCallback } from 'react';
 
-import { sessionStorage } from '@/lib/localStorage';
+import { sessionStorage } from '@/lib/sessionStorage';
 
 import AuthLayout from '@/components/layout/AuthLayout';
 
