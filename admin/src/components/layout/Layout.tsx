@@ -1,12 +1,20 @@
-import * as React from 'react';
+import { ReactNode } from 'react';
 
 import Sidebar from '@/components/Sidebar';
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+import { useUIContext } from '@/context/UIContext';
+
+export default function Layout({ children }: { children: ReactNode }) {
+  const { sidebarCollapse } = useUIContext();
+
+  const className = `relative h-full bg-slate-100 ${
+    sidebarCollapse ? 'ml-16' : 'ml-64'
+  }`;
+
   return (
     <>
       <Sidebar />
-      <main className='relative h-full bg-slate-100 md:ml-64'>{children}</main>
+      <main className={className}>{children}</main>
     </>
   );
 }
