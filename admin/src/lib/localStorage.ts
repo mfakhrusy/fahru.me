@@ -1,5 +1,4 @@
-type LocalStorageKeys =
-  | 'sidebarCollapse'
+type LocalStorageKeys = 'sidebarCollapse';
 
 export const localStorage = {
   setItem: (key: LocalStorageKeys, value: string | boolean) => {

@@ -5,12 +5,15 @@ import '@/styles/globals.css';
 import '@/styles/colors.css';
 import '@/styles/style.css';
 
+import EditorContextProvider from '@/context/EditorContext';
 import UIContextProvider from '@/context/UIContext';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <UIContextProvider>
-      <Component {...pageProps} />
+      <EditorContextProvider>
+        <Component {...pageProps} />
+      </EditorContextProvider>
     </UIContextProvider>
   );
 }

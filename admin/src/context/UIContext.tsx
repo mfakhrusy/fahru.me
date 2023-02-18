@@ -1,4 +1,10 @@
-import { createContext, useCallback, useContext, useEffect, useState } from 'react';
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 
 import { localStorage } from '@/lib/localStorage';
 
@@ -25,7 +31,8 @@ export default function UIContextProvider({
   }, []);
 
   useEffect(() => {
-    const isCollapsed = localStorage.getItem('sidebarCollapse') as boolean | undefined ?? false;
+    const isCollapsed =
+      (localStorage.getItem('sidebarCollapse') as boolean | undefined) ?? false;
     if (isCollapsed) {
       setSidebarCollapse(isCollapsed);
     }
