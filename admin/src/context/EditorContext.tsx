@@ -17,8 +17,8 @@ export default function EditorContextProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const state = sessionStorage.getItem('editorState');
-  const initialDoc = JSON.parse(state as string)?.doc ?? '';
+  const state = sessionStorage.getItem('editorState') as string;
+  const initialDoc = JSON.parse(state)?.doc ?? '';
   const [docState, setDocState] = useState<string>(initialDoc);
 
   return (

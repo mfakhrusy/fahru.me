@@ -10,7 +10,7 @@ import { formatEndline } from '@/lib/string';
 // See [toJSON](https://codemirror.net/docs/ref/#state.EditorState.toJSON) documentation for more details
 const stateFields = { history: historyField };
 
-export function Editor({ onChange }: { onChange?: (doc: string) => void }) {
+export function Editor({ onChange }: { onChange: (doc: string) => void }) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const serializedState = sessionStorage.getItem('editorState') as any;
   const value = (sessionStorage.getItem('editorValue') ?? '') as string;
@@ -27,12 +27,11 @@ export function Editor({ onChange }: { onChange?: (doc: string) => void }) {
           : undefined
       }
       onChange={(value: string, viewUpdate: ViewUpdate) => {
-        sessionStorage.setItem('editorValue', value);
-
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const state = (viewUpdate as any).state.toJSON(stateFields);
         sessionStorage.setItem('editorState', JSON.stringify(state));
-        onChange?.(formatEndline(JSON.stringify(state.doc)));
+        sessionStorage.setItem('editorValue', value);
+        onChange(formatEndline(value));
       }}
       extensions={[markdown({ codeLanguages: [] })]}
       height='100%'
