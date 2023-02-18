@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   BsArrowBarLeft,
   BsArrowBarRight,
@@ -14,6 +14,7 @@ import { useUIContext } from '@/context/UIContext';
 
 export default function Sidebar() {
   const { sidebarCollapse, setSidebarCollapse } = useUIContext();
+  const [mounted, setMounted] = useState(false);
 
   const navClassName = classNames(
     'z-10 flex flex-wrap items-center justify-between bg-white py-4 px-6 shadow-xl fixed top-0 bottom-0 w-64 flex-row overflow-hidden overflow-y-auto',
@@ -21,6 +22,14 @@ export default function Sidebar() {
       'w-16': sidebarCollapse,
     }
   );
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return null;
+  }
 
   return (
     <nav className={navClassName}>
