@@ -32,7 +32,9 @@ export default function BlogPage() {
         <div className='h-full w-1/2'>
           <Editor onChange={setDocState} />
         </div>
-        {isMounted ? <MarkdownRenderer /> : null}
+        <div className='h-full w-1/2 p-4'>
+          {isMounted ? <MarkdownRenderer /> : null}
+        </div>
       </div>
     </Layout>
   );

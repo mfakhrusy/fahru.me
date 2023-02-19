@@ -13,7 +13,7 @@ const stateFields = { history: historyField };
 export function Editor({ onChange }: { onChange: (doc: string) => void }) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const serializedState = sessionStorage.getItem('editorState') as any;
-  const value = (sessionStorage.getItem('editorValue') ?? '') as string;
+  const value = (sessionStorage.getItem('editorValue') as string ?? '');
 
   return (
     <ReactCodeMirror
