@@ -23,13 +23,11 @@ export default function MarkdownRenderer() {
             '-'
           )[1] as PrismProps['language'];
 
-          return (
-            <Code
-              language={language}
-              value={String(props.children).replace(/\n$/, '')}
-              {...props}
-            />
-          );
+          const formattedValue = String(props.children)
+            .replace(/\n$/, '')
+            .replace(/&lt;/g, '<');
+
+          return <Code language={language} value={formattedValue} {...props} />;
         },
       }}
     >
