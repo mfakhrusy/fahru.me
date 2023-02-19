@@ -26,9 +26,11 @@ function Code({
   }
   return (
     <pre className={classNames('rounded-md bg-gray-100 p-4', className)}>
-      <Prism language={language} {...codeProps}>{value}</Prism>
+      <Prism language={language} {...codeProps}>
+        {value}
+      </Prism>
     </pre>
   );
 }
 
-export default memo(Code)
+export default memo(Code);
