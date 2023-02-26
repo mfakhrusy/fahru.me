@@ -1,4 +1,4 @@
-.PHONY: server/run server/format server/deploy server/watch frontend/dev admin/format blog/dev dev db
+.PHONY: server/run server/format server/deploy server/watch frontend/dev admin/format blog/dev dev db sqitch-setup
 
 MAKEFLAGS += -j3
 
@@ -22,6 +22,10 @@ frontend/dev:
 
 blog/dev:
 	./blog/bin/rails server
+
+sqitch-setup: # change the email and the name
+	chmod 755 ./bin/sqitch config --user user.name "M Fahru"
+	chmod 755 ./bin/sqitch config --user user.email "fakhrusy.m@gmail.com"
 
 db:
 	docker-compose -f ./dev-db/docker-compose.yml up -d
