@@ -1,0 +1,5 @@
+%syntax-version=1.0.0
+%project=fakhrusy-com
+%uri=https://github.com/mfakhrusy/fakhrusy-com/
+
+init_app_user 2023-02-26T15:01:47Z M Fahru <fakhrusy.m@gmail.com> # init database with app_user

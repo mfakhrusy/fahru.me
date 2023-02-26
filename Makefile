@@ -1,4 +1,8 @@
-.PHONY: server/run server/format server/deploy server/watch frontend/dev admin/format blog/dev dev db sqitch-setup
+.PHONY: server/run server/format server/deploy server/watch frontend/dev admin/format blog/dev dev db sqitch/setup sqitch/deploy-dev
+
+# import sqitch env, create it first if it doesn't exist
+include ./sqitch/.env
+export $(shell sed 's/=.*//' ./sqitch/.env)
 
 MAKEFLAGS += -j3
 
@@ -23,9 +27,16 @@ frontend/dev:
 blog/dev:
 	./blog/bin/rails server
 
-sqitch-setup: # change the email and the name
-	chmod 755 ./bin/sqitch config --user user.name "M Fahru"
-	chmod 755 ./bin/sqitch config --user user.email "fakhrusy.m@gmail.com"
+sqitch/setup: # change the email and the name
+	cd sqitch && chmod 755 ./bin/sqitch
+	./sqitch/bin/sqitch config --user user.name "M Fahru"
+	./sqitch/bin/sqitch config --user user.email "fakhrusy.m@gmail.com"
+
+sqitch/deploy-dev:
+	cd sqitch && ./bin/sqitch deploy db:${PG_URL_DEV}
+
+sqitch/deploy-prod:
+	cd sqitch && ./bin/sqitch deploy db:${PG_URL_DEV}
 
 db:
 	docker-compose -f ./dev-db/docker-compose.yml up -d
