@@ -28,15 +28,15 @@ blog/dev:
 	./blog/bin/rails server
 
 sqitch/setup: # change the email and the name
-	cd sqitch && chmod 755 ./bin/sqitch
+	chmod 755 ./sqitch/bin/sqitch
 	./sqitch/bin/sqitch config --user user.name "M Fahru"
 	./sqitch/bin/sqitch config --user user.email "fakhrusy.m@gmail.com"
 
 sqitch/deploy-dev:
-	cd sqitch && ./bin/sqitch deploy db:${PG_URL_DEV}
+	./sqitch/bin/sqitch deploy db:${PG_URL_DEV} --chdir sqitch
 
 sqitch/deploy-prod:
-	cd sqitch && ./bin/sqitch deploy db:${PG_URL_DEV}
+	./sqitch/bin/sqitch deploy db:${PG_URL_DEV} --chdir sqitch
 
 db:
 	docker-compose -f ./dev-db/docker-compose.yml up -d
