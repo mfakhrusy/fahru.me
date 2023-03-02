@@ -1,4 +1,5 @@
-.PHONY: server/run server/format server/deploy server/watch frontend/dev admin/format blog/dev dev db sqitch/setup sqitch/deploy-dev
+.PHONY: server/run server/format server/deploy server/watch frontend/dev admin/format blog/dev dev 
+.PHONY: db sqitch/setup
 
 # import sqitch env, create it first if it doesn't exist
 include ./sqitch/.env
@@ -31,12 +32,6 @@ sqitch/setup: # change the email and the name
 	chmod 755 ./sqitch/bin/sqitch
 	./sqitch/bin/sqitch config --user user.name "M Fahru"
 	./sqitch/bin/sqitch config --user user.email "fakhrusy.m@gmail.com"
-
-sqitch/deploy-dev:
-	./sqitch/bin/sqitch deploy db:${PG_URL_DEV} --chdir sqitch
-
-sqitch/deploy-prod:
-	./sqitch/bin/sqitch deploy db:${PG_URL_DEV} --chdir sqitch
 
 db:
 	docker-compose -f ./dev-db/docker-compose.yml up -d

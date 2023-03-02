@@ -3,3 +3,4 @@
 %uri=https://github.com/mfakhrusy/fakhrusy-com/
 
 init_app_user 2023-02-26T15:01:47Z M Fahru <fakhrusy.m@gmail.com> # init database with app_user
+init_article 2023-03-02T07:47:15Z M Fahru <fakhrusy.m@gmail.com> # Create article table
