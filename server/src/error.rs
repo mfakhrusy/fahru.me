@@ -20,18 +20,19 @@ pub enum LoginErrorCode {
 pub enum ErrorCode {
     Register(RegisterErrorCode),
     Login(LoginErrorCode),
-    SomethingWentWrong,
+    SomethingWentWrong(Option<String>),
 }
 
 #[derive(Serialize)]
 struct ErrorResponse {
     error_code: String,
+    error_message: Option<String>,
 }
 
 impl IntoResponse for ErrorCode {
     fn into_response(self) -> Response {
-        let error_code = match self {
-            ErrorCode::SomethingWentWrong => "SOMETHING_WENT_WRONG",
+        let error_code = match &self {
+            ErrorCode::SomethingWentWrong(_) => "SOMETHING_WENT_WRONG",
             ErrorCode::Register(register) => match register {
                 RegisterErrorCode::PasswordConfirmationNotFound => {
                     "PASSWORD_CONFIRMATION_NOT_FOUND"
@@ -48,6 +49,10 @@ impl IntoResponse for ErrorCode {
 
         let body = ErrorResponse {
             error_code: error_code.to_string(),
+            error_message: match &self {
+                ErrorCode::SomethingWentWrong(message) => message.to_owned(),
+                _ => None,
+            },
         };
 
         // its often easiest to implement `IntoResponse` by calling other implementations
@@ -62,7 +67,7 @@ where
     println!("Error: {}", _err);
     (
         StatusCode::INTERNAL_SERVER_ERROR,
-        ErrorCode::SomethingWentWrong,
+        ErrorCode::SomethingWentWrong(None),
     )
 }
 

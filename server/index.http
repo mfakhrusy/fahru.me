@@ -11,6 +11,12 @@ username=aaaa&password=123456
 POST http://localhost:3000/register
 Content-Type: application/x-www-form-urlencoded
 
+### add article
+POST http://localhost:3000/article
+Content-Type: application/json
+
+{"title":"test","content":"test"}
+
 username=hallo&password=123456&confirm_password=123456&registration_code=123456
 ### 404 handler
 GET http://localhost:3000/demo404

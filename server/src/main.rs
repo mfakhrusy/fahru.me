@@ -17,6 +17,7 @@ use tower_http::{
     services::ServeDir,
 };
 
+pub mod article;
 pub mod auth;
 pub mod db;
 pub mod error;
@@ -50,6 +51,7 @@ async fn main() {
         )
         .route("/register", post(register))
         .route("/login", post(login))
+        .route("/article", post(article::post_article))
         .layer(cors)
         .with_state(pool);
 

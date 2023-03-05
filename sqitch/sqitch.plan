@@ -4,3 +4,4 @@
 
 init_app_user 2023-02-26T15:01:47Z M Fahru <fakhrusy.m@gmail.com> # init database with app_user
 init_article 2023-03-02T07:47:15Z M Fahru <fakhrusy.m@gmail.com> # Create article table
+add_content_to_article 2023-03-05T07:54:05Z M Fahru <fakhrusy.m@gmail.com> # "Add content column to article table"
