@@ -1,4 +1,5 @@
 import { PrismProps } from '@mantine/prism';
+import { useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { CodeProps } from 'react-markdown/lib/ast-to-react';
 import rehypeRaw from 'rehype-raw';
@@ -12,6 +13,13 @@ import Code from './Code';
 export default function MarkdownRenderer() {
   const { docState } = useEditorContext();
   const formattedString = formatStringToFilterIncompleteHtmlTag(docState);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  if (!isMounted) return null;
 
   return (
     <ReactMarkdown

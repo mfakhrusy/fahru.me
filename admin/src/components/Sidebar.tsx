@@ -89,12 +89,13 @@ function SidebarItem({
   sidebarCollapse = false,
 }: SidebarItemProps) {
   const router = useRouter();
+  const isActive = router.pathname.split('/')[1] === href.split('/')[1];
 
   const linkClassName = classNames(
     'block p-0 text-xs font-bold uppercase flex flex-row items-center w-full',
     {
-      'text-sky-500 hover:text-sky-600': router.pathname === href,
-      'text-slate-700 hover:text-slate-500': router.pathname !== href,
+      'text-sky-500 hover:text-sky-600': isActive,
+      'text-slate-700 hover:text-slate-500': !isActive,
     }
   );
 

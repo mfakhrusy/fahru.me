@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 import { sessionStorage } from '@/lib/sessionStorage';
 
@@ -12,13 +12,8 @@ import { useEditorContext } from '@/context/EditorContext';
 export default function BlogPage() {
   const isLogin = sessionStorage.getItem('isLogin');
   const router = useRouter();
-  const [isMounted, setIsMounted] = useState(false);
 
   const { setDocState } = useEditorContext();
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
 
   useEffect(() => {
     if (!isLogin) {
@@ -33,7 +28,7 @@ export default function BlogPage() {
           <Editor onChange={setDocState} />
         </div>
         <div className='h-full w-1/2 p-4'>
-          {isMounted ? <MarkdownRenderer /> : null}
+          <MarkdownRenderer />
         </div>
       </div>
     </Layout>

@@ -8,6 +8,10 @@ body,
   height: 100vh;
 }
 
+html {
+  @apply text-gray-700;
+}
+
 :root {
   /* #region  /**=========== Primary Color =========== */
   /* Customize these variable, copy and paste from /styles/colors.css for list of colors */
