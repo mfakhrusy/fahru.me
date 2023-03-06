@@ -1,45 +1,6 @@
-import { useRouter } from 'next/router';
-import { type FormEventHandler, useCallback } from 'react';
-
-import { sessionStorage } from '@/lib/sessionStorage';
-
 import AuthLayout from '@/components/layout/AuthLayout';
 
-import { baseURL } from '@/constant/env';
-
 export default function Login() {
-  const router = useRouter();
-
-  const handleSubmit: FormEventHandler<HTMLFormElement> = useCallback(
-    async (event) => {
-      event.preventDefault();
-      const body = new URLSearchParams();
-
-      Array.from(event.currentTarget.elements).forEach((elem) => {
-        const element = elem as HTMLInputElement;
-        if (element.type !== 'submit') {
-          body.append(element.name, element.value);
-        }
-      });
-
-      try {
-        const res = await fetch(`${baseURL}/login`, {
-          method: 'post',
-          body,
-        });
-
-        if (res.ok) {
-          sessionStorage.setItem('isLogin', true);
-          router.replace('/');
-        }
-      } catch (err) {
-        // eslint-disable-next-line no-console
-        console.error(err);
-      }
-    },
-    [router]
-  );
-
   return (
     <AuthLayout
       footer={{
@@ -48,7 +9,7 @@ export default function Login() {
       }}
       headerText='Sign In'
     >
-      <form className='mt-5' onSubmit={handleSubmit}>
+      <form className='mt-5' action='/api/login' method='post'>
         <div className='relative mb-3 w-full'>
           <label
             className='mb-2 block text-xs font-bold uppercase text-slate-600'

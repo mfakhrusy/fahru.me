@@ -1,12 +1,11 @@
+import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
-
-import { sessionStorage } from '@/lib/sessionStorage';
 
 import Layout from '@/components/layout/Layout';
 
 export default function HomePage() {
-  const isLogin = sessionStorage.getItem('isLogin');
+  const isLogin = Cookies.get('loggedIn');
   const router = useRouter();
 
   useEffect(() => {
