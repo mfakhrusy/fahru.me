@@ -1,4 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
+import fetch from 'node-fetch';
 import { z } from 'zod';
 
 import { baseURL } from '@/constant/env';
