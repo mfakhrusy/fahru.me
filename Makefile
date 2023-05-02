@@ -1,5 +1,4 @@
-.PHONY: server/run server/format server/deploy server/watch frontend/dev admin/format blog/dev dev 
-.PHONY: db sqitch/setup
+.PHONY: server/run server/format server/deploy server/watch frontend/dev admin/format dev db sqitch/setup
 
 # import sqitch env, create it first if it doesn't exist
 include ./sqitch/.env
@@ -24,9 +23,6 @@ admin/format:
 
 frontend/dev:
 	npm run dev
-
-blog/dev:
-	./blog/bin/rails server
 
 sqitch/setup: # change the email and the name
 	chmod 755 ./sqitch/bin/sqitch
