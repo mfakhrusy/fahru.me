@@ -2,10 +2,11 @@
   "name": "fakhrusy-com",
   "workspaces": [
     "admin",
-    "client"
+    "client",
+    "blog"
   ],
   "scripts": {
-    "dev": "concurrently \"npm run dev --workspace=admin\" \"npm run dev --workspace=client\""
+    "dev": "concurrently \"npm run dev --workspace=admin\" \"npm run dev --workspace=client\" \"npm run dev --workspace=blog\""
   },
   "dependencies": {
     "concurrently": "^7.6.0",
