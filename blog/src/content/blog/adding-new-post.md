@@ -4,7 +4,7 @@ pubDatetime: 2022-09-23T15:22:00Z
 title: Adding new posts in AstroPaper theme
 postSlug: adding-new-posts-in-astropaper-theme
 featured: true
-draft: false
+draft: true
 tags:
   - docs
 ogImage: ""
