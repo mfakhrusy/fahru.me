@@ -20,13 +20,13 @@
     "next": "^13.4.0",
     "react": "^18.2.0",
     "react-calendar": "^4.2.1",
-    "react-device-detect": "^2.0.0",
+    "react-device-detect": "^2.2.3",
     "react-dom": "^18.2.0",
     "react-icons": "^4.8.0",
     "react-redux": "^8.0.5",
-    "ua-parser-js": "^0.7.28",
-    "xterm": "^4.10.0",
-    "xterm-addon-fit": "^0.5.0"
+    "ua-parser-js": "^1.0.35",
+    "xterm": "^5.1.0",
+    "xterm-addon-fit": "^0.7.0"
   },
   "devDependencies": {
     "@types/node": "^18.16.3",
