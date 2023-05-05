@@ -9,11 +9,11 @@
     "pretty": "npm prettier --write ."
   },
   "dependencies": {
-    "@chakra-ui/icons": "^2.0.17",
-    "@chakra-ui/react": "^2.4.9",
-    "@chakra-ui/system": "^2.3.8",
-    "@emotion/react": "^11",
-    "@emotion/styled": "^11",
+    "@chakra-ui/icons": "^2.0.19",
+    "@chakra-ui/react": "^2.6.1",
+    "@chakra-ui/system": "^2.5.7",
+    "@emotion/react": "^11.10.8",
+    "@emotion/styled": "^11.10.8",
     "@reduxjs/toolkit": "^1.6.2",
     "date-fns": "^2.25.0",
     "framer-motion": "^5",
@@ -40,6 +40,6 @@
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-react": "^7.29.3",
     "prettier": "^2.4.1",
-    "typescript": "^4.9.5"
+    "typescript": "^5.0.4"
   }
 }
