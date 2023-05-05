@@ -1,3 +1,4 @@
+/** @type {import('next').NextConfig} */
 module.exports = {
   async redirects() {
     return [
@@ -8,4 +9,7 @@ module.exports = {
       },
     ];
   },
+  experimental: {
+    appDir: false,
+  }
 };
