@@ -38,12 +38,4 @@ if [[ "$(podman container inspect --format='{{.State.Status}}' ${POSTGRES_CONTAI
   exit 1
 fi
 
-# Create the database if it does not exist
-if PGPASSWORD=${POSTGRES_PASSWORD} podman exec -it ${POSTGRES_CONTAINER_NAME} psql -U ${POSTGRES_USER} -lqt | cut -d \| -f 1 | grep -qw ${POSTGRES_DB}; then
-  echo "Database ${POSTGRES_DB} already exists"
-  exit 0
-else
-  echo "Creating database ${POSTGRES_DB} in ${POSTGRES_CONTAINER_NAME}"
-  PGPASSWORD=${POSTGRES_PASSWORD} podman exec -it ${POSTGRES_CONTAINER_NAME} psql -U ${POSTGRES_USER} -c "CREATE DATABASE ${POSTGRES_DB};"
-fi
-
+PGPASSWORD=${POSTGRES_PASSWORD} podman exec -it ${POSTGRES_CONTAINER_NAME} psql -U ${POSTGRES_USER} -d ${POSTGRES_DB}

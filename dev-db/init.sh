@@ -40,5 +40,6 @@ else
   podman run --name "$POSTGRES_CONTAINER_NAME" \
     -e POSTGRES_PASSWORD="$POSTGRES_PASSWORD" \
     -e POSTGRES_USER="$POSTGRES_USER" \
+    -p "5432:5432" \
     -d docker.io/library/postgres:15.2
 fi

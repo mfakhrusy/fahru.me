@@ -7,11 +7,11 @@ Requirement:
 To run locally:
 
 1. Set up dev database:
+  - chmod +x *.sh
   - cd ./dev-db
-  - chmod +x init.sh init.sh
   - ./init.sh
   - ./create-db.sh
-2. To check if the database is running, type `podman ps`
+2. To check if the database is running, type `podman ps`, it should return a running postgres container
 
 ## Attribution
 
