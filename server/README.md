@@ -1,71 +1,73 @@
-# Node.js starter using Fastify & TypeScript
+<p align="center">
+  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
+</p>
 
-![ci badge](https://github.com/yonathan06/fastify-typescript-boilerplate/workflows/CI/badge.svg)
-[![Sync Vulnerabilities Status](https://app.snyk.io/test/github/yonathan06/fastify-typescript-boilerplate/badge.svg)](https://snyk.io/test/github/yonathan06/fastify-typescript-boilerplate)
+[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
+[circleci-url]: https://circleci.com/gh/nestjs/nest
 
-Create a new server:
-```bash
-pnpx degit yonathan06/fastify-typescript-starter my-server
-```
-or `npx`.
+  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
+    <p align="center">
+<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
+<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
+<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
+<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
+<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
+<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
+<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
+<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
+  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
+    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
+  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
+</p>
+  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
+  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
-See [degit](https://github.com/Rich-Harris/degit) docs for detailed explaination 
+## Description
 
-## Included in the boilerplate
+[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
-- TypeScript (using esbuild for fast compilation, and tsx for development)
-- Env vars
-- Tests (using Vitest)
-- Fastify
-- CI with github actions
-- Docker image
-- Linting
-- ESM (can be opt out by changing the tsconfig: https://www.typescriptlang.org/docs/handbook/esm-node.html)
-
-**BYODB - Bring your own database** - no database connection included
-
-## Set Up
-
-- Install the dependencies.
-
-```bash
-pnpm install
-```
-
-or npm/yarn
-
-- Start the server in development mode.
+## Installation
 
 ```bash
-pnpm dev
+$ npm install
 ```
 
-or npm/yarn
+## Running the app
 
-## Env vars
+```bash
+# development
+$ npm run start
 
-Loaded from `.env` file, with schema validation
+# watch mode
+$ npm run start:dev
 
-## Backend API Development
+# production mode
+$ npm run start:prod
+```
 
-There are a number of handy commands you can run to help with development.
+## Test
 
-|Command | Action |
-|---|---|
-|`pnpm run dev` | Run the server in dev mode, automatically restarts on file change |
-|`pnpm build`| Compile TypeScript to JavaScript |
-|`pnpm start`| Start JavaScript from 'build' directory |
-|`pnpm test`| Run unit tests (run `pnpm build` before) |
-|`pnpm test:watch`| Run backend tests in watch mode, running on changed test files |
-|`pnpm lint`| Run eslint |
-|`pnpm lint:fix`| Run eslint in fix mode |
+```bash
+# unit tests
+$ npm run test
 
-## CI
+# e2e tests
+$ npm run test:e2e
 
-Run tests on push/PR to 'main' branch
-Check `.github/workflows/CI.yml`
+# test coverage
+$ npm run test:cov
+```
 
-## Recommended Vscode Extensions
+## Support
 
-[Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
-[ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
+Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+
+## Stay in touch
+
+- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
+- Website - [https://nestjs.com](https://nestjs.com/)
+- Twitter - [@nestframework](https://twitter.com/nestframework)
+
+## License
+
+Nest is [MIT licensed](LICENSE).
