@@ -55,7 +55,7 @@ export default function useIsTouchDevice() {
 
       localStorage.setItem("isTouchDevice", newIsTouch);
     }
-  }, [isTouch]);
+  }, [isTouch, isTouchLS]);
 
   if (isTouchLS === "" || isTouchLS === null) {
     return isTouch;

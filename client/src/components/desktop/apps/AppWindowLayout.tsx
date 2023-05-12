@@ -51,7 +51,7 @@ export function AppWindowLayout({
 
   const setFullScreen = useCallback<(args: boolean) => SetActiveAppFullScreen>(
     (payload) => dispatch(setActiveAppFullScreen(payload)),
-    []
+    [dispatch]
   );
 
   const renderContent = () => (

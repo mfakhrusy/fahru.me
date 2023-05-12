@@ -24,7 +24,7 @@ export function DesktopRebootModal({ isOpen, onClose }: Props) {
 
   const disableAppMenu = useCallback<() => void>(
     () => dispatch(disableAppMenuAction()),
-    []
+    [dispatch]
   );
 
   return (

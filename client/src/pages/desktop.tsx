@@ -34,7 +34,7 @@ function DesktopScreen() {
 
   const setActiveDesktopApp = useCallback<
     (args: DesktopApp) => SetActiveDesktopAppAction
-  >((payload) => dispatch(setActiveDesktopAppAction(payload)), []);
+  >((payload) => dispatch(setActiveDesktopAppAction(payload)), [dispatch]);
 
   const renderContent = (
     dragConstraintRef?: MutableRefObject<HTMLDivElement>

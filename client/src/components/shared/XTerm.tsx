@@ -35,7 +35,7 @@ export default function XTerm(props: Props) {
   const dispatch = useDispatch();
   const setActiveDesktopApp = useCallback<
     (args: DesktopApp) => SetActiveDesktopAppAction
-  >((payload) => dispatch(setActiveDesktopAppAction(payload)), []);
+  >((payload) => dispatch(setActiveDesktopAppAction(payload)), [dispatch]);
 
   useEffect(() => {
     if (ref.current) {
@@ -92,7 +92,7 @@ export default function XTerm(props: Props) {
         });
       }
     }
-  }, [ref]);
+  }, [props.withHelp, ref, router, setActiveDesktopApp]);
 
   return <Container ref={ref} bgColor="green" w="100%" />;
 }

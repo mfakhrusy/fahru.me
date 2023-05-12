@@ -16,7 +16,7 @@ export function DesktopTouchView({ renderActiveApp }: Props) {
   const dispatch = useDispatch();
   const setActiveDesktopApp = useCallback<
     (args: DesktopApp) => SetActiveDesktopAppAction
-  >((payload) => dispatch(setActiveDesktopAppAction(payload)), []);
+  >((payload) => dispatch(setActiveDesktopAppAction(payload)), [dispatch]);
 
   return (
     <Flex

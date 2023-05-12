@@ -17,7 +17,7 @@ export default function useDelayRenderOnTouchDevice({
     } else {
       setshouldRenderContent(true);
     }
-  }, []);
+  }, [delayAmount, isTouchDevice]);
 
   return shouldRenderContent;
 }

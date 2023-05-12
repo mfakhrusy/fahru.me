@@ -35,7 +35,7 @@ export function ShutdownProcessView() {
     } else {
       setTimeout(() => router.replace("/shutdown"), duration * 1000 + 1000);
     }
-  }, []);
+  }, [duration, reboot, router]);
 
   return (
     <TerminalProcessAnimation text={text} stepTimeInSecond={stepTimeInSecond} />

@@ -30,17 +30,17 @@ export function DesktopTaskbar() {
 
   const enableAppMenu = useCallback<(args: DesktopApp) => EnableAppMenuAction>(
     (payload) => dispatch(enableAppMenuAction(payload)),
-    []
+    [dispatch]
   );
 
   const disableAppMenu = useCallback<() => void>(
     () => dispatch(disableAppMenuAction()),
-    []
+    [dispatch]
   );
 
   const setFocusedDesktopApp = useCallback<
     (args: DesktopApp) => SetFocusedDesktopAppAction
-  >((payload) => dispatch(setFocusedDesktopAppAction(payload)), []);
+  >((payload) => dispatch(setFocusedDesktopAppAction(payload)), [dispatch]);
 
   const onClickApplications = () => {
     setFocusedDesktopApp("DesktopMainView");
@@ -63,7 +63,7 @@ export function DesktopTaskbar() {
   const clockRef = useRef<HTMLDivElement>(null);
   const setTimeWidget = useCallback<(args: boolean) => SetTimeWidgetActive>(
     (payload) => dispatch(setTimeWidgetActive(payload)),
-    []
+    [dispatch]
   );
 
   useClickOutside({

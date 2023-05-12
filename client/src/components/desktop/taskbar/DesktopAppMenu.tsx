@@ -28,16 +28,16 @@ export function DesktopAppMenu({ isActive, forwardRef }: Props) {
 
   const setActiveDesktopApp = useCallback<
     (args: DesktopApp) => SetActiveDesktopAppAction
-  >((payload) => dispatch(setActiveDesktopAppAction(payload)), []);
+  >((payload) => dispatch(setActiveDesktopAppAction(payload)), [dispatch]);
 
   const disableAppMenu = useCallback<() => void>(
     () => dispatch(disableAppMenuAction()),
-    []
+    [dispatch]
   );
 
   const setModal = useCallback<(args: ModalState) => SetModalAction>(
     (payload) => dispatch(setModalAction(payload)),
-    []
+    [dispatch]
   );
 
   return (

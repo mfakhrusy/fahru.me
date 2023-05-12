@@ -33,7 +33,7 @@ export function DesktopAppSimpleClock({ forwardRef }: Props) {
 
   const setTimeWidget = useCallback<(args: boolean) => SetTimeWidgetActive>(
     (payload) => dispatch(setTimeWidgetActive(payload)),
-    []
+    [dispatch]
   );
 
   return (

@@ -20,7 +20,7 @@ export function Typewriter({
 
   useEffect(() => {
     setTimeout(() => onFinish(), duration * 1000 + onFinishDelay);
-  }, []);
+  }, [duration, onFinish, onFinishDelay]);
 
   return useMemo(
     () => (
@@ -57,6 +57,6 @@ export function Typewriter({
         })}
       </motion.p>
     ),
-    []
+    [duration, stepSize, stepTimeSecond, textArr]
   );
 }

@@ -27,7 +27,7 @@ export function AppTerminal({ onClose, isOpen, dragConstraintRef }: Props) {
         onClose();
       }
     }
-  }, [isClosingDown]);
+  }, [isClosingDown, isTouchDevice, onClose]);
 
   return (
     <AppLayout

@@ -53,20 +53,20 @@ export function DesktopMainView({ renderActiveApp }: Props) {
 
   const setFocusedDesktopApp = useCallback<
     (args: DesktopApp) => SetFocusedDesktopAppAction
-  >((payload) => dispatch(setFocusedDesktopAppAction(payload)), []);
+  >((payload) => dispatch(setFocusedDesktopAppAction(payload)), [dispatch]);
 
   const setActiveDesktopApp = useCallback<
     (args: DesktopApp) => SetActiveDesktopAppAction
-  >((payload) => dispatch(setActiveDesktopAppAction(payload)), []);
+  >((payload) => dispatch(setActiveDesktopAppAction(payload)), [dispatch]);
 
   const setModal = useCallback<(args: ModalState) => SetModalAction>(
     (payload) => dispatch(setModalAction(payload)),
-    []
+    [dispatch]
   );
 
   const setCurrentTime = useCallback<(currentTime: string) => SetCurrentTime>(
     (payload) => dispatch(setCurrentTimeAction(payload)),
-    []
+    [dispatch]
   );
 
   useEffect(() => {
@@ -75,7 +75,7 @@ export function DesktopMainView({ renderActiveApp }: Props) {
     }, 1000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [setCurrentTime]);
 
   useEffect(() => {
     const eventHandler = (event: KeyboardEvent) => {
@@ -93,7 +93,7 @@ export function DesktopMainView({ renderActiveApp }: Props) {
     window.addEventListener("keydown", eventHandler);
 
     return () => window.removeEventListener("keydown", eventHandler);
-  }, [focusedApp]);
+  }, [focusedApp, setActiveDesktopApp, setFocusedDesktopApp]);
 
   const renderModal = (modal: ModalState) => {
     switch (modal) {
@@ -129,7 +129,7 @@ export function DesktopMainView({ renderActiveApp }: Props) {
         }
       }
     },
-    [focusedApp]
+    [focusedApp, setFocusedDesktopApp]
   );
 
   return (
