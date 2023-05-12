@@ -6,7 +6,7 @@
     "dev": "next dev -p 3090",
     "build": "next build",
     "start": "next start",
-    "pretty": "npm prettier --write .",
+    "pretty": "prettier --write .",
     "lint": "next lint"
   },
   "dependencies": {

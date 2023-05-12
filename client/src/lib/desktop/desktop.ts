@@ -11,7 +11,7 @@ export const desktopApp = [
   "AppTodo",
 ] as const;
 
-export type DesktopApp = typeof desktopApp[number];
+export type DesktopApp = (typeof desktopApp)[number];
 
 type DesktopIcon = {
   iconName: string;
