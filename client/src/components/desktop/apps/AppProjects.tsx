@@ -33,6 +33,7 @@ export function AppProjects({ onClose, isOpen, dragConstraintRef }: Props) {
               maxW={{ base: "90%", md: "70%" }}
               h="auto"
               mb={3}
+              alt="Mathematic Hub: Equation Visualizer"
             />
             <Link
               href="https://github.com/mfakhrusy/math-hub"

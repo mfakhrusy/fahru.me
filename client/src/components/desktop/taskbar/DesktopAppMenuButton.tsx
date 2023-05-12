@@ -25,7 +25,13 @@ export function DesktopAppMenuButton({ onClick, forwardRef }: Props) {
         bgColor={appMenuState.isActive ? "debian.600" : "debian.500"}
         ref={forwardRef}
       >
-        <Image src="/icons/app-other.png" w="2.18rem" h="1.55rem" pr={2} />
+        <Image
+          src="/icons/app-other.png"
+          w="2.18rem"
+          h="1.55rem"
+          pr={2}
+          alt="Application List"
+        />
         <Text fontSize="15px" mr={2} userSelect="none">
           Applications
         </Text>

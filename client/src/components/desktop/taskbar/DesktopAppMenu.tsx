@@ -85,7 +85,12 @@ export function DesktopAppMenu({ isActive, forwardRef }: Props) {
                     setActiveDesktopApp(app);
                   }}
                 >
-                  <Image src={`/icons/${appIconName}`} w="30px" h="30px" />
+                  <Image
+                    src={`/icons/${appIconName}`}
+                    w="30px"
+                    h="30px"
+                    alt={appTitle}
+                  />
                   <Box w={2} />
                   <Text userSelect="none">{appTitle}</Text>
                 </Flex>
@@ -108,7 +113,7 @@ export function DesktopAppMenu({ isActive, forwardRef }: Props) {
           onClick={() => setModal("shutdownModal")}
           alignItems="center"
         >
-          <Image src="/icons/shutdown.png" w="30px" h="30px" />
+          <Image src="/icons/shutdown.png" w="30px" h="30px" alt="Shutdown" />
           <Box w={2} />
           <Text userSelect="none">Shutdown</Text>
         </Flex>
@@ -121,7 +126,7 @@ export function DesktopAppMenu({ isActive, forwardRef }: Props) {
           onClick={() => setModal("rebootModal")}
           alignItems="center"
         >
-          <Image src="/icons/restart.png" w="30px" h="30px" />
+          <Image src="/icons/restart.png" w="30px" h="30px" alt="Restart" />
           <Box w={2} />
           <Text userSelect="none">Reboot</Text>
         </Flex>
