@@ -1,27 +1,27 @@
-import { DesktopApp, makeDesktopIcons } from "@/lib/desktop/desktop";
-import { RootState } from "@/store";
+import { Box, Flex } from "@chakra-ui/react";
+import styled from "@emotion/styled";
+import { motion } from "framer-motion";
+import React, { useCallback, useEffect, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { AppContent } from "@/components/desktop/apps/AppContent";
+import { DesktopIcon } from "@/components/desktop/DesktopIcon";
+import { DesktopInfoPopover } from "@/components/desktop/DesktopInfoPopover";
+import { DesktopRebootModal } from "@/components/desktop/DesktopRebootModal";
+import { DesktopShutdownModal } from "@/components/desktop/DesktopShutdownModal";
+import className from "@/lib/className";
+import { type DesktopApp, makeDesktopIcons } from "@/lib/desktop/desktop";
+import type { RootState } from "@/store";
 import {
   SetActiveDesktopAppAction,
   SetFocusedDesktopAppAction,
   setActiveDesktopApp as setActiveDesktopAppAction,
   setFocusedDesktopApp as setFocusedDesktopAppAction,
-  ModalState,
+  type ModalState,
   setModal as setModalAction,
   SetModalAction,
   SetCurrentTime,
   setCurrentTime as setCurrentTimeAction,
 } from "@/store/desktop";
-import { Box, Flex } from "@chakra-ui/react";
-import { motion } from "framer-motion";
-import React, { useCallback, useEffect, useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import styled from "@emotion/styled";
-import { DesktopInfoPopover } from "@/components/desktop/DesktopInfoPopover";
-import { DesktopRebootModal } from "@/components/desktop/DesktopRebootModal";
-import { DesktopShutdownModal } from "@/components/desktop/DesktopShutdownModal";
-import className from "@/lib/className";
-import { DesktopIcon } from "./DesktopIcon";
-import { AppContent } from "./apps/AppContent";
 
 const DragArea = styled(motion.div)`
   width: 300%;

@@ -1,17 +1,17 @@
 import { CloseIcon, Icon } from "@chakra-ui/icons";
-import { BiExitFullscreen, BiFullscreen } from "react-icons/bi";
 import { Flex, Text } from "@chakra-ui/layout";
 import { BackgroundProps } from "@chakra-ui/styled-system";
 import styled from "@emotion/styled";
 import { motion } from "framer-motion";
-import { MutableRefObject, PropsWithChildren, useCallback } from "react";
+import { type MutableRefObject, PropsWithChildren, useCallback } from "react";
+import { BiExitFullscreen, BiFullscreen } from "react-icons/bi";
+import { useDispatch, useSelector } from "react-redux";
+import zIndex from "@/lib/zIndex";
+import { RootState } from "@/store";
 import {
   SetActiveAppFullScreen,
   setActiveAppFullScreen,
 } from "@/store/desktop";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@/store";
-import zIndex from "@/lib/zIndex";
 
 const Container = styled(motion.div)`
   height: auto;

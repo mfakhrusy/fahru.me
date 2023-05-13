@@ -8,6 +8,7 @@ module.exports = {
     "plugin:react/recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:react/jsx-runtime",
+    "plugin:import/typescript",
     "next",
     "prettier",
   ],
@@ -19,13 +20,26 @@ module.exports = {
     ecmaVersion: "latest",
     sourceType: "module",
   },
-  plugins: ["react", "@typescript-eslint"],
+  plugins: ["react", "@typescript-eslint", "import"],
   rules: {
     "linebreak-style": ["error", "unix"],
     quotes: ["error", "double"],
     semi: ["error", "always"],
+    "import/order": [
+      "error",
+      {
+        groups: ["builtin", "external", "internal"],
+        alphabetize: {
+          order: "asc",
+          caseInsensitive: true,
+        },
+      },
+    ],
   },
   settings: {
+    "import/resolver": {
+      typescript: {},
+    },
     react: {
       version: "detect",
     },

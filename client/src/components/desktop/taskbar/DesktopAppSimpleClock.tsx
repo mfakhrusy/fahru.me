@@ -1,10 +1,10 @@
-import { RootState } from "@/store";
-import { setTimeWidgetActive, SetTimeWidgetActive } from "@/store/desktop";
 import { Divider, Flex, Text } from "@chakra-ui/layout";
 import styled from "@emotion/styled";
 import { format, parseISO } from "date-fns";
 import { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/store";
+import { setTimeWidgetActive, SetTimeWidgetActive } from "@/store/desktop";
 
 const TextContainer = styled(Text)`
   animation: blinker 1s step-start infinite;

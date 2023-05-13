@@ -1,6 +1,6 @@
-import useIsTouchDevice from "@/lib/useIsTouchDevice";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import useIsTouchDevice from "@/lib/useIsTouchDevice";
 import { BlackTerminalPage } from "../shared/BlackTerminalPage";
 import { Typewriter } from "../shared/Typewriter";
 

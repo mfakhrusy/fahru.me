@@ -1,8 +1,8 @@
-import { RootState } from "@/store";
-import { AppMenuState } from "@/store/desktop";
 import { Image } from "@chakra-ui/image";
 import { Divider, Flex, Text } from "@chakra-ui/layout";
 import { useSelector } from "react-redux";
+import { RootState } from "@/store";
+import { AppMenuState } from "@/store/desktop";
 
 type Props = {
   onClick: () => void;

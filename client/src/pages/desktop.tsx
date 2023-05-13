@@ -1,8 +1,8 @@
-import dynamic from "next/dynamic";
 import { Flex } from "@chakra-ui/react";
+import dynamic from "next/dynamic";
 import { DesktopMainView } from "@/components/desktop/DesktopMainView";
-import { DesktopTaskbar } from "@/components/desktop/taskbar/DesktopTaskbar";
 import { DesktopTouchView } from "@/components/desktop/DesktopTouchView";
+import { DesktopTaskbar } from "@/components/desktop/taskbar/DesktopTaskbar";
 import useIsTouchDevice from "@/lib/useIsTouchDevice";
 
 function DesktopScreen() {

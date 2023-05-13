@@ -1,11 +1,14 @@
+import { Image } from "@chakra-ui/image";
+import { Box, Flex, Text } from "@chakra-ui/layout";
+import { Ref, useCallback } from "react";
+import { useDispatch } from "react-redux";
 import {
   DesktopApp,
   desktopApp,
   makeDesktopIcons,
 } from "@/lib/desktop/desktop";
-import { Image } from "@chakra-ui/image";
-import { Box, Flex, Text } from "@chakra-ui/layout";
-import { Ref, useCallback } from "react";
+import height from "@/lib/height";
+import zIndex from "@/lib/zIndex";
 import {
   SetActiveDesktopAppAction,
   setActiveDesktopApp as setActiveDesktopAppAction,
@@ -14,9 +17,6 @@ import {
   SetModalAction,
   ModalState,
 } from "@/store/desktop";
-import { useDispatch } from "react-redux";
-import zIndex from "@/lib/zIndex";
-import height from "@/lib/height";
 
 type Props = {
   isActive: boolean;

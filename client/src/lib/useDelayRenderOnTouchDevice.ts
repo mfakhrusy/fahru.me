@@ -1,5 +1,5 @@
-import useIsTouchDevice from "@/lib/useIsTouchDevice";
 import { useEffect, useState } from "react";
+import useIsTouchDevice from "@/lib/useIsTouchDevice";
 
 export type UseDelayRenderConfig = {
   delayAmount: number;

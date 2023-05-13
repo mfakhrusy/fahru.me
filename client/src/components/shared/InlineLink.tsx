@@ -1,7 +1,7 @@
-import { HTMLAttributeAnchorTarget, PropsWithChildren } from "react";
+import { ExternalLinkIcon } from "@chakra-ui/icons";
 import { Link } from "@chakra-ui/react";
 import { InteractivityProps } from "@chakra-ui/styled-system";
-import { ExternalLinkIcon } from "@chakra-ui/icons";
+import { HTMLAttributeAnchorTarget, PropsWithChildren } from "react";
 
 type Props = {
   href: string;

@@ -1,8 +1,8 @@
-import className from "@/lib/className";
 import { Flex, Text } from "@chakra-ui/react";
 import styled from "@emotion/styled";
 import { motion } from "framer-motion";
 import { MutableRefObject } from "react";
+import className from "@/lib/className";
 
 type ContainerProps = {
   isMobileIcon: boolean;

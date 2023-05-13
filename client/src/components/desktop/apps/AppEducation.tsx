@@ -1,7 +1,7 @@
+import { Box, ListItem, Text, UnorderedList } from "@chakra-ui/react";
+import type { MutableRefObject } from "react";
 import { AppLayout } from "@/components/desktop/apps/AppLayout";
 import useDelayRenderOnTouchDevice from "@/lib/useDelayRenderOnTouchDevice";
-import { Box, ListItem, Text, UnorderedList } from "@chakra-ui/react";
-import { MutableRefObject } from "react";
 
 type Props = {
   onClose: () => void;

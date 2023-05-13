@@ -1,5 +1,13 @@
+import { Flex } from "@chakra-ui/react";
+import { useCallback, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { DesktopAppMenu } from "@/components/desktop/taskbar/DesktopAppMenu";
+import { DesktopAppMenuButton } from "@/components/desktop/taskbar/DesktopAppMenuButton";
+import { DesktopAppSimpleClock } from "@/components/desktop/taskbar/DesktopAppSimpleClock";
+import { DesktopTimeWidget } from "@/components/desktop/taskbar/DesktopTimeWidget";
 import { DesktopApp } from "@/lib/desktop/desktop";
 import height from "@/lib/height";
+import useClickOutside from "@/lib/useClickOutside";
 import zIndex from "@/lib/zIndex";
 import { RootState } from "@/store";
 import {
@@ -12,14 +20,6 @@ import {
   SetTimeWidgetActive,
   setTimeWidgetActive,
 } from "@/store/desktop";
-import { Flex } from "@chakra-ui/react";
-import { useCallback, useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import useClickOutside from "@/lib/useClickOutside";
-import { DesktopAppMenuButton } from "./DesktopAppMenuButton";
-import { DesktopAppSimpleClock } from "./DesktopAppSimpleClock";
-import { DesktopAppMenu } from "./DesktopAppMenu";
-import { DesktopTimeWidget } from "./DesktopTimeWidget";
 
 export function DesktopTaskbar() {
   const dispatch = useDispatch();

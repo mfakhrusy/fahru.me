@@ -1,8 +1,8 @@
 import { ChakraProvider } from "@chakra-ui/react";
-import { Provider as ReduxProvider } from "react-redux";
 import { PropsWithChildren } from "react";
-import store from "./store";
+import { Provider as ReduxProvider } from "react-redux";
 import theme from "@/config/theme";
+import store from "./store";
 
 export function Provider({
   children,

@@ -1,13 +1,13 @@
+import { Flex } from "@chakra-ui/react";
+import { useCallback } from "react";
+import { useDispatch } from "react-redux";
+import { AppContent } from "@/components/desktop/apps/AppContent";
+import { DesktopIcon } from "@/components/desktop/DesktopIcon";
 import { DesktopApp, makeDesktopIcons } from "@/lib/desktop/desktop";
 import {
   SetActiveDesktopAppAction,
   setActiveDesktopApp as setActiveDesktopAppAction,
 } from "@/store/desktop";
-import { Flex } from "@chakra-ui/react";
-import { useCallback } from "react";
-import { useDispatch } from "react-redux";
-import { DesktopIcon } from "./DesktopIcon";
-import { AppContent } from "./apps/AppContent";
 
 export function DesktopTouchView() {
   const dispatch = useDispatch();

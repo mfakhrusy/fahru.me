@@ -1,6 +1,6 @@
-import useIsTouchDevice from "@/lib/useIsTouchDevice";
 import { Text } from "@chakra-ui/react";
 import { motion } from "framer-motion";
+import useIsTouchDevice from "@/lib/useIsTouchDevice";
 
 export type Status = "Ok" | "Error" | "Loading";
 

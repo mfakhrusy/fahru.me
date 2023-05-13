@@ -1,11 +1,5 @@
-import { MutableRefObject, useCallback } from "react";
-import {
-  setActiveDesktopApp as setActiveDesktopAppAction,
-  SetActiveDesktopAppAction,
-} from "@/store/desktop";
-import { useDispatch } from "react-redux";
-import { RootState } from "@/store";
-import { useSelector } from "react-redux";
+import { type MutableRefObject, useCallback } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   AppAboutMe,
   AppAboutSite,
@@ -18,6 +12,11 @@ import {
   AppWorkHistory,
 } from "@/components/desktop/apps";
 import type { DesktopApp } from "@/lib/desktop/desktop";
+import type { RootState } from "@/store";
+import {
+  setActiveDesktopApp as setActiveDesktopAppAction,
+  SetActiveDesktopAppAction,
+} from "@/store/desktop";
 
 type AppContentProps = {
   dragConstraintRef?: MutableRefObject<HTMLDivElement>;

@@ -1,9 +1,9 @@
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 import {
   AnimatedText,
   TerminalProcessAnimation,
 } from "@/components/shared/TerminalProcessAnimation";
-import { useRouter } from "next/router";
-import { useEffect } from "react";
 
 const makeText: () => Array<AnimatedText> = () => [
   { value: "Shutdown process is started", status: "Ok" },

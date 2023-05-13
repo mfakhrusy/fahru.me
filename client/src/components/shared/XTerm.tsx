@@ -1,17 +1,17 @@
-import { DesktopApp } from "@/lib/desktop/desktop";
-import { executeCommand } from "@/lib/terminal/terminal";
 import { Box } from "@chakra-ui/react";
 import styled from "@emotion/styled";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useCallback } from "react";
 import { isAndroid } from "react-device-detect";
+import { useDispatch } from "react-redux";
 import { Terminal as Terminal_ } from "xterm";
 import { FitAddon } from "xterm-addon-fit";
+import { DesktopApp } from "@/lib/desktop/desktop";
+import { executeCommand } from "@/lib/terminal/terminal";
 import {
   setActiveDesktopApp as setActiveDesktopAppAction,
   SetActiveDesktopAppAction,
 } from "@/store/desktop";
-import { useDispatch } from "react-redux";
 
 const Container = styled(Box)`
   .xterm-viewport {

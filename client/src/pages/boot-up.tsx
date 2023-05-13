@@ -1,8 +1,8 @@
+import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { BootUpView } from "@/components/bootUp/BootUpView";
 import { BlackTerminalPage } from "@/components/shared/BlackTerminalPage";
-import dynamic from "next/dynamic";
 
 function BootUpScreen() {
   const router = useRouter();

@@ -1,9 +1,9 @@
+import { Flex, Text } from "@chakra-ui/react";
+import { MutableRefObject, useEffect, useState } from "react";
 import { AppLayout } from "@/components/desktop/apps/AppLayout";
 import { Terminal } from "@/components/shared/Terminal";
 import useDelayRenderOnTouchDevice from "@/lib/useDelayRenderOnTouchDevice";
 import useIsTouchDevice from "@/lib/useIsTouchDevice";
-import { Flex, Text } from "@chakra-ui/react";
-import { MutableRefObject, useEffect, useState } from "react";
 
 type Props = {
   onClose: () => void;

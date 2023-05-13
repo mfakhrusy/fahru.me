@@ -1,9 +1,9 @@
-import useIsTouchDevice from "@/lib/useIsTouchDevice";
 import { Flex } from "@chakra-ui/layout";
 import { BackgroundProps } from "@chakra-ui/styled-system";
-import { MutableRefObject, PropsWithChildren } from "react";
-import { AppModalLayout } from "./AppModalLayout";
-import { AppWindowLayout } from "./AppWindowLayout";
+import type { MutableRefObject, PropsWithChildren } from "react";
+import { AppModalLayout } from "@/components/desktop/apps/AppModalLayout";
+import { AppWindowLayout } from "@/components/desktop/apps/AppWindowLayout";
+import useIsTouchDevice from "@/lib/useIsTouchDevice";
 
 type Props = {
   dragConstraintRef: MutableRefObject<HTMLDivElement>;

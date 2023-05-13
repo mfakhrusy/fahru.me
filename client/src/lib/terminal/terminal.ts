@@ -1,6 +1,6 @@
 import { NextRouter } from "next/router";
-import { Terminal as Terminal_ } from "xterm";
 import { isMobileOnly } from "react-device-detect";
+import { Terminal as Terminal_ } from "xterm";
 
 export type TerminalCommand =
   | "help"

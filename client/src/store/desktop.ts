@@ -1,5 +1,5 @@
-import { DesktopApp } from "@/lib/desktop/desktop";
 import { createSlice } from "@reduxjs/toolkit";
+import { DesktopApp } from "@/lib/desktop/desktop";
 
 export type AppMenuState =
   | {

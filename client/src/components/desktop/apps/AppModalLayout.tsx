@@ -1,3 +1,4 @@
+import { CloseIcon } from "@chakra-ui/icons";
 import {
   BackgroundProps,
   Flex,
@@ -5,8 +6,7 @@ import {
   ModalContent,
   Text,
 } from "@chakra-ui/react";
-import { CloseIcon } from "@chakra-ui/icons";
-import { PropsWithChildren } from "react";
+import type { PropsWithChildren } from "react";
 
 type Props = {
   title: string;

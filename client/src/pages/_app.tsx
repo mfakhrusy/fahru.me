@@ -1,5 +1,5 @@
-import { Provider } from "../Provider";
 import Head from "next/head";
+import { Provider } from "../Provider";
 import "xterm/css/xterm.css";
 import "@/styles/globals.css";
 import "@/styles/calendar.css";
