@@ -7,12 +7,9 @@ import { Flex } from "@chakra-ui/react";
 import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { DesktopIcon } from "./DesktopIcon";
+import { AppContent } from "./apps/AppContent";
 
-type Props = {
-  renderActiveApp: () => React.ReactNode;
-};
-
-export function DesktopTouchView({ renderActiveApp }: Props) {
+export function DesktopTouchView() {
   const dispatch = useDispatch();
   const setActiveDesktopApp = useCallback<
     (args: DesktopApp) => SetActiveDesktopAppAction
@@ -37,7 +34,7 @@ export function DesktopTouchView({ renderActiveApp }: Props) {
           />
         ))}
       </Flex>
-      {renderActiveApp()}
+      <AppContent />
     </Flex>
   );
 }
