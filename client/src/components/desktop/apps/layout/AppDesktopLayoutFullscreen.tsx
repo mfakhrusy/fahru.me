@@ -1,10 +1,9 @@
 import { Flex } from "@chakra-ui/layout";
-import { BackgroundProps } from "@chakra-ui/styled-system";
-import { PropsWithChildren, useCallback } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import type { BackgroundProps } from "@chakra-ui/styled-system";
+import { type PropsWithChildren, useCallback } from "react";
+import { useDispatch } from "react-redux";
 import { AppDesktopLayoutContent } from "@/components/desktop/apps/layout/AppDesktopLayoutContent";
 import zIndex from "@/lib/zIndex";
-import { RootState } from "@/store";
 import {
   SetActiveAppFullScreen,
   setActiveAppFullScreen,
@@ -26,10 +25,6 @@ export function AppDesktopLayoutFullscreen({
 }: PropsWithChildren<AppDesktopLayoutFullscreenProps>) {
   const dispatch = useDispatch();
 
-  const isFullScreen = useSelector<RootState, boolean>(
-    (state) => state.desktop.isActiveAppFullScreen
-  );
-
   const setFullScreen = useCallback<(args: boolean) => SetActiveAppFullScreen>(
     (payload) => dispatch(setActiveAppFullScreen(payload)),
     [dispatch]
@@ -45,7 +40,7 @@ export function AppDesktopLayoutFullscreen({
       zIndex={zIndex.fullScreenAppWindow}
     >
       <AppDesktopLayoutContent
-        isFullScreen={isFullScreen}
+        isFullScreen
         title={title}
         bgColor={bgColor}
         noPadding={noPadding}
