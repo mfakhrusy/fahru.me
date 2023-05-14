@@ -17,7 +17,7 @@ type Props = {
   bgColor?: BackgroundProps["bgColor"];
 };
 
-export function AppModalLayout({
+export function AppMobileLayout({
   title,
   children,
   onClose,

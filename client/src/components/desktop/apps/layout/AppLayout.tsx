@@ -1,7 +1,7 @@
 import { Flex } from "@chakra-ui/layout";
 import { BackgroundProps } from "@chakra-ui/styled-system";
 import type { MutableRefObject, PropsWithChildren } from "react";
-import { AppModalLayout } from "@/components/desktop/apps/layout/AppModalLayout";
+import { AppMobileLayout } from "@/components/desktop/apps/layout/AppMobileLayout";
 import { AppWindowLayout } from "@/components/desktop/apps/layout/AppWindowLayout";
 import useIsTouchDevice from "@/lib/useIsTouchDevice";
 
@@ -40,7 +40,7 @@ export function AppLayout({
   );
 
   return isTouchDevice ? (
-    <AppModalLayout
+    <AppMobileLayout
       title={title}
       onClose={onClose}
       isOpen={isOpen}
@@ -49,7 +49,7 @@ export function AppLayout({
       noPadding={noPadding}
     >
       {renderContent(noPadding)}
-    </AppModalLayout>
+    </AppMobileLayout>
   ) : (
     <AppWindowLayout
       onClose={onClose}
