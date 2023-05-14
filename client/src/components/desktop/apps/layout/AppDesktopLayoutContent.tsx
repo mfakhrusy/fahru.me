@@ -4,7 +4,7 @@ import { BackgroundProps } from "@chakra-ui/system";
 import { PropsWithChildren } from "react";
 import { BiExitFullscreen, BiFullscreen } from "react-icons/bi";
 
-type AppWindowLayoutContentProps = {
+type AppDesktopLayoutContentProps = {
   isFullScreen: boolean;
   title: string;
   bgColor?: BackgroundProps["bgColor"];
@@ -13,7 +13,7 @@ type AppWindowLayoutContentProps = {
   onClickFullscreen: (isFullscreen: boolean) => void;
 };
 
-export function AppWindowLayoutContent({
+export function AppDesktopLayoutContent({
   children,
   isFullScreen,
   title,
@@ -21,7 +21,7 @@ export function AppWindowLayoutContent({
   noPadding,
   onClickClose,
   onClickFullscreen,
-}: PropsWithChildren<AppWindowLayoutContentProps>) {
+}: PropsWithChildren<AppDesktopLayoutContentProps>) {
   return (
     <Flex
       w="100%"

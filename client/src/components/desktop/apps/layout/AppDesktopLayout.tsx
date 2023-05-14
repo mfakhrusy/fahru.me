@@ -3,8 +3,8 @@ import styled from "@emotion/styled";
 import { motion } from "framer-motion";
 import { type MutableRefObject, PropsWithChildren, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { AppWindowLayoutContent } from "@/components/desktop/apps/layout/AppWindowLayoutContent";
-import { AppWindowLayoutFullscreen } from "@/components/desktop/apps/layout/AppWindowLayoutFullscreen";
+import { AppDesktopLayoutContent } from "@/components/desktop/apps/layout/AppDesktopLayoutContent";
+import { AppDesktopLayoutFullscreen } from "@/components/desktop/apps/layout/AppDesktopLayoutFullscreen";
 import zIndex from "@/lib/zIndex";
 import { RootState } from "@/store";
 import {
@@ -25,7 +25,7 @@ const Container = styled(motion.div)`
   margin-left: 103vw;
 `;
 
-type AppWindowLayoutProps = {
+type AppDesktopLayoutProps = {
   dragConstraintRef?: MutableRefObject<HTMLDivElement>;
   title: string;
   bgColor?: BackgroundProps["bgColor"];
@@ -33,14 +33,14 @@ type AppWindowLayoutProps = {
   noPadding?: boolean;
 };
 
-export function AppWindowLayout({
+export function AppDesktopLayout({
   dragConstraintRef,
   children,
   bgColor,
   title,
   onClose,
   noPadding = false,
-}: PropsWithChildren<AppWindowLayoutProps>) {
+}: PropsWithChildren<AppDesktopLayoutProps>) {
   const isDraggable = dragConstraintRef ? true : false;
   const dispatch = useDispatch();
 
@@ -55,7 +55,7 @@ export function AppWindowLayout({
 
   if (isFullScreen) {
     return (
-      <AppWindowLayoutFullscreen
+      <AppDesktopLayoutFullscreen
         title={title}
         bgColor={bgColor}
         onClose={onClose}
@@ -75,7 +75,7 @@ export function AppWindowLayout({
           bounceDamping: 0,
         }}
       >
-        <AppWindowLayoutContent
+        <AppDesktopLayoutContent
           isFullScreen={isFullScreen}
           title={title}
           bgColor={bgColor}
@@ -84,7 +84,7 @@ export function AppWindowLayout({
           onClickFullscreen={setFullScreen}
         >
           {children}
-        </AppWindowLayoutContent>
+        </AppDesktopLayoutContent>
       </Container>
     );
   }
