@@ -3,6 +3,7 @@ import { Provider } from "../Provider";
 import "xterm/css/xterm.css";
 import "@/styles/globals.css";
 import "@/styles/calendar.css";
+import "@/styles/markdown.css";
 
 type Props = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

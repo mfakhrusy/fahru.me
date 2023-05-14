@@ -1,8 +1,63 @@
-import { Box, ListItem, Text, UnorderedList } from "@chakra-ui/react";
-import type { MutableRefObject } from "react";
+import { MutableRefObject, memo } from "react";
+import { ReactMarkdown } from "react-markdown/lib/react-markdown";
+import rehypeRaw from "rehype-raw";
 import { AppLayout } from "@/components/desktop/apps/AppLayout";
-import { InlineLink } from "@/components/shared/InlineLink";
 import useDelayRenderOnTouchDevice from "@/lib/useDelayRenderOnTouchDevice";
+
+const md = `
+## **About me**
+Fahru, Baltimore, MD, USA  
+Origin: Indonesia  
+
+<br />
+
+## **What I do**
+Software Engineer. Tinkerer. Hacker.  
+
+<br />
+
+## **Tech stacks I worked on**
+- Web stacks: HTML5, CSS3, Javascript
+- Typescript
+- ReasonML
+- React
+- NodeJS
+- PostgreSQL
+
+<br />
+
+## **Other skills**
+- CI/CD with Gitlab CI, and GitHub Action
+- Linux web server (nginx/apache) config
+- DNS config
+- Web animation & SVGs
+- Docker
+
+<br />
+
+## **Currently interested about:**
+- Web Assembly with either Rust/C++
+- Building graphic-intensive web application
+- Cyber Security (especially CTF)
+- etc... follow me on [mastodon](https://fosstodon.org/fahru) to find out!
+
+<br />
+
+## **My take on software engineering**
+- Problem solving at its core
+- Maintainable and readable code is important
+- Pragmatism on tight deadline
+- Programming language is just a tool
+
+<br />
+
+**Hobbies**
+- Learning stuffs. Anything, really.
+- Writing. I'm preparing a blog!
+- Building something cool. Tinkering about stuffs.
+- Reading articles on the web & cool stuffs on twitter, still working on developing reading books as a habit.
+
+`;
 
 type Props = {
   onClose: () => void;
@@ -10,7 +65,11 @@ type Props = {
   dragConstraintRef?: MutableRefObject<HTMLDivElement>;
 };
 
-export function AppAboutMe({ onClose, isOpen, dragConstraintRef }: Props) {
+export const AppAboutMe = memo(function AppAboutMe({
+  onClose,
+  isOpen,
+  dragConstraintRef,
+}: Props) {
   const shouldRenderContent = useDelayRenderOnTouchDevice({ delayAmount: 150 });
 
   return (
@@ -21,72 +80,10 @@ export function AppAboutMe({ onClose, isOpen, dragConstraintRef }: Props) {
       dragConstraintRef={dragConstraintRef}
     >
       {shouldRenderContent && (
-        <>
-          <Text fontWeight="bold">About me</Text>
-          <Text>Fahru, Baltimore, MD, USA</Text>
-          <Text>Origin: Indonesia</Text>
-          <Box minH="16px" />
-          <Text fontWeight="bold">What I do</Text>
-          <Text>Software Engineer. Tinkerer. Hacker.</Text>
-          <Box minH="16px" />
-          <Text fontWeight="bold">Tech stacks I worked on</Text>
-          <UnorderedList>
-            <ListItem>Web stacks: HTML5, CSS3, Javascript</ListItem>
-            <ListItem>Typescript</ListItem>
-            <ListItem>ReasonML</ListItem>
-            <ListItem>React</ListItem>
-            <ListItem>NodeJS</ListItem>
-            <ListItem>PostgreSQL</ListItem>
-          </UnorderedList>
-          <Box minH="16px" />
-          <Text fontWeight="bold">Other skills</Text>
-          <UnorderedList>
-            <ListItem>Basic Azure cloud</ListItem>
-            <ListItem>
-              CI/CD with Gitlab CI, Azure devops, and GitHub Action{" "}
-            </ListItem>
-            <ListItem>Linux web server (nginx/apache) config</ListItem>
-            <ListItem>DNS config</ListItem>
-            <ListItem>Web animation & SVGs</ListItem>
-            <ListItem>Docker</ListItem>
-          </UnorderedList>
-          <Box minH="16px" />
-          <Text fontWeight="bold">Currently interested about:</Text>
-          <UnorderedList>
-            <ListItem>Web Assembly with either Rust/C++</ListItem>
-            <ListItem>Building graphic-intensive web application</ListItem>
-            <ListItem>Cyber Security (especially CTF)</ListItem>
-            <ListItem>
-              etc... follow me on{" "}
-              <InlineLink href="https://twitter.com/f_fakhrusy">
-                twitter
-              </InlineLink>
-              to find out!
-            </ListItem>
-          </UnorderedList>
-          <Box minH="16px" />
-          <Text fontWeight="bold">My take on software engineering</Text>
-          <UnorderedList>
-            <ListItem>problem solving at its core</ListItem>
-            <ListItem>maintainable and readable code is important</ListItem>
-            <ListItem>pragmatism on tight deadline</ListItem>
-            <ListItem>programming language is just a tool</ListItem>
-          </UnorderedList>
-          <Box minH="16px" />
-          <Text fontWeight="bold">Hobbies</Text>
-          <UnorderedList>
-            <ListItem>Learning stuffs. Anything, really.</ListItem>
-            <ListItem>Writing. I&apos;m preparing a blog!</ListItem>
-            <ListItem>
-              Building something cool. Tinkering about stuffs.
-            </ListItem>
-            <ListItem>
-              Reading articles on the web & cool stuffs on twitter, still
-              working on developing reading books as a habit.
-            </ListItem>
-          </UnorderedList>
-        </>
+        <ReactMarkdown className="react-markdown" rehypePlugins={[rehypeRaw]}>
+          {md}
+        </ReactMarkdown>
       )}
     </AppLayout>
   );
-}
+});
