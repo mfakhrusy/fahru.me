@@ -1,7 +1,5 @@
-import { MutableRefObject, memo } from "react";
-import { AppLayout } from "@/components/desktop/apps/AppLayout";
-import { Markdown } from "@/components/shared/Markdown";
-import useDelayRenderOnTouchDevice from "@/lib/useDelayRenderOnTouchDevice";
+import { MutableRefObject } from "react";
+import { AppLayoutMarkdown } from "@/components/desktop/apps/AppLayoutMarkdown";
 
 const md = `
 ## **About me**
@@ -64,25 +62,14 @@ type Props = {
   dragConstraintRef?: MutableRefObject<HTMLDivElement>;
 };
 
-export const AppAboutMe = memo(function AppAboutMe({
-  onClose,
-  isOpen,
-  dragConstraintRef,
-}: Props) {
-  const shouldRenderContent = useDelayRenderOnTouchDevice({ delayAmount: 150 });
-
+export function AppAboutMe({ onClose, isOpen, dragConstraintRef }: Props) {
   return (
-    <AppLayout
+    <AppLayoutMarkdown
       title="About Me"
       onClose={onClose}
       isOpen={isOpen}
       dragConstraintRef={dragConstraintRef}
-    >
-      {shouldRenderContent && (
-        <Markdown>
-          {md}
-        </Markdown>
-      )}
-    </AppLayout>
+      markdown={md}
+    />
   );
-});
+}
