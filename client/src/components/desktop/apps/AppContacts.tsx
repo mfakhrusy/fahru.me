@@ -23,11 +23,16 @@ export function AppContacts({ onClose, isOpen, dragConstraintRef }: Props) {
       {shouldRenderContent && (
         <>
           <Text fontWeight="bold">Email</Text>
-          <InlineLink href="mailto:fakhrusy.m@gmail.com">
-            fakhrusy.m@gmail.com
+          <InlineLink href="mailto:hello@fahru.me">
+            hello@fahru.me
           </InlineLink>
           <Box minH="16px" />
-          <Text fontWeight="bold">Twitter</Text>
+          <Text fontWeight="bold">Mastodon</Text>
+          <InlineLink href="https://fosstodon.org/@fahru">
+            Fahru
+          </InlineLink>
+          <Box minH="16px" />
+          <Text fontWeight="bold">Twitter (inactive)</Text>
           <InlineLink href="https://twitter.com/f_fakhrusy">
             @f_fakhrusy
           </InlineLink>
@@ -47,7 +52,7 @@ export function AppContacts({ onClose, isOpen, dragConstraintRef }: Props) {
             href="https://www.linkedin.com/in/mfakhrusy/"
             outline="none"
           >
-            Muhamad Fakhrusy
+            M Fahru
           </InlineLink>
         </>
       )}

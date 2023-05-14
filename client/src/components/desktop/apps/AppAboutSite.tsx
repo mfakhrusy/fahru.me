@@ -30,9 +30,9 @@ export function AppAboutSite({ onClose, isOpen, dragConstraintRef }: Props) {
           <Link
             textDecor="underline"
             target="_blank"
-            href="https://github.com/mfakhrusy/fakhrusy.com"
+            href="https://github.com/mfakhrusy/fahru.me"
           >
-            https://github.com/mfakhrusy/fakhrusy.com <ExternalLinkIcon />
+            https://github.com/mfakhrusy/fahru.me <ExternalLinkIcon />
           </Link>
           <Box minH={4} />
           <Text fontWeight="bold">Tech Stack & Libraries</Text>
