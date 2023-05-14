@@ -1,3 +1,7 @@
 .react-markdown ul {
   padding-left: 1rem;
 }
+
+.react-markdown a {
+  text-decoration: underline;
+}
