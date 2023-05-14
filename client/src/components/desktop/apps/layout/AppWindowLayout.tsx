@@ -1,10 +1,10 @@
-import { Flex } from "@chakra-ui/layout";
 import { BackgroundProps } from "@chakra-ui/styled-system";
 import styled from "@emotion/styled";
 import { motion } from "framer-motion";
 import { type MutableRefObject, PropsWithChildren, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppWindowLayoutContent } from "@/components/desktop/apps/layout/AppWindowLayoutContent";
+import { AppWindowLayoutFullscreen } from "@/components/desktop/apps/layout/AppWindowLayoutFullscreen";
 import zIndex from "@/lib/zIndex";
 import { RootState } from "@/store";
 import {
@@ -55,25 +55,11 @@ export function AppWindowLayout({
 
   if (isFullScreen) {
     return (
-      <Flex
-        w="100vw"
-        h="100vh"
-        pos="absolute"
-        top="33.3%"
-        left="33.3%"
-        zIndex={zIndex.fullScreenAppWindow}
-      >
-        <AppWindowLayoutContent
-          isFullScreen={isFullScreen}
-          title={title}
-          bgColor={bgColor}
-          noPadding={noPadding}
-          onClickClose={onClose}
-          onClickFullscreen={setFullScreen}
-        >
-          {children}
-        </AppWindowLayoutContent>
-      </Flex>
+      <AppWindowLayoutFullscreen
+        title={title}
+        bgColor={bgColor}
+        onClose={onClose}
+      />
     );
   } else {
     return (
