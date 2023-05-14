@@ -44,11 +44,11 @@ export function ProcessAnimatedLine({
         fontSize: isTouchDevice ? "12px" : "18px",
       }}
       animate={{
-        opacity: ["0%", "100%"],
+        opacity: [0, 1, 1],
       }}
       transition={{
-        times: [startTime, endTime],
-        ease: [0.7, 0, 0.84, 0],
+        times: [startTime, endTime, 1],
+        ease: "linear",
         duration,
       }}
     >
