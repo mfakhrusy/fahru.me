@@ -26,7 +26,7 @@ const Container = styled(motion.div)`
   margin-left: 103vw;
 `;
 
-type Props = {
+type AppWindowLayoutProps = {
   dragConstraintRef?: MutableRefObject<HTMLDivElement>;
   title: string;
   bgColor?: BackgroundProps["bgColor"];
@@ -41,7 +41,7 @@ export function AppWindowLayout({
   title,
   onClose,
   noPadding = false,
-}: PropsWithChildren<Props>) {
+}: PropsWithChildren<AppWindowLayoutProps>) {
   const isDraggable = dragConstraintRef ? true : false;
   const dispatch = useDispatch();
 
@@ -54,7 +54,76 @@ export function AppWindowLayout({
     [dispatch]
   );
 
-  const renderContent = () => (
+  if (isFullScreen) {
+    return (
+      <Flex
+        w="100vw"
+        h="100vh"
+        pos="absolute"
+        top="33.3%"
+        left="33.3%"
+        zIndex={zIndex.fullScreenAppWindow}
+      >
+        <AppWindowLayoutContent
+          isFullScreen={isFullScreen}
+          title={title}
+          bgColor={bgColor}
+          noPadding={noPadding}
+          onClickClose={onClose}
+          onClickFullscreen={setFullScreen}
+        >
+          {children}
+        </AppWindowLayoutContent>
+      </Flex>
+    );
+  } else {
+    return (
+      <Container
+        dragConstraints={dragConstraintRef}
+        drag={isDraggable}
+        dragElastic={0}
+        dragTransition={{
+          bounceStiffness: 0,
+          min: 0,
+          max: 0,
+          power: 0,
+          bounceDamping: 0,
+        }}
+      >
+        <AppWindowLayoutContent
+          isFullScreen={isFullScreen}
+          title={title}
+          bgColor={bgColor}
+          noPadding={noPadding}
+          onClickClose={onClose}
+          onClickFullscreen={setFullScreen}
+        >
+          {children}
+        </AppWindowLayoutContent>
+      </Container>
+    );
+  }
+}
+
+type AppWindowLayoutContentProps = {
+  isFullScreen: boolean;
+  title: string;
+  bgColor?: BackgroundProps["bgColor"];
+  noPadding?: boolean;
+  onClickClose: () => void;
+  onClickFullscreen: (isFullscreen: boolean) => void;
+};
+
+function AppWindowLayoutContent({
+  children,
+  isFullScreen,
+  title,
+  bgColor,
+  noPadding,
+  onClickClose,
+  onClickFullscreen,
+}: PropsWithChildren<AppWindowLayoutContentProps>) {
+  return (
     <Flex
       w="100%"
       h={isFullScreen ? "100%" : "726px"}
@@ -93,7 +162,7 @@ export function AppWindowLayout({
             alignItems="center"
             cursor="pointer"
             onClick={() => {
-              setFullScreen(!isFullScreen);
+              onClickFullscreen(!isFullScreen);
             }}
             _hover={{ bgColor: "debian.600" }}
           >
@@ -109,7 +178,7 @@ export function AppWindowLayout({
           <Flex
             alignItems="center"
             cursor="pointer"
-            onClick={onClose}
+            onClick={onClickClose}
             _hover={{ bgColor: "debian.600" }}
             borderTopRightRadius="10px"
           >
@@ -130,36 +199,4 @@ export function AppWindowLayout({
       </Flex>
     </Flex>
   );
-
-  if (isFullScreen) {
-    return (
-      <Flex
-        w="100vw"
-        h="100vh"
-        pos="absolute"
-        top="33.3%"
-        left="33.3%"
-        zIndex={zIndex.fullScreenAppWindow}
-      >
-        {renderContent()}
-      </Flex>
-    );
-  } else {
-    return (
-      <Container
-        dragConstraints={dragConstraintRef}
-        drag={isDraggable}
-        dragElastic={0}
-        dragTransition={{
-          bounceStiffness: 0,
-          min: 0,
-          max: 0,
-          power: 0,
-          bounceDamping: 0,
-        }}
-      >
-        {renderContent()}
-      </Container>
-    );
-  }
 }
