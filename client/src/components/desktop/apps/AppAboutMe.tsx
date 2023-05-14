@@ -1,7 +1,6 @@
 import { MutableRefObject, memo } from "react";
-import { ReactMarkdown } from "react-markdown/lib/react-markdown";
-import rehypeRaw from "rehype-raw";
 import { AppLayout } from "@/components/desktop/apps/AppLayout";
+import { Markdown } from "@/components/shared/Markdown";
 import useDelayRenderOnTouchDevice from "@/lib/useDelayRenderOnTouchDevice";
 
 const md = `
@@ -80,9 +79,9 @@ export const AppAboutMe = memo(function AppAboutMe({
       dragConstraintRef={dragConstraintRef}
     >
       {shouldRenderContent && (
-        <ReactMarkdown className="react-markdown" rehypePlugins={[rehypeRaw]}>
+        <Markdown>
           {md}
-        </ReactMarkdown>
+        </Markdown>
       )}
     </AppLayout>
   );
