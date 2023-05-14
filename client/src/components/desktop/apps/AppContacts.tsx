@@ -1,6 +1,6 @@
 import { Box, Text } from "@chakra-ui/react";
 import type { MutableRefObject } from "react";
-import { AppLayout } from "@/components/desktop/apps/AppLayout";
+import { AppLayout } from "@/components/desktop/apps/layout/AppLayout";
 import { InlineLink } from "@/components/shared/InlineLink";
 import useDelayRenderOnTouchDevice from "@/lib/useDelayRenderOnTouchDevice";
 

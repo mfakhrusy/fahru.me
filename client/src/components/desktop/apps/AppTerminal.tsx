@@ -1,6 +1,6 @@
 import { Flex, Text } from "@chakra-ui/react";
 import { MutableRefObject, useEffect, useState } from "react";
-import { AppLayout } from "@/components/desktop/apps/AppLayout";
+import { AppLayout } from "@/components/desktop/apps/layout/AppLayout";
 import { Terminal } from "@/components/shared/Terminal";
 import useDelayRenderOnTouchDevice from "@/lib/useDelayRenderOnTouchDevice";
 import useIsTouchDevice from "@/lib/useIsTouchDevice";

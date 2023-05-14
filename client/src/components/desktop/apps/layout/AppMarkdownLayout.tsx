@@ -1,9 +1,9 @@
 import { MutableRefObject, memo } from "react";
-import { AppLayout } from "@/components/desktop/apps/AppLayout";
+import { AppLayout } from "@/components/desktop/apps/layout/AppLayout";
 import { Markdown } from "@/components/shared/Markdown";
 import useDelayRenderOnTouchDevice from "@/lib/useDelayRenderOnTouchDevice";
 
-type AppLayoutMarkdownProps = {
+type AppMarkdownLayoutProps = {
   onClose: () => void;
   isOpen: boolean;
   dragConstraintRef?: MutableRefObject<HTMLDivElement>;
@@ -11,13 +11,13 @@ type AppLayoutMarkdownProps = {
   title: string;
 };
 
-export const AppLayoutMarkdown = memo(function AppAboutMe({
+export const AppMarkdownLayout = memo(function AppAboutMe({
   onClose,
   isOpen,
   dragConstraintRef,
   markdown,
   title,
-}: AppLayoutMarkdownProps) {
+}: AppMarkdownLayoutProps) {
   const shouldRenderContent = useDelayRenderOnTouchDevice({ delayAmount: 150 });
 
   return (

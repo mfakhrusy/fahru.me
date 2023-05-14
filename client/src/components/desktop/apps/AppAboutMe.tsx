@@ -1,5 +1,5 @@
 import { MutableRefObject } from "react";
-import { AppLayoutMarkdown } from "@/components/desktop/apps/AppLayoutMarkdown";
+import { AppMarkdownLayout } from "@/components/desktop/apps/layout/AppMarkdownLayout";
 
 const md = `
 ## **About me**
@@ -64,7 +64,7 @@ type Props = {
 
 export function AppAboutMe({ onClose, isOpen, dragConstraintRef }: Props) {
   return (
-    <AppLayoutMarkdown
+    <AppMarkdownLayout
       title="About Me"
       onClose={onClose}
       isOpen={isOpen}

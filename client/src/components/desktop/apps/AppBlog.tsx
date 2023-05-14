@@ -2,7 +2,7 @@ import { ExternalLinkIcon } from "@chakra-ui/icons";
 import { Button, Flex, Heading, Text } from "@chakra-ui/react";
 import { type MutableRefObject, useState } from "react";
 import { useSelector } from "react-redux";
-import { AppLayout } from "@/components/desktop/apps/AppLayout";
+import { AppLayout } from "@/components/desktop/apps/layout/AppLayout";
 import useDelayRenderOnTouchDevice from "@/lib/useDelayRenderOnTouchDevice";
 import useIsTouchDevice from "@/lib/useIsTouchDevice";
 import { RootState } from "@/store";

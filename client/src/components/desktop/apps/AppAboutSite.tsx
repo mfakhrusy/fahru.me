@@ -1,7 +1,7 @@
 import { ExternalLinkIcon } from "@chakra-ui/icons";
 import { Box, Link, ListItem, Text, UnorderedList } from "@chakra-ui/react";
 import type { MutableRefObject } from "react";
-import { AppLayout } from "@/components/desktop/apps/AppLayout";
+import { AppLayout } from "@/components/desktop/apps/layout/AppLayout";
 import useDelayRenderOnTouchDevice from "@/lib/useDelayRenderOnTouchDevice";
 
 type Props = {

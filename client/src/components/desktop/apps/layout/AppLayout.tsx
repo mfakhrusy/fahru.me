@@ -1,8 +1,8 @@
 import { Flex } from "@chakra-ui/layout";
 import { BackgroundProps } from "@chakra-ui/styled-system";
 import type { MutableRefObject, PropsWithChildren } from "react";
-import { AppModalLayout } from "@/components/desktop/apps/AppModalLayout";
-import { AppWindowLayout } from "@/components/desktop/apps/AppWindowLayout";
+import { AppModalLayout } from "@/components/desktop/apps/layout/AppModalLayout";
+import { AppWindowLayout } from "@/components/desktop/apps/layout/AppWindowLayout";
 import useIsTouchDevice from "@/lib/useIsTouchDevice";
 
 type Props = {
