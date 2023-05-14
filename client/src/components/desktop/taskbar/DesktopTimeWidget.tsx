@@ -34,7 +34,7 @@ export function DesktopTimeWidget({ forwardRef }: Props) {
     >
       <Flex>
         <Flex flexDir="column" p="0 1rem">
-          <Text fontSize="4rem" mb="-10px" mt="-12px">
+          <Text fontSize="4rem" mb="-10px" mt="-5px">
             {format(parseISO(currentTime), "HH:mm:ss")}
           </Text>
           <Text
