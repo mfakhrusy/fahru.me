@@ -3,7 +3,7 @@ import { AppMarkdownLayout } from "@/components/desktop/apps/layout/AppMarkdownL
 
 const md = `
 ## **About me**
-Fahru, Baltimore, MD, USA  
+Fahru, Tucson, AZ, USA  
 Origin: Indonesia  
 
 <br />
