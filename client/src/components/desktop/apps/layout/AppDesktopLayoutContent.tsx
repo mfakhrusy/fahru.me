@@ -1,7 +1,7 @@
 import { CloseIcon } from "@chakra-ui/icons";
 import { Flex, Icon, Text } from "@chakra-ui/react";
-import { BackgroundProps } from "@chakra-ui/system";
-import { PropsWithChildren } from "react";
+import type { BackgroundProps } from "@chakra-ui/system";
+import type { PointerEvent, PropsWithChildren } from "react";
 import { BiExitFullscreen, BiFullscreen } from "react-icons/bi";
 
 type AppDesktopLayoutContentProps = {
@@ -11,6 +11,7 @@ type AppDesktopLayoutContentProps = {
   noPadding?: boolean;
   onClickClose: () => void;
   onClickFullscreen: (isFullscreen: boolean) => void;
+  onPointerDown?: (e: PointerEvent<HTMLParagraphElement>) => void;
 };
 
 export function AppDesktopLayoutContent({
@@ -21,6 +22,7 @@ export function AppDesktopLayoutContent({
   noPadding,
   onClickClose,
   onClickFullscreen,
+  onPointerDown,
 }: PropsWithChildren<AppDesktopLayoutContentProps>) {
   return (
     <Flex
@@ -38,6 +40,9 @@ export function AppDesktopLayoutContent({
         borderTop="1px solid rgba(0, 0, 0, 0.1)"
         borderRight="1px solid rgba(0, 0, 0, 0.1)"
         borderLeft="1px solid rgba(0, 0, 0, 0.1)"
+        onPointerDown={(e) => {
+          onPointerDown?.(e);
+        }}
       >
         <Text
           display="flex"
@@ -93,6 +98,7 @@ export function AppDesktopLayoutContent({
         flexDir="column"
         h={isFullScreen ? "100%" : "unset"}
         minH="500px"
+        cursor="default"
       >
         {children}
       </Flex>

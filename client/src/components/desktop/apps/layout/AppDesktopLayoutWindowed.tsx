@@ -1,6 +1,6 @@
-import { BackgroundProps } from "@chakra-ui/styled-system";
+import type { BackgroundProps } from "@chakra-ui/styled-system";
 import styled from "@emotion/styled";
-import { motion } from "framer-motion";
+import { motion, useDragControls } from "framer-motion";
 import {
   type MutableRefObject,
   type PropsWithChildren,
@@ -43,13 +43,15 @@ export function AppDesktopLayoutWindowed({
   onClose,
   noPadding = false,
 }: PropsWithChildren<AppDesktopLayoutWindowedProps>) {
-  const isDraggable = dragConstraintRef ? true : false;
   const dispatch = useDispatch();
+  const dragControls = useDragControls();
 
   const setFullScreen = useCallback<(args: boolean) => SetActiveAppFullScreen>(
     (payload) => dispatch(setActiveAppFullScreen(payload)),
     [dispatch]
   );
+
+  const isDraggable = dragConstraintRef ? true : false;
 
   return (
     <Container
@@ -63,6 +65,8 @@ export function AppDesktopLayoutWindowed({
         power: 0,
         bounceDamping: 0,
       }}
+      dragListener={false}
+      dragControls={dragControls}
     >
       <AppDesktopLayoutContent
         isFullScreen={false}
@@ -71,6 +75,9 @@ export function AppDesktopLayoutWindowed({
         noPadding={noPadding}
         onClickClose={onClose}
         onClickFullscreen={setFullScreen}
+        onPointerDown={(e) => {
+          dragControls.start(e);
+        }}
       >
         {children}
       </AppDesktopLayoutContent>
