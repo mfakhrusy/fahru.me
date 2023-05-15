@@ -1,7 +1,7 @@
-import { Flex } from "@chakra-ui/layout";
-import { BackgroundProps } from "@chakra-ui/styled-system";
+import type { BackgroundProps } from "@chakra-ui/styled-system";
 import type { MutableRefObject, PropsWithChildren } from "react";
 import { AppDesktopLayout } from "@/components/desktop/apps/layout/AppDesktopLayout";
+import { AppLayoutContent } from "@/components/desktop/apps/layout/AppLayoutContent";
 import { AppMobileLayout } from "@/components/desktop/apps/layout/AppMobileLayout";
 import useIsTouchDevice from "@/lib/useIsTouchDevice";
 
@@ -27,18 +27,6 @@ export function AppLayout({
 }: PropsWithChildren<Props>) {
   const isTouchDevice = useIsTouchDevice();
 
-  const renderContent = (noPadding: boolean) => (
-    <Flex
-      flexDir="column"
-      w="100%"
-      h={isTouchDevice ? "auto" : "unset"}
-      minH={isTouchDevice ? "calc(100vh - 57px)" : "unset"}
-      pb={noPadding ? 0 : 4}
-    >
-      {children}
-    </Flex>
-  );
-
   return isTouchDevice ? (
     <AppMobileLayout
       title={title}
@@ -48,7 +36,7 @@ export function AppLayout({
       isScrollable={isScrollable}
       noPadding={noPadding}
     >
-      {renderContent(noPadding)}
+      <AppLayoutContent noPadding={noPadding}>{children}</AppLayoutContent>
     </AppMobileLayout>
   ) : (
     <AppDesktopLayout
@@ -58,7 +46,7 @@ export function AppLayout({
       bgColor={bgColor}
       noPadding={noPadding}
     >
-      {renderContent(noPadding)}
+      <AppLayoutContent noPadding={noPadding}>{children}</AppLayoutContent>
     </AppDesktopLayout>
   );
 }
