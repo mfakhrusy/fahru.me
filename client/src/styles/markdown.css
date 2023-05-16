@@ -11,6 +11,11 @@
   font-weight: 700;
 }
 
+.react-markdown h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
 .react-markdown a {
   text-decoration: underline;
 }
