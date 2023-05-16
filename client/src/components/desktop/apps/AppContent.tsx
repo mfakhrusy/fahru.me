@@ -25,13 +25,13 @@ type AppContentProps = {
 export const AppContent = ({ dragConstraintRef }: AppContentProps) => {
   const dispatch = useDispatch();
 
-  const setActiveDesktopApp = useCallback<
-    (args: DesktopApp) => SetActiveDesktopAppAction
-  >((payload) => dispatch(setActiveDesktopAppAction(payload)), [dispatch]);
-
   const activeDesktopApp = useSelector<RootState, DesktopApp>(
     (state) => state.desktop.activeDesktopApp
   );
+
+  const setActiveDesktopApp = useCallback<
+    (args: DesktopApp) => SetActiveDesktopAppAction
+  >((payload) => dispatch(setActiveDesktopAppAction(payload)), [dispatch]);
 
   const onCloseApp = () => setActiveDesktopApp("DesktopMainView");
 
@@ -41,7 +41,6 @@ export const AppContent = ({ dragConstraintRef }: AppContentProps) => {
         <AppTerminal
           dragConstraintRef={dragConstraintRef}
           isOpen={activeDesktopApp === "AppTerminal"}
-          onClose={onCloseApp}
         />
       );
     case "AppAboutMe":
@@ -49,7 +48,6 @@ export const AppContent = ({ dragConstraintRef }: AppContentProps) => {
         <AppAboutMe
           dragConstraintRef={dragConstraintRef}
           isOpen={activeDesktopApp === "AppAboutMe"}
-          onClose={onCloseApp}
         />
       );
     case "AppAboutSite":
@@ -57,7 +55,6 @@ export const AppContent = ({ dragConstraintRef }: AppContentProps) => {
         <AppAboutSite
           dragConstraintRef={dragConstraintRef}
           isOpen={activeDesktopApp === "AppAboutSite"}
-          onClose={onCloseApp}
         />
       );
     case "AppWorkHistory":

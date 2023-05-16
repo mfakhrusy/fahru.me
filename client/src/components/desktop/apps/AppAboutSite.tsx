@@ -90,17 +90,15 @@ original logo creator [u/Ishaan_P](https://www.reddit.com/user/Ishaan_P)
 `;
 
 type Props = {
-  onClose: () => void;
   isOpen: boolean;
   dragConstraintRef?: MutableRefObject<HTMLDivElement>;
 };
 
-export function AppAboutSite({ onClose, isOpen, dragConstraintRef }: Props) {
+export function AppAboutSite({ isOpen, dragConstraintRef }: Props) {
   return (
     <AppMarkdownLayout
       markdown={md}
       title="About Site"
-      onClose={onClose}
       isOpen={isOpen}
       dragConstraintRef={dragConstraintRef}
     />

@@ -57,16 +57,14 @@ Software Engineer. Tinkerer. Hacker.
 `;
 
 type Props = {
-  onClose: () => void;
   isOpen: boolean;
   dragConstraintRef?: MutableRefObject<HTMLDivElement>;
 };
 
-export function AppAboutMe({ onClose, isOpen, dragConstraintRef }: Props) {
+export function AppAboutMe({ isOpen, dragConstraintRef }: Props) {
   return (
     <AppMarkdownLayout
       title="About Me"
-      onClose={onClose}
       isOpen={isOpen}
       dragConstraintRef={dragConstraintRef}
       markdown={md}
