@@ -69,7 +69,6 @@ export const AppContent = ({ dragConstraintRef }: AppContentProps) => {
         <AppEducation
           dragConstraintRef={dragConstraintRef}
           isOpen={activeDesktopApp === "AppEducation"}
-          onClose={onCloseApp}
         />
       );
     case "AppContacts":
