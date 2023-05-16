@@ -62,7 +62,6 @@ export const AppContent = ({ dragConstraintRef }: AppContentProps) => {
         <AppWorkHistory
           dragConstraintRef={dragConstraintRef}
           isOpen={activeDesktopApp === "AppWorkHistory"}
-          onClose={onCloseApp}
         />
       );
     case "AppEducation":

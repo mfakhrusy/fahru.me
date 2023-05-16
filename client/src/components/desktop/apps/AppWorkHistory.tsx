@@ -98,7 +98,6 @@ Project:
 `;
 
 type Props = {
-  onClose: () => void;
   isOpen: boolean;
   dragConstraintRef?: MutableRefObject<HTMLDivElement>;
 };
