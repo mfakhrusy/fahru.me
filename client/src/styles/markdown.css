@@ -2,6 +2,15 @@
   padding-left: 1rem;
 }
 
+.react-markdown ol {
+  padding-left: 1rem;
+}
+
+.react-markdown h1 {
+  font-size: 2rem;
+  font-weight: 700;
+}
+
 .react-markdown a {
   text-decoration: underline;
 }
