@@ -76,7 +76,6 @@ export const AppContent = ({ dragConstraintRef }: AppContentProps) => {
         <AppContacts
           dragConstraintRef={dragConstraintRef}
           isOpen={activeDesktopApp === "AppContacts"}
-          onClose={onCloseApp}
         />
       );
     case "AppProjects":
@@ -100,7 +99,6 @@ export const AppContent = ({ dragConstraintRef }: AppContentProps) => {
         <AppTodo
           dragConstraintRef={dragConstraintRef}
           isOpen={activeDesktopApp === "AppTodo"}
-          onClose={onCloseApp}
         />
       );
     default:

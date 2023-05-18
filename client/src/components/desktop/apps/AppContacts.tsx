@@ -1,57 +1,51 @@
-import { Box, Text } from "@chakra-ui/react";
 import type { MutableRefObject } from "react";
-import { AppLayout } from "@/components/desktop/apps/layout/AppLayout";
-import { InlineLink } from "@/components/shared/InlineLink";
-import useDelayRenderOnTouchDevice from "@/lib/useDelayRenderOnTouchDevice";
+import { AppMarkdownLayout } from "@/components/desktop/apps/layout/AppMarkdownLayout";
+
+const md = `
+ **Email**
+
+[hello@fahru.me](mailto:hello@fahru.me)
+
+<br />
+
+**Mastodon**
+
+[Fahru](https://fosstodon.org/@fahru)
+
+<br />
+
+**Twitter (inactive)**
+
+[@f_fakhrusy](https://twitter.com/f_fakhrusy)
+
+<br />
+
+**GitHub**
+
+[mfakhrusy](https://github.com/mfakhrusy/)
+
+<br />
+
+**Stack Overflow**
+
+[mfakhrusy](https://stackoverflow.com/users/5835100/mfakhrusy)
+
+<br />
+
+**LinkedIn**
+
+[M Fahru](https://www.linkedin.com/in/mfakhrusy/)
+ 
+`;
 
 type Props = {
-  onClose: () => void;
   isOpen: boolean;
   dragConstraintRef?: MutableRefObject<HTMLDivElement>;
 };
 
-export function AppContacts({ onClose, isOpen, dragConstraintRef }: Props) {
-  const shouldRenderContent = useDelayRenderOnTouchDevice({ delayAmount: 150 });
+export function AppContacts({ isOpen, dragConstraintRef }: Props) {
 
   return (
-    <AppLayout
-      title="Contacts"
-      onClose={onClose}
-      isOpen={isOpen}
-      dragConstraintRef={dragConstraintRef}
-    >
-      {shouldRenderContent && (
-        <>
-          <Text fontWeight="bold">Email</Text>
-          <InlineLink href="mailto:hello@fahru.me">hello@fahru.me</InlineLink>
-          <Box minH="16px" />
-          <Text fontWeight="bold">Mastodon</Text>
-          <InlineLink href="https://fosstodon.org/@fahru">Fahru</InlineLink>
-          <Box minH="16px" />
-          <Text fontWeight="bold">Twitter (inactive)</Text>
-          <InlineLink href="https://twitter.com/f_fakhrusy">
-            @f_fakhrusy
-          </InlineLink>
-          <Box minH="16px" />
-          <Text fontWeight="bold">GitHub</Text>
-          <InlineLink href="https://github.com/mfakhrusy/">
-            mfakhrusy
-          </InlineLink>
-          <Box minH="16px" />
-          <Text fontWeight="bold">Stack Overflow</Text>
-          <InlineLink href="https://stackoverflow.com/users/5835100/mfakhrusy">
-            mfakhrusy
-          </InlineLink>
-          <Box minH="16px" />
-          <Text fontWeight="bold">LinkedIn</Text>
-          <InlineLink
-            href="https://www.linkedin.com/in/mfakhrusy/"
-            outline="none"
-          >
-            M Fahru
-          </InlineLink>
-        </>
-      )}
-    </AppLayout>
+    <AppMarkdownLayout markdown={md} title="Contacts" isOpen={isOpen} dragConstraintRef={dragConstraintRef} />
   );
 }
