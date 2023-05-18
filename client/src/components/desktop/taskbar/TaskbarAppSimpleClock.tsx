@@ -38,7 +38,6 @@ export function TaskbarAppSimpleClock({ forwardRef }: Props) {
 
   return (
     <Flex
-      ml="auto"
       alignItems="center"
       pr={4}
       cursor="pointer"
@@ -46,7 +45,7 @@ export function TaskbarAppSimpleClock({ forwardRef }: Props) {
       onClick={() => setTimeWidget(!isTimeWidgetActive)}
       ref={forwardRef}
     >
-      <Divider orientation="vertical" mr={4} />
+      <Divider orientation="vertical" mx={4} />
       <Text display="inline">{format(parseISO(currentTime), "HH")}</Text>
       <TextContainer display="inline" mb="4px" mr="1px" ml="1px">
         :

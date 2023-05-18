@@ -5,17 +5,18 @@ import { TaskbarAppMenu } from "@/components/desktop/taskbar/TaskbarAppMenu";
 import { TaskbarAppMenuButton } from "@/components/desktop/taskbar/TaskbarAppMenuButton";
 import { TaskbarAppSimpleClock } from "@/components/desktop/taskbar/TaskbarAppSimpleClock";
 import { TaskbarTimeWidget } from "@/components/desktop/taskbar/TaskbarTimeWidget";
+import { TaskbarWifiIcon } from "@/components/desktop/taskbar/TaskbarWifiIcon";
 import { DesktopApp } from "@/lib/desktop/desktop";
 import height from "@/lib/height";
 import useClickOutside from "@/lib/useClickOutside";
 import zIndex from "@/lib/zIndex";
-import { RootState } from "@/store";
+import type { RootState } from "@/store";
 import {
   EnableAppMenuAction,
   enableAppMenu as enableAppMenuAction,
   disableAppMenu as disableAppMenuAction,
   setFocusedDesktopApp as setFocusedDesktopAppAction,
-  AppMenuState,
+  type AppMenuState,
   SetFocusedDesktopAppAction,
   SetTimeWidgetActive,
   setTimeWidgetActive,
@@ -89,6 +90,7 @@ export function Taskbar() {
           onClick={onClickApplications}
           forwardRef={appMenuButtonRef}
         />
+        <TaskbarWifiIcon />
         <TaskbarAppSimpleClock forwardRef={clockRef} />
       </Flex>
       <TaskbarAppMenu
