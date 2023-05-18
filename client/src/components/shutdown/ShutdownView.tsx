@@ -1,8 +1,8 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { BlackTerminalPage } from "@/components/shared/BlackTerminalPage";
+import { Typewriter } from "@/components/shared/Typewriter";
 import useIsTouchDevice from "@/lib/useIsTouchDevice";
-import { BlackTerminalPage } from "../shared/BlackTerminalPage";
-import { Typewriter } from "../shared/Typewriter";
 
 type State = "blank" | "initialActivation";
 
