@@ -1,5 +1,5 @@
-import { type MutableRefObject, useCallback } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import type { MutableRefObject } from "react";
+import { useSelector } from "react-redux";
 import {
   AppAboutMe,
   AppAboutSite,
@@ -13,27 +13,14 @@ import {
 } from "@/components/desktop/apps";
 import type { DesktopApp } from "@/lib/desktop/desktop";
 import type { RootState } from "@/store";
-import {
-  setActiveDesktopApp as setActiveDesktopAppAction,
-  SetActiveDesktopAppAction,
-} from "@/store/desktop";
-
 type AppContentProps = {
   dragConstraintRef?: MutableRefObject<HTMLDivElement>;
 };
 
 export const AppContent = ({ dragConstraintRef }: AppContentProps) => {
-  const dispatch = useDispatch();
-
   const activeDesktopApp = useSelector<RootState, DesktopApp>(
     (state) => state.desktop.activeDesktopApp
   );
-
-  const setActiveDesktopApp = useCallback<
-    (args: DesktopApp) => SetActiveDesktopAppAction
-  >((payload) => dispatch(setActiveDesktopAppAction(payload)), [dispatch]);
-
-  const onCloseApp = () => setActiveDesktopApp("DesktopMainView");
 
   switch (activeDesktopApp) {
     case "AppTerminal":
@@ -83,7 +70,6 @@ export const AppContent = ({ dragConstraintRef }: AppContentProps) => {
         <AppProjects
           dragConstraintRef={dragConstraintRef}
           isOpen={activeDesktopApp === "AppProjects"}
-          onClose={onCloseApp}
         />
       );
     case "AppBlog":
@@ -91,7 +77,6 @@ export const AppContent = ({ dragConstraintRef }: AppContentProps) => {
         <AppBlog
           dragConstraintRef={dragConstraintRef}
           isOpen={activeDesktopApp === "AppBlog"}
-          onClose={onCloseApp}
         />
       );
     case "AppTodo":

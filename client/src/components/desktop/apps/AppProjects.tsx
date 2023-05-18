@@ -1,17 +1,29 @@
 import { ExternalLinkIcon } from "@chakra-ui/icons";
 import { Divider, Flex, Heading, Image, Text, Link } from "@chakra-ui/react";
-import type { MutableRefObject } from "react";
+import { type MutableRefObject, useCallback } from "react";
+import { useDispatch } from "react-redux";
 import { AppLayout } from "@/components/desktop/apps/layout/AppLayout";
+import type { DesktopApp } from "@/lib/desktop/desktop";
 import useDelayRenderOnTouchDevice from "@/lib/useDelayRenderOnTouchDevice";
+import {
+  setActiveDesktopApp as setActiveDesktopAppAction,
+  SetActiveDesktopAppAction,
+} from "@/store/desktop";
 
 type Props = {
-  onClose: () => void;
   isOpen: boolean;
   dragConstraintRef?: MutableRefObject<HTMLDivElement>;
 };
 
-export function AppProjects({ onClose, isOpen, dragConstraintRef }: Props) {
+export function AppProjects({ isOpen, dragConstraintRef }: Props) {
   const shouldRenderContent = useDelayRenderOnTouchDevice({ delayAmount: 150 });
+  const dispatch = useDispatch();
+
+  const setActiveDesktopApp = useCallback<
+    (args: DesktopApp) => SetActiveDesktopAppAction
+  >((payload) => dispatch(setActiveDesktopAppAction(payload)), [dispatch]);
+
+  const onClose = () => setActiveDesktopApp("DesktopMainView");
 
   return (
     <AppLayout

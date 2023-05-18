@@ -44,8 +44,12 @@ type Props = {
 };
 
 export function AppContacts({ isOpen, dragConstraintRef }: Props) {
-
   return (
-    <AppMarkdownLayout markdown={md} title="Contacts" isOpen={isOpen} dragConstraintRef={dragConstraintRef} />
+    <AppMarkdownLayout
+      markdown={md}
+      title="Contacts"
+      isOpen={isOpen}
+      dragConstraintRef={dragConstraintRef}
+    />
   );
 }

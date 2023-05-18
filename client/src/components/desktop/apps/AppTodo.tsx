@@ -1,7 +1,7 @@
 import type { MutableRefObject } from "react";
 import { AppMarkdownLayout } from "@/components/desktop/apps/layout/AppMarkdownLayout";
 
-const md =`
+const md = `
 List of things that I want to implement in the future: (no promises and in no particular order! edit: 2023 and still no promises)
 
 <br />
@@ -25,8 +25,12 @@ type Props = {
 };
 
 export function AppTodo({ isOpen, dragConstraintRef }: Props) {
-
   return (
-    <AppMarkdownLayout markdown={md} title="Todo" isOpen={isOpen} dragConstraintRef={dragConstraintRef} />
+    <AppMarkdownLayout
+      markdown={md}
+      title="Todo"
+      isOpen={isOpen}
+      dragConstraintRef={dragConstraintRef}
+    />
   );
 }
