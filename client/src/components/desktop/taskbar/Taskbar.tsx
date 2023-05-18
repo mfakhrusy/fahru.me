@@ -1,10 +1,10 @@
 import { Flex } from "@chakra-ui/react";
 import { useCallback, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { DesktopAppMenu } from "@/components/desktop/taskbar/DesktopAppMenu";
-import { DesktopAppMenuButton } from "@/components/desktop/taskbar/DesktopAppMenuButton";
-import { DesktopAppSimpleClock } from "@/components/desktop/taskbar/DesktopAppSimpleClock";
-import { DesktopTimeWidget } from "@/components/desktop/taskbar/DesktopTimeWidget";
+import { TaskbarAppMenu } from "@/components/desktop/taskbar/TaskbarAppMenu";
+import { TaskbarAppMenuButton } from "@/components/desktop/taskbar/TaskbarAppMenuButton";
+import { TaskbarAppSimpleClock } from "@/components/desktop/taskbar/TaskbarAppSimpleClock";
+import { TaskbarTimeWidget } from "@/components/desktop/taskbar/TaskbarTimeWidget";
 import { DesktopApp } from "@/lib/desktop/desktop";
 import height from "@/lib/height";
 import useClickOutside from "@/lib/useClickOutside";
@@ -21,7 +21,7 @@ import {
   setTimeWidgetActive,
 } from "@/store/desktop";
 
-export function DesktopTaskbar() {
+export function Taskbar() {
   const dispatch = useDispatch();
 
   const appMenuState = useSelector<RootState, AppMenuState>(
@@ -85,17 +85,17 @@ export function DesktopTaskbar() {
         zIndex={zIndex.taskbar}
         pos="relative"
       >
-        <DesktopAppMenuButton
+        <TaskbarAppMenuButton
           onClick={onClickApplications}
           forwardRef={appMenuButtonRef}
         />
-        <DesktopAppSimpleClock forwardRef={clockRef} />
+        <TaskbarAppSimpleClock forwardRef={clockRef} />
       </Flex>
-      <DesktopAppMenu
+      <TaskbarAppMenu
         isActive={appMenuState.isActive}
         forwardRef={appMenuRef}
       />
-      <DesktopTimeWidget forwardRef={timeWidgetRef} />
+      <TaskbarTimeWidget forwardRef={timeWidgetRef} />
     </>
   );
 }

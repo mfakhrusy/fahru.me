@@ -2,7 +2,7 @@ import { Flex } from "@chakra-ui/react";
 import dynamic from "next/dynamic";
 import { DesktopMainView } from "@/components/desktop/DesktopMainView";
 import { DesktopTouchView } from "@/components/desktop/DesktopTouchView";
-import { DesktopTaskbar } from "@/components/desktop/taskbar/DesktopTaskbar";
+import { Taskbar } from "@/components/desktop/taskbar/Taskbar";
 import useIsTouchDevice from "@/lib/useIsTouchDevice";
 
 function DesktopScreen() {
@@ -20,7 +20,7 @@ function DesktopScreen() {
         <DesktopTouchView />
       ) : (
         <>
-          <DesktopTaskbar />
+          <Taskbar />
           <DesktopMainView />
         </>
       )}

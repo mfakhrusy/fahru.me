@@ -20,7 +20,7 @@ type Props = {
   forwardRef: React.RefObject<HTMLDivElement>;
 };
 
-export function DesktopAppSimpleClock({ forwardRef }: Props) {
+export function TaskbarAppSimpleClock({ forwardRef }: Props) {
   const dispatch = useDispatch();
 
   const currentTime = useSelector<RootState, string>(

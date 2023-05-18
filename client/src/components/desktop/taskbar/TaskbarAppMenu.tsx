@@ -23,7 +23,7 @@ type Props = {
   forwardRef: Ref<HTMLDivElement>;
 };
 
-export function DesktopAppMenu({ isActive, forwardRef }: Props) {
+export function TaskbarAppMenu({ isActive, forwardRef }: Props) {
   const dispatch = useDispatch();
 
   const setActiveDesktopApp = useCallback<

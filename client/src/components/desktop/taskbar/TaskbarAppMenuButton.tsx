@@ -9,7 +9,7 @@ type Props = {
   forwardRef: React.Ref<HTMLDivElement>;
 };
 
-export function DesktopAppMenuButton({ onClick, forwardRef }: Props) {
+export function TaskbarAppMenuButton({ onClick, forwardRef }: Props) {
   const appMenuState = useSelector<RootState, AppMenuState>(
     (state) => state.desktop.appMenu
   );

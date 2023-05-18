@@ -11,7 +11,7 @@ type Props = {
   forwardRef: React.Ref<HTMLDivElement>;
 };
 
-export function DesktopTimeWidget({ forwardRef }: Props) {
+export function TaskbarTimeWidget({ forwardRef }: Props) {
   const currentTime = useSelector<RootState, string>(
     (state) => state.desktop.currentTime
   );
