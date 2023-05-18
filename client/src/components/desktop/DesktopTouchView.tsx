@@ -1,7 +1,7 @@
 import { Flex } from "@chakra-ui/react";
 import { useCallback } from "react";
 import { useDispatch } from "react-redux";
-import { AppContent } from "@/components/desktop/apps/AppContent";
+import { DesktopAppContent } from "@/components/desktop/DesktopAppContent";
 import { DesktopIcon } from "@/components/desktop/DesktopIcon";
 import { DesktopApp, makeDesktopIcons } from "@/lib/desktop/desktop";
 import {
@@ -34,7 +34,7 @@ export function DesktopTouchView() {
           />
         ))}
       </Flex>
-      <AppContent />
+      <DesktopAppContent />
     </Flex>
   );
 }

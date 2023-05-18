@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 import { motion } from "framer-motion";
 import React, { useCallback, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { AppContent } from "@/components/desktop/apps/AppContent";
+import { DesktopAppContent } from "@/components/desktop/DesktopAppContent";
 import { DesktopIcon } from "@/components/desktop/DesktopIcon";
 import { DesktopInfoPopover } from "@/components/desktop/DesktopInfoPopover";
 import { DesktopRebootModal } from "@/components/desktop/DesktopRebootModal";
@@ -137,7 +137,7 @@ export function DesktopMainView() {
       onClick={unfocusApp}
     >
       <DragArea className="drag-area" ref={dragConstraintRef}>
-        <AppContent dragConstraintRef={dragConstraintRef} />
+        <DesktopAppContent dragConstraintRef={dragConstraintRef} />
         <Flex pos="absolute" top="33.4%" w="100%">
           {/* 100vw because drag area extends to left and right side of the visible screen, so we need to add some "left buffer" so desktop icons can appear in the middle */}
           <Box w="100vw" h="100px" />

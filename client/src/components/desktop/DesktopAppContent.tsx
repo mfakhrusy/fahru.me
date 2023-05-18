@@ -17,7 +17,7 @@ type AppContentProps = {
   dragConstraintRef?: MutableRefObject<HTMLDivElement>;
 };
 
-export const AppContent = ({ dragConstraintRef }: AppContentProps) => {
+export const DesktopAppContent = ({ dragConstraintRef }: AppContentProps) => {
   const activeDesktopApp = useSelector<RootState, DesktopApp>(
     (state) => state.desktop.activeDesktopApp
   );
