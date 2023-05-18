@@ -121,7 +121,13 @@ function MainView() {
   }
 
   return (
-    <Flex alignItems="center" justifyContent="center" w="100%" h={height} flexDir="column">
+    <Flex
+      alignItems="center"
+      justifyContent="center"
+      w="100%"
+      h={height}
+      flexDir="column"
+    >
       <Image src="/images/under_construction.png" alt="under construction" />
       <Text mt={4}>Under Construction</Text>
     </Flex>
