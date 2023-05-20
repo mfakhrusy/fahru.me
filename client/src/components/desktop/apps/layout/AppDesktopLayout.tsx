@@ -1,9 +1,8 @@
 import type { BackgroundProps } from "@chakra-ui/styled-system";
-import { type PropsWithChildren, useContext } from "react";
+import { type PropsWithChildren } from "react";
 import { useSelector } from "react-redux";
 import { AppDesktopLayoutFullscreen } from "@/components/desktop/apps/layout/AppDesktopLayoutFullscreen";
 import { AppDesktopLayoutWindowed } from "@/components/desktop/apps/layout/AppDesktopLayoutWindowed";
-import { DragContext } from "@/context/DragContext";
 import type { RootState } from "@/store";
 
 type AppDesktopLayoutProps = {
@@ -20,7 +19,6 @@ export function AppDesktopLayout({
   onClose,
   noPadding = false,
 }: PropsWithChildren<AppDesktopLayoutProps>) {
-  const dragConstraintRef = useContext(DragContext);
   const isFullScreen = useSelector<RootState, boolean>(
     (state) => state.desktop.isActiveAppFullScreen
   );
@@ -38,7 +36,6 @@ export function AppDesktopLayout({
   } else {
     return (
       <AppDesktopLayoutWindowed
-        dragConstraintRef={dragConstraintRef}
         title={title}
         bgColor={bgColor}
         onClose={onClose}

@@ -5,9 +5,11 @@ import {
   type MutableRefObject,
   type PropsWithChildren,
   useCallback,
+  useContext,
 } from "react";
 import { useDispatch } from "react-redux";
 import { AppDesktopLayoutContent } from "@/components/desktop/apps/layout/AppDesktopLayoutContent";
+import { DragContext } from "@/context/DragContext";
 import zIndex from "@/lib/zIndex";
 import {
   SetActiveAppFullScreen,
@@ -36,13 +38,13 @@ type AppDesktopLayoutWindowedProps = {
 };
 
 export function AppDesktopLayoutWindowed({
-  dragConstraintRef,
   children,
   bgColor,
   title,
   onClose,
   noPadding = false,
 }: PropsWithChildren<AppDesktopLayoutWindowedProps>) {
+  const dragConstraintRef = useContext(DragContext);
   const dispatch = useDispatch();
   const dragControls = useDragControls();
 
