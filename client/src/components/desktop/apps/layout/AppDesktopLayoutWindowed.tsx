@@ -25,7 +25,7 @@ const Container = styled(motion.div)`
   cursor: pointer;
   align-self: flex-start;
   z-index: ${zIndex.draggableAppWindow};
-  margin-top: 100vh;
+  margin-top: 3vh;
   margin-left: 103vw;
 `;
 

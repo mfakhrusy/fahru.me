@@ -28,12 +28,11 @@ import { TaskbarState, setTaskbarMenu } from "@/store/taskbar";
 const DragArea = styled(motion.div)`
   width: 300%;
   left: -100%;
-  height: 300%;
+  height: 200%;
   display: flex;
   flex-direction: row;
   align-items: flex-end;
   position: absolute;
-  top: -100%;
 `;
 
 export function DesktopMainView() {
@@ -154,7 +153,7 @@ export function DesktopMainView() {
     >
       <DragArea className="drag-area" ref={dragConstraintRef}>
         <DesktopAppContent />
-        <Flex pos="absolute" top="33.4%" w="100%">
+        <Flex pos="absolute" top="0" w="100%">
           {/* 100vw because drag area extends to left and right side of the visible screen, so we need to add some "left buffer" so desktop icons can appear in the middle */}
           <Box w="100vw" h="100px" />
           {makeDesktopIcons().map((desktopIcon, i) => (

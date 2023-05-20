@@ -35,7 +35,7 @@ export function AppDesktopLayoutFullscreen({
       w="100vw"
       h="100vh"
       pos="absolute"
-      top="33.3%"
+      top="0"
       left="33.3%"
       zIndex={zIndex.fullScreenAppWindow}
     >
