@@ -11,8 +11,7 @@ import {
 } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { BiWifi, BiWifiOff } from "react-icons/bi";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import type { RootState } from "@/store";
 import { type TaskbarState, setTaskbarMenu } from "@/store/taskbar";
 
