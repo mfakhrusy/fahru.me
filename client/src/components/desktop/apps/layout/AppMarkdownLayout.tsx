@@ -1,4 +1,4 @@
-import { MutableRefObject, memo, useCallback } from "react";
+import { memo, useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { AppLayout } from "@/components/desktop/apps/layout/AppLayout";
 import { Markdown } from "@/components/shared/Markdown";
@@ -10,13 +10,11 @@ import {
 } from "@/store/desktop";
 
 type AppMarkdownLayoutProps = {
-  dragConstraintRef?: MutableRefObject<HTMLDivElement>;
   markdown: string;
   title: string;
 };
 
 export const AppMarkdownLayout = memo(function AppAboutMe({
-  dragConstraintRef,
   markdown,
   title,
 }: AppMarkdownLayoutProps) {
@@ -30,11 +28,7 @@ export const AppMarkdownLayout = memo(function AppAboutMe({
   const onClose = () => setActiveDesktopApp("DesktopMainView");
 
   return (
-    <AppLayout
-      title={title}
-      onClose={onClose}
-      dragConstraintRef={dragConstraintRef}
-    >
+    <AppLayout title={title} onClose={onClose}>
       {shouldRenderContent && <Markdown>{markdown}</Markdown>}
     </AppLayout>
   );

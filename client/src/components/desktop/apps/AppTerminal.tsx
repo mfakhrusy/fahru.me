@@ -1,5 +1,5 @@
 import { Flex, Text } from "@chakra-ui/react";
-import { MutableRefObject, useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { AppLayout } from "@/components/desktop/apps/layout/AppLayout";
 import { Terminal } from "@/components/shared/Terminal";
@@ -11,11 +11,7 @@ import {
   SetActiveDesktopAppAction,
 } from "@/store/desktop";
 
-type Props = {
-  dragConstraintRef?: MutableRefObject<HTMLDivElement>;
-};
-
-export function AppTerminal({ dragConstraintRef }: Props) {
+export function AppTerminal() {
   const dispatch = useDispatch();
   const isTouchDevice = useIsTouchDevice();
   const [isClosingDown, setIsClosingDown] = useState(false);
@@ -50,7 +46,6 @@ export function AppTerminal({ dragConstraintRef }: Props) {
       isScrollable={false}
       noPadding
       bgColor="black"
-      dragConstraintRef={dragConstraintRef}
     >
       <Flex color="white" overflow="hidden" p={2}>
         {shouldRenderTerminal ? (

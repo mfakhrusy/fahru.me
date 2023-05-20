@@ -1,6 +1,6 @@
 import { ExternalLinkIcon } from "@chakra-ui/icons";
 import { Divider, Flex, Heading, Image, Text, Link } from "@chakra-ui/react";
-import { type MutableRefObject, useCallback } from "react";
+import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { AppLayout } from "@/components/desktop/apps/layout/AppLayout";
 import type { DesktopApp } from "@/lib/desktop/desktop";
@@ -10,11 +10,7 @@ import {
   SetActiveDesktopAppAction,
 } from "@/store/desktop";
 
-type Props = {
-  dragConstraintRef?: MutableRefObject<HTMLDivElement>;
-};
-
-export function AppProjects({ dragConstraintRef }: Props) {
+export function AppProjects() {
   const shouldRenderContent = useDelayRenderOnTouchDevice({ delayAmount: 150 });
   const dispatch = useDispatch();
 
@@ -25,11 +21,7 @@ export function AppProjects({ dragConstraintRef }: Props) {
   const onClose = () => setActiveDesktopApp("DesktopMainView");
 
   return (
-    <AppLayout
-      title="Hobby Projects"
-      onClose={onClose}
-      dragConstraintRef={dragConstraintRef}
-    >
+    <AppLayout title="Hobby Projects" onClose={onClose}>
       <Flex flexDir="column" alignItems="center">
         {shouldRenderContent && (
           <>

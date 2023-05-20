@@ -1,4 +1,3 @@
-import type { MutableRefObject } from "react";
 import { AppMarkdownLayout } from "@/components/desktop/apps/layout/AppMarkdownLayout";
 
 const md = `
@@ -19,16 +18,6 @@ List of things that I want to implement in the future: (no promises and in no pa
 - Custom right-click on the screen (e.g. to enlarge icons)
 `;
 
-type Props = {
-  dragConstraintRef?: MutableRefObject<HTMLDivElement>;
-};
-
-export function AppTodo({ dragConstraintRef }: Props) {
-  return (
-    <AppMarkdownLayout
-      markdown={md}
-      title="Todo"
-      dragConstraintRef={dragConstraintRef}
-    />
-  );
+export function AppTodo() {
+  return <AppMarkdownLayout markdown={md} title="Todo" />;
 }

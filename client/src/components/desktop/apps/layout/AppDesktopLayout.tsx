@@ -1,12 +1,12 @@
 import type { BackgroundProps } from "@chakra-ui/styled-system";
-import type { MutableRefObject, PropsWithChildren } from "react";
+import { type PropsWithChildren, useContext } from "react";
 import { useSelector } from "react-redux";
 import { AppDesktopLayoutFullscreen } from "@/components/desktop/apps/layout/AppDesktopLayoutFullscreen";
 import { AppDesktopLayoutWindowed } from "@/components/desktop/apps/layout/AppDesktopLayoutWindowed";
-import { RootState } from "@/store";
+import { DragContext } from "@/context/DragContext";
+import type { RootState } from "@/store";
 
 type AppDesktopLayoutProps = {
-  dragConstraintRef?: MutableRefObject<HTMLDivElement>;
   title: string;
   bgColor?: BackgroundProps["bgColor"];
   onClose: () => void;
@@ -14,13 +14,13 @@ type AppDesktopLayoutProps = {
 };
 
 export function AppDesktopLayout({
-  dragConstraintRef,
   children,
   bgColor,
   title,
   onClose,
   noPadding = false,
 }: PropsWithChildren<AppDesktopLayoutProps>) {
+  const dragConstraintRef = useContext(DragContext);
   const isFullScreen = useSelector<RootState, boolean>(
     (state) => state.desktop.isActiveAppFullScreen
   );

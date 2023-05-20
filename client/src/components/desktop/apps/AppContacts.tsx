@@ -1,4 +1,3 @@
-import type { MutableRefObject } from "react";
 import { AppMarkdownLayout } from "@/components/desktop/apps/layout/AppMarkdownLayout";
 
 const md = `
@@ -38,16 +37,6 @@ const md = `
  
 `;
 
-type Props = {
-  dragConstraintRef?: MutableRefObject<HTMLDivElement>;
-};
-
-export function AppContacts({ dragConstraintRef }: Props) {
-  return (
-    <AppMarkdownLayout
-      markdown={md}
-      title="Contacts"
-      dragConstraintRef={dragConstraintRef}
-    />
-  );
+export function AppContacts() {
+  return <AppMarkdownLayout markdown={md} title="Contacts" />;
 }

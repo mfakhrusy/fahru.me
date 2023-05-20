@@ -3,6 +3,7 @@ import { PropsWithChildren } from "react";
 import { Provider as ReduxProvider } from "react-redux";
 import theme from "@/config/theme";
 import ConnectionCheckerProvider from "@/ConnectionCheckerProvider";
+import DragConstraintProvider from "@/DragConstraintProvider";
 import store from "@/store";
 
 export function Provider({
@@ -11,7 +12,9 @@ export function Provider({
   return (
     <ReduxProvider store={store}>
       <ChakraProvider theme={theme}>
-        <ConnectionCheckerProvider>{children}</ConnectionCheckerProvider>
+        <ConnectionCheckerProvider>
+          <DragConstraintProvider>{children}</DragConstraintProvider>
+        </ConnectionCheckerProvider>
       </ChakraProvider>
     </ReduxProvider>
   );

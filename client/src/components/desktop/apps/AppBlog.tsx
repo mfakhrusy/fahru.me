@@ -1,7 +1,7 @@
 import { ExternalLinkIcon } from "@chakra-ui/icons";
 import { Button, Flex, Heading, Text } from "@chakra-ui/react";
 import { Image } from "@chakra-ui/react";
-import { type MutableRefObject, useState, useCallback } from "react";
+import { useState, useCallback } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { AppLayout } from "@/components/desktop/apps/layout/AppLayout";
@@ -14,11 +14,7 @@ import {
   SetActiveDesktopAppAction,
 } from "@/store/desktop";
 
-type Props = {
-  dragConstraintRef?: MutableRefObject<HTMLDivElement>;
-};
-
-export function AppBlog({ dragConstraintRef }: Props) {
+export function AppBlog() {
   const dispatch = useDispatch();
   const shouldRenderContent = useDelayRenderOnTouchDevice({ delayAmount: 150 });
   const [isIntro, setIsIntro] = useState(true);
@@ -29,12 +25,7 @@ export function AppBlog({ dragConstraintRef }: Props) {
   const onClose = () => setActiveDesktopApp("DesktopMainView");
 
   return (
-    <AppLayout
-      title="Blog"
-      onClose={onClose}
-      dragConstraintRef={dragConstraintRef}
-      noPadding
-    >
+    <AppLayout title="Blog" onClose={onClose} noPadding>
       {shouldRenderContent && (
         <Flex pos="relative" w="100%">
           <MainView />

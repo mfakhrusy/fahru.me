@@ -1,4 +1,3 @@
-import type { MutableRefObject } from "react";
 import { AppMarkdownLayout } from "@/components/desktop/apps/layout/AppMarkdownLayout";
 
 const md = `
@@ -34,16 +33,6 @@ My "formal" education for web development studies. I actually learnt from from w
 I didn't get certifications from the platform since I got my first web development job while I was still learning there.
 `;
 
-type Props = {
-  dragConstraintRef?: MutableRefObject<HTMLDivElement>;
-};
-
-export function AppEducation({ dragConstraintRef }: Props) {
-  return (
-    <AppMarkdownLayout
-      markdown={md}
-      title="Education"
-      dragConstraintRef={dragConstraintRef}
-    />
-  );
+export function AppEducation() {
+  return <AppMarkdownLayout markdown={md} title="Education" />;
 }

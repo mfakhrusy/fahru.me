@@ -1,4 +1,3 @@
-import type { MutableRefObject } from "react";
 import { AppMarkdownLayout } from "@/components/desktop/apps/layout/AppMarkdownLayout";
 
 const md = `
@@ -97,16 +96,6 @@ Project:
    
 `;
 
-type Props = {
-  dragConstraintRef?: MutableRefObject<HTMLDivElement>;
-};
-
-export function AppWorkHistory({ dragConstraintRef }: Props) {
-  return (
-    <AppMarkdownLayout
-      markdown={md}
-      title="Work History"
-      dragConstraintRef={dragConstraintRef}
-    />
-  );
+export function AppWorkHistory() {
+  return <AppMarkdownLayout markdown={md} title="Work History" />;
 }

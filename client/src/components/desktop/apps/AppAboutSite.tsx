@@ -1,4 +1,3 @@
-import type { MutableRefObject } from "react";
 import { AppMarkdownLayout } from "@/components/desktop/apps/layout/AppMarkdownLayout";
 
 const md = `
@@ -89,16 +88,6 @@ licensed under [GPL](https://www.gnu.org/licenses/gpl-3.0.html)
 original logo creator [u/Ishaan_P](https://www.reddit.com/user/Ishaan_P)  
 `;
 
-type Props = {
-  dragConstraintRef?: MutableRefObject<HTMLDivElement>;
-};
-
-export function AppAboutSite({ dragConstraintRef }: Props) {
-  return (
-    <AppMarkdownLayout
-      markdown={md}
-      title="About Site"
-      dragConstraintRef={dragConstraintRef}
-    />
-  );
+export function AppAboutSite() {
+  return <AppMarkdownLayout markdown={md} title="About Site" />;
 }

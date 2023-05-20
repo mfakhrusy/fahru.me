@@ -1,12 +1,11 @@
 import type { BackgroundProps } from "@chakra-ui/styled-system";
-import type { MutableRefObject, PropsWithChildren } from "react";
+import type { PropsWithChildren } from "react";
 import { AppDesktopLayout } from "@/components/desktop/apps/layout/AppDesktopLayout";
 import { AppLayoutContent } from "@/components/desktop/apps/layout/AppLayoutContent";
 import { AppMobileLayout } from "@/components/desktop/apps/layout/AppMobileLayout";
 import useIsTouchDevice from "@/lib/useIsTouchDevice";
 
 type Props = {
-  dragConstraintRef: MutableRefObject<HTMLDivElement>;
   onClose: () => void;
   title: string;
   bgColor?: BackgroundProps["bgColor"];
@@ -15,7 +14,6 @@ type Props = {
 };
 
 export function AppLayout({
-  dragConstraintRef,
   onClose,
   children,
   title,
@@ -39,7 +37,6 @@ export function AppLayout({
     <AppDesktopLayout
       onClose={onClose}
       title={title}
-      dragConstraintRef={dragConstraintRef}
       bgColor={bgColor}
       noPadding={noPadding}
     >
