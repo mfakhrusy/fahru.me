@@ -1,18 +1,48 @@
 import { Image } from "@chakra-ui/image";
 import { Divider, Flex, Text } from "@chakra-ui/layout";
+import { useCallback } from "react";
 import { useSelector } from "react-redux";
-import { RootState } from "@/store";
-import { AppMenuState } from "@/store/desktop";
+import { useDispatch } from "react-redux";
+import type { DesktopApp } from "@/lib/desktop/desktop";
+import type { RootState } from "@/store";
+import {
+  EnableAppMenuAction,
+  enableAppMenu as enableAppMenuAction,
+  disableAppMenu as disableAppMenuAction,
+  setFocusedDesktopApp as setFocusedDesktopAppAction,
+  type AppMenuState,
+  SetFocusedDesktopAppAction,
+} from "@/store/desktop";
 
 type Props = {
-  onClick: () => void;
   forwardRef: React.Ref<HTMLDivElement>;
 };
 
-export function TaskbarAppMenuButton({ onClick, forwardRef }: Props) {
+export function TaskbarAppMenuButton({ forwardRef }: Props) {
+  const dispatch = useDispatch();
   const appMenuState = useSelector<RootState, AppMenuState>(
     (state) => state.desktop.appMenu
   );
+
+  const setFocusedDesktopApp = useCallback<
+    (args: DesktopApp) => SetFocusedDesktopAppAction
+  >((payload) => dispatch(setFocusedDesktopAppAction(payload)), [dispatch]);
+
+  const enableAppMenu = useCallback<(args: DesktopApp) => EnableAppMenuAction>(
+    (payload) => dispatch(enableAppMenuAction(payload)),
+    [dispatch]
+  );
+
+  const disableAppMenu = useCallback<() => void>(
+    () => dispatch(disableAppMenuAction()),
+    [dispatch]
+  );
+
+  const onClick = () => {
+    setFocusedDesktopApp("DesktopMainView");
+
+    appMenuState.isActive ? disableAppMenu() : enableAppMenu("DesktopMainView");
+  };
 
   return (
     <>

@@ -6,18 +6,13 @@ import { TaskbarAppMenuButton } from "@/components/desktop/taskbar/TaskbarAppMen
 import { TaskbarAppSimpleClock } from "@/components/desktop/taskbar/TaskbarAppSimpleClock";
 import { TaskbarTimeWidget } from "@/components/desktop/taskbar/TaskbarTimeWidget";
 import { TaskbarWifiIcon } from "@/components/desktop/taskbar/TaskbarWifiIcon";
-import { DesktopApp } from "@/lib/desktop/desktop";
 import height from "@/lib/height";
 import useClickOutside from "@/lib/useClickOutside";
 import zIndex from "@/lib/zIndex";
 import type { RootState } from "@/store";
 import {
-  EnableAppMenuAction,
-  enableAppMenu as enableAppMenuAction,
   disableAppMenu as disableAppMenuAction,
-  setFocusedDesktopApp as setFocusedDesktopAppAction,
   type AppMenuState,
-  SetFocusedDesktopAppAction,
   SetTimeWidgetActive,
   setTimeWidgetActive,
 } from "@/store/desktop";
@@ -29,25 +24,10 @@ export function Taskbar() {
     (state) => state.desktop.appMenu
   );
 
-  const enableAppMenu = useCallback<(args: DesktopApp) => EnableAppMenuAction>(
-    (payload) => dispatch(enableAppMenuAction(payload)),
-    [dispatch]
-  );
-
   const disableAppMenu = useCallback<() => void>(
     () => dispatch(disableAppMenuAction()),
     [dispatch]
   );
-
-  const setFocusedDesktopApp = useCallback<
-    (args: DesktopApp) => SetFocusedDesktopAppAction
-  >((payload) => dispatch(setFocusedDesktopAppAction(payload)), [dispatch]);
-
-  const onClickApplications = () => {
-    setFocusedDesktopApp("DesktopMainView");
-
-    appMenuState.isActive ? disableAppMenu() : enableAppMenu("DesktopMainView");
-  };
 
   const appMenuRef = useRef<HTMLDivElement>(null);
   const appMenuButtonRef = useRef<HTMLDivElement>(null);
@@ -86,10 +66,7 @@ export function Taskbar() {
         zIndex={zIndex.taskbar}
         pos="relative"
       >
-        <TaskbarAppMenuButton
-          onClick={onClickApplications}
-          forwardRef={appMenuButtonRef}
-        />
+        <TaskbarAppMenuButton forwardRef={appMenuButtonRef} />
         <TaskbarWifiIcon />
         <TaskbarAppSimpleClock forwardRef={clockRef} />
       </Flex>
