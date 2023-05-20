@@ -13,7 +13,7 @@ type Action = {
   setServerReachable: (state: State, action: SetServerReachableAction) => void;
 };
 
-const desktopSlice = createSlice<State, Action, "connection">({
+const connectionSlice = createSlice<State, Action, "connection">({
   name: "connection",
   initialState: {
     serverReachable: true,
@@ -25,6 +25,6 @@ const desktopSlice = createSlice<State, Action, "connection">({
   },
 });
 
-export const { setServerReachable } = desktopSlice.actions;
+export const { setServerReachable } = connectionSlice.actions;
 
-export default desktopSlice.reducer;
+export default connectionSlice.reducer;
