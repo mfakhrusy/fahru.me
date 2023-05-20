@@ -20,16 +20,14 @@ List of things that I want to implement in the future: (no promises and in no pa
 `;
 
 type Props = {
-  isOpen: boolean;
   dragConstraintRef?: MutableRefObject<HTMLDivElement>;
 };
 
-export function AppTodo({ isOpen, dragConstraintRef }: Props) {
+export function AppTodo({ dragConstraintRef }: Props) {
   return (
     <AppMarkdownLayout
       markdown={md}
       title="Todo"
-      isOpen={isOpen}
       dragConstraintRef={dragConstraintRef}
     />
   );

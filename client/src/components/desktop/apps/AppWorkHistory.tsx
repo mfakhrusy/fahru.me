@@ -98,16 +98,14 @@ Project:
 `;
 
 type Props = {
-  isOpen: boolean;
   dragConstraintRef?: MutableRefObject<HTMLDivElement>;
 };
 
-export function AppWorkHistory({ isOpen, dragConstraintRef }: Props) {
+export function AppWorkHistory({ dragConstraintRef }: Props) {
   return (
     <AppMarkdownLayout
       markdown={md}
       title="Work History"
-      isOpen={isOpen}
       dragConstraintRef={dragConstraintRef}
     />
   );

@@ -10,14 +10,12 @@ import {
 } from "@/store/desktop";
 
 type AppMarkdownLayoutProps = {
-  isOpen: boolean;
   dragConstraintRef?: MutableRefObject<HTMLDivElement>;
   markdown: string;
   title: string;
 };
 
 export const AppMarkdownLayout = memo(function AppAboutMe({
-  isOpen,
   dragConstraintRef,
   markdown,
   title,
@@ -35,7 +33,6 @@ export const AppMarkdownLayout = memo(function AppAboutMe({
     <AppLayout
       title={title}
       onClose={onClose}
-      isOpen={isOpen}
       dragConstraintRef={dragConstraintRef}
     >
       {shouldRenderContent && <Markdown>{markdown}</Markdown>}

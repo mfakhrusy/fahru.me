@@ -24,68 +24,23 @@ export const DesktopAppContent = ({ dragConstraintRef }: AppContentProps) => {
 
   switch (activeDesktopApp) {
     case "AppTerminal":
-      return (
-        <AppTerminal
-          dragConstraintRef={dragConstraintRef}
-          isOpen={activeDesktopApp === "AppTerminal"}
-        />
-      );
+      return <AppTerminal dragConstraintRef={dragConstraintRef} />;
     case "AppAboutMe":
-      return (
-        <AppAboutMe
-          dragConstraintRef={dragConstraintRef}
-          isOpen={activeDesktopApp === "AppAboutMe"}
-        />
-      );
+      return <AppAboutMe dragConstraintRef={dragConstraintRef} />;
     case "AppAboutSite":
-      return (
-        <AppAboutSite
-          dragConstraintRef={dragConstraintRef}
-          isOpen={activeDesktopApp === "AppAboutSite"}
-        />
-      );
+      return <AppAboutSite dragConstraintRef={dragConstraintRef} />;
     case "AppWorkHistory":
-      return (
-        <AppWorkHistory
-          dragConstraintRef={dragConstraintRef}
-          isOpen={activeDesktopApp === "AppWorkHistory"}
-        />
-      );
+      return <AppWorkHistory dragConstraintRef={dragConstraintRef} />;
     case "AppEducation":
-      return (
-        <AppEducation
-          dragConstraintRef={dragConstraintRef}
-          isOpen={activeDesktopApp === "AppEducation"}
-        />
-      );
+      return <AppEducation dragConstraintRef={dragConstraintRef} />;
     case "AppContacts":
-      return (
-        <AppContacts
-          dragConstraintRef={dragConstraintRef}
-          isOpen={activeDesktopApp === "AppContacts"}
-        />
-      );
+      return <AppContacts dragConstraintRef={dragConstraintRef} />;
     case "AppProjects":
-      return (
-        <AppProjects
-          dragConstraintRef={dragConstraintRef}
-          isOpen={activeDesktopApp === "AppProjects"}
-        />
-      );
+      return <AppProjects dragConstraintRef={dragConstraintRef} />;
     case "AppBlog":
-      return (
-        <AppBlog
-          dragConstraintRef={dragConstraintRef}
-          isOpen={activeDesktopApp === "AppBlog"}
-        />
-      );
+      return <AppBlog dragConstraintRef={dragConstraintRef} />;
     case "AppTodo":
-      return (
-        <AppTodo
-          dragConstraintRef={dragConstraintRef}
-          isOpen={activeDesktopApp === "AppTodo"}
-        />
-      );
+      return <AppTodo dragConstraintRef={dragConstraintRef} />;
     default:
       return null;
   }

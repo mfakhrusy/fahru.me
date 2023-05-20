@@ -11,11 +11,10 @@ import {
 } from "@/store/desktop";
 
 type Props = {
-  isOpen: boolean;
   dragConstraintRef?: MutableRefObject<HTMLDivElement>;
 };
 
-export function AppProjects({ isOpen, dragConstraintRef }: Props) {
+export function AppProjects({ dragConstraintRef }: Props) {
   const shouldRenderContent = useDelayRenderOnTouchDevice({ delayAmount: 150 });
   const dispatch = useDispatch();
 
@@ -29,7 +28,6 @@ export function AppProjects({ isOpen, dragConstraintRef }: Props) {
     <AppLayout
       title="Hobby Projects"
       onClose={onClose}
-      isOpen={isOpen}
       dragConstraintRef={dragConstraintRef}
     >
       <Flex flexDir="column" alignItems="center">

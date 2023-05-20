@@ -15,11 +15,10 @@ import {
 } from "@/store/desktop";
 
 type Props = {
-  isOpen: boolean;
   dragConstraintRef?: MutableRefObject<HTMLDivElement>;
 };
 
-export function AppBlog({ isOpen, dragConstraintRef }: Props) {
+export function AppBlog({ dragConstraintRef }: Props) {
   const dispatch = useDispatch();
   const shouldRenderContent = useDelayRenderOnTouchDevice({ delayAmount: 150 });
   const [isIntro, setIsIntro] = useState(true);
@@ -33,7 +32,6 @@ export function AppBlog({ isOpen, dragConstraintRef }: Props) {
     <AppLayout
       title="Blog"
       onClose={onClose}
-      isOpen={isOpen}
       dragConstraintRef={dragConstraintRef}
       noPadding
     >

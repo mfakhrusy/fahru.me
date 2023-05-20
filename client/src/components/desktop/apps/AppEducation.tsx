@@ -35,16 +35,14 @@ I didn't get certifications from the platform since I got my first web developme
 `;
 
 type Props = {
-  isOpen: boolean;
   dragConstraintRef?: MutableRefObject<HTMLDivElement>;
 };
 
-export function AppEducation({ isOpen, dragConstraintRef }: Props) {
+export function AppEducation({ dragConstraintRef }: Props) {
   return (
     <AppMarkdownLayout
       markdown={md}
       title="Education"
-      isOpen={isOpen}
       dragConstraintRef={dragConstraintRef}
     />
   );

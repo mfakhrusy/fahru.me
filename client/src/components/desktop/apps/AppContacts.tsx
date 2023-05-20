@@ -39,16 +39,14 @@ const md = `
 `;
 
 type Props = {
-  isOpen: boolean;
   dragConstraintRef?: MutableRefObject<HTMLDivElement>;
 };
 
-export function AppContacts({ isOpen, dragConstraintRef }: Props) {
+export function AppContacts({ dragConstraintRef }: Props) {
   return (
     <AppMarkdownLayout
       markdown={md}
       title="Contacts"
-      isOpen={isOpen}
       dragConstraintRef={dragConstraintRef}
     />
   );

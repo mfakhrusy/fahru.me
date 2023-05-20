@@ -11,7 +11,6 @@ import type { PropsWithChildren } from "react";
 type Props = {
   title: string;
   onClose: () => void;
-  isOpen: boolean;
   isScrollable?: boolean;
   noPadding?: boolean;
   bgColor?: BackgroundProps["bgColor"];
@@ -21,18 +20,12 @@ export function AppMobileLayout({
   title,
   children,
   onClose,
-  isOpen,
   isScrollable = true,
   noPadding = false,
   bgColor = "white",
 }: PropsWithChildren<Props>) {
   return (
-    <Modal
-      onClose={onClose}
-      isOpen={isOpen}
-      size="full"
-      styleConfig={{ marginTop: 0 }}
-    >
+    <Modal onClose={onClose} isOpen size="full" styleConfig={{ marginTop: 0 }}>
       <ModalContent overflowY="auto">
         <Flex
           flexDir="column"

@@ -8,7 +8,6 @@ import useIsTouchDevice from "@/lib/useIsTouchDevice";
 type Props = {
   dragConstraintRef: MutableRefObject<HTMLDivElement>;
   onClose: () => void;
-  isOpen: boolean;
   title: string;
   bgColor?: BackgroundProps["bgColor"];
   isScrollable?: boolean;
@@ -18,7 +17,6 @@ type Props = {
 export function AppLayout({
   dragConstraintRef,
   onClose,
-  isOpen,
   children,
   title,
   bgColor = "white",
@@ -31,7 +29,6 @@ export function AppLayout({
     <AppMobileLayout
       title={title}
       onClose={onClose}
-      isOpen={isOpen}
       bgColor={bgColor}
       isScrollable={isScrollable}
       noPadding={noPadding}

@@ -57,15 +57,13 @@ Software Engineer. Tinkerer. Hacker.
 `;
 
 type Props = {
-  isOpen: boolean;
   dragConstraintRef?: MutableRefObject<HTMLDivElement>;
 };
 
-export function AppAboutMe({ isOpen, dragConstraintRef }: Props) {
+export function AppAboutMe({ dragConstraintRef }: Props) {
   return (
     <AppMarkdownLayout
       title="About Me"
-      isOpen={isOpen}
       dragConstraintRef={dragConstraintRef}
       markdown={md}
     />

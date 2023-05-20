@@ -12,11 +12,10 @@ import {
 } from "@/store/desktop";
 
 type Props = {
-  isOpen: boolean;
   dragConstraintRef?: MutableRefObject<HTMLDivElement>;
 };
 
-export function AppTerminal({ isOpen, dragConstraintRef }: Props) {
+export function AppTerminal({ dragConstraintRef }: Props) {
   const dispatch = useDispatch();
   const isTouchDevice = useIsTouchDevice();
   const [isClosingDown, setIsClosingDown] = useState(false);
@@ -48,7 +47,6 @@ export function AppTerminal({ isOpen, dragConstraintRef }: Props) {
     <AppLayout
       title="Terminal"
       onClose={() => setIsClosingDown(true)}
-      isOpen={isOpen}
       isScrollable={false}
       noPadding
       bgColor="black"
