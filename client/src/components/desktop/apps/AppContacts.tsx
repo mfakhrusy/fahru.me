@@ -34,7 +34,7 @@ const md = `
 
 **LinkedIn**
 
-[M Fahru](https://www.linkedin.com/in/mfakhrusy/)
+[M Fahru](https://www.linkedin.com/in/mfahru/)
  
 `;
 
