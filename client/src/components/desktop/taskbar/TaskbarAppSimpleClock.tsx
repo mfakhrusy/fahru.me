@@ -4,7 +4,7 @@ import { format, parseISO } from "date-fns";
 import { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
-import { setTimeWidgetActive, SetTimeWidgetActive } from "@/store/desktop";
+import { TaskbarState, setTaskbarMenu } from "@/store/taskbar";
 
 const TextContainer = styled(Text)`
   animation: blinker 1s step-start infinite;
@@ -16,25 +16,24 @@ const TextContainer = styled(Text)`
   }
 `;
 
-type Props = {
-  forwardRef: React.RefObject<HTMLDivElement>;
-};
-
-export function TaskbarAppSimpleClock({ forwardRef }: Props) {
+export function TaskbarAppSimpleClock() {
   const dispatch = useDispatch();
 
   const currentTime = useSelector<RootState, string>(
     (state) => state.desktop.currentTime
   );
 
-  const isTimeWidgetActive = useSelector<RootState, boolean>(
-    (state) => state.desktop.isTimeWidgetActive
+  const taskbarMenu = useSelector<RootState, TaskbarState["taskbarMenu"]>(
+    (state) => state.taskbar.taskbarMenu
   );
 
-  const setTimeWidget = useCallback<(args: boolean) => SetTimeWidgetActive>(
-    (payload) => dispatch(setTimeWidgetActive(payload)),
-    [dispatch]
-  );
+  const handleClick = useCallback(() => {
+    if (taskbarMenu === "TimeWidget") {
+      dispatch(setTaskbarMenu());
+    } else {
+      dispatch(setTaskbarMenu("TimeWidget"));
+    }
+  }, [dispatch, taskbarMenu]);
 
   return (
     <Flex
@@ -42,8 +41,7 @@ export function TaskbarAppSimpleClock({ forwardRef }: Props) {
       pr={4}
       cursor="pointer"
       userSelect="none"
-      onClick={() => setTimeWidget(!isTimeWidgetActive)}
-      ref={forwardRef}
+      onClick={handleClick}
     >
       <Divider orientation="vertical" mx={4} />
       <Text display="inline">{format(parseISO(currentTime), "HH")}</Text>

@@ -1,48 +1,43 @@
 import { Image } from "@chakra-ui/image";
 import { Box, Flex, Text } from "@chakra-ui/layout";
-import { Ref, useCallback } from "react";
+import { useCallback } from "react";
 import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import {
-  DesktopApp,
+  type DesktopApp,
   desktopApp,
   makeDesktopIcons,
 } from "@/lib/desktop/desktop";
 import height from "@/lib/height";
 import zIndex from "@/lib/zIndex";
+import type { RootState } from "@/store";
 import {
-  SetActiveDesktopAppAction,
+  type SetActiveDesktopAppAction,
   setActiveDesktopApp as setActiveDesktopAppAction,
-  disableAppMenu as disableAppMenuAction,
   setModal as setModalAction,
-  SetModalAction,
-  ModalState,
+  type SetModalAction,
+  type ModalState,
 } from "@/store/desktop";
+import { type TaskbarState, setTaskbarMenu } from "@/store/taskbar";
 
-type Props = {
-  isActive: boolean;
-  forwardRef: Ref<HTMLDivElement>;
-};
-
-export function TaskbarAppMenu({ isActive, forwardRef }: Props) {
+export function TaskbarAppMenu() {
   const dispatch = useDispatch();
 
   const setActiveDesktopApp = useCallback<
     (args: DesktopApp) => SetActiveDesktopAppAction
   >((payload) => dispatch(setActiveDesktopAppAction(payload)), [dispatch]);
 
-  const disableAppMenu = useCallback<() => void>(
-    () => dispatch(disableAppMenuAction()),
-    [dispatch]
-  );
-
   const setModal = useCallback<(args: ModalState) => SetModalAction>(
     (payload) => dispatch(setModalAction(payload)),
     [dispatch]
   );
 
+  const taskbarMenu = useSelector<RootState, TaskbarState["taskbarMenu"]>(
+    (state) => state.taskbar.taskbarMenu
+  );
+
   return (
     <Flex
-      ref={forwardRef}
       w="400px"
       minH="150px"
       position="absolute"
@@ -51,7 +46,7 @@ export function TaskbarAppMenu({ isActive, forwardRef }: Props) {
       backgroundColor="debian.500"
       color="white"
       p={4}
-      visibility={isActive ? "visible" : "hidden"}
+      visibility={taskbarMenu === "AppMenu" ? "visible" : "hidden"}
       borderRight="1px solid rgba(0, 0, 0, 0.1)"
       borderBottom="1px solid rgba(0, 0, 0, 0.1)"
       flexDir="column"
@@ -81,7 +76,7 @@ export function TaskbarAppMenu({ isActive, forwardRef }: Props) {
                   borderRadius="5px"
                   cursor="pointer"
                   onClick={() => {
-                    disableAppMenu();
+                    dispatch(setTaskbarMenu());
                     setActiveDesktopApp(app);
                   }}
                 >

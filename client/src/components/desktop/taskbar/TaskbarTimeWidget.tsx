@@ -6,28 +6,24 @@ import { useSelector } from "react-redux";
 import height from "@/lib/height";
 import zIndex from "@/lib/zIndex";
 import { RootState } from "@/store";
+import { TaskbarState } from "@/store/taskbar";
 
-type Props = {
-  forwardRef: React.Ref<HTMLDivElement>;
-};
-
-export function TaskbarTimeWidget({ forwardRef }: Props) {
+export function TaskbarTimeWidget() {
   const currentTime = useSelector<RootState, string>(
     (state) => state.desktop.currentTime
   );
 
-  const isTimeWidgetActive = useSelector<RootState, boolean>(
-    (state) => state.desktop.isTimeWidgetActive
+  const taskbarMenu = useSelector<RootState, TaskbarState["taskbarMenu"]>(
+    (state) => state.taskbar.taskbarMenu
   );
 
   return (
     <Flex
       color="debian.500"
       pos="absolute"
-      top={isTimeWidgetActive ? height.taskbar : "-100vh"}
+      top={taskbarMenu === "TimeWidget" ? height.taskbar : "-100vh"}
       right={0}
       zIndex={zIndex.timeWidget}
-      ref={forwardRef}
       flexDir="column"
       bgColor="white"
       userSelect="none"

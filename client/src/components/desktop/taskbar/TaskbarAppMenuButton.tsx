@@ -3,46 +3,23 @@ import { Divider, Flex, Text } from "@chakra-ui/layout";
 import { useCallback } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import type { DesktopApp } from "@/lib/desktop/desktop";
 import type { RootState } from "@/store";
-import {
-  EnableAppMenuAction,
-  enableAppMenu as enableAppMenuAction,
-  disableAppMenu as disableAppMenuAction,
-  setFocusedDesktopApp as setFocusedDesktopAppAction,
-  type AppMenuState,
-  SetFocusedDesktopAppAction,
-} from "@/store/desktop";
+import { setFocusedDesktopApp } from "@/store/desktop";
+import { type TaskbarState, setTaskbarMenu } from "@/store/taskbar";
 
-type Props = {
-  forwardRef: React.Ref<HTMLDivElement>;
-};
-
-export function TaskbarAppMenuButton({ forwardRef }: Props) {
+export function TaskbarAppMenuButton() {
   const dispatch = useDispatch();
-  const appMenuState = useSelector<RootState, AppMenuState>(
-    (state) => state.desktop.appMenu
+  const taskbarMenu = useSelector<RootState, TaskbarState["taskbarMenu"]>(
+    (state) => state.taskbar.taskbarMenu
   );
 
-  const setFocusedDesktopApp = useCallback<
-    (args: DesktopApp) => SetFocusedDesktopAppAction
-  >((payload) => dispatch(setFocusedDesktopAppAction(payload)), [dispatch]);
+  const handleClick = useCallback(() => {
+    dispatch(setFocusedDesktopApp("DesktopMainView"));
 
-  const enableAppMenu = useCallback<(args: DesktopApp) => EnableAppMenuAction>(
-    (payload) => dispatch(enableAppMenuAction(payload)),
-    [dispatch]
-  );
-
-  const disableAppMenu = useCallback<() => void>(
-    () => dispatch(disableAppMenuAction()),
-    [dispatch]
-  );
-
-  const onClick = () => {
-    setFocusedDesktopApp("DesktopMainView");
-
-    appMenuState.isActive ? disableAppMenu() : enableAppMenu("DesktopMainView");
-  };
+    taskbarMenu === "AppMenu"
+      ? dispatch(setTaskbarMenu())
+      : dispatch(setTaskbarMenu("AppMenu"));
+  }, [dispatch, taskbarMenu]);
 
   return (
     <>
@@ -51,9 +28,8 @@ export function TaskbarAppMenuButton({ forwardRef }: Props) {
         cursor="pointer"
         _hover={{ bgColor: "debian.600" }}
         justifyContent="space-between"
-        onClick={onClick}
-        bgColor={appMenuState.isActive ? "debian.600" : "debian.500"}
-        ref={forwardRef}
+        onClick={handleClick}
+        bgColor={taskbarMenu === "AppMenu" ? "debian.600" : "debian.500"}
       >
         <Image
           src="/icons/app-other.png"

@@ -22,6 +22,7 @@ import {
   SetCurrentTime,
   setCurrentTime as setCurrentTimeAction,
 } from "@/store/desktop";
+import { TaskbarState, setTaskbarMenu } from "@/store/taskbar";
 
 const DragArea = styled(motion.div)`
   width: 300%;
@@ -44,6 +45,10 @@ export function DesktopMainView() {
 
   const modal = useSelector<RootState, ModalState>(
     (state) => state.desktop.modal
+  );
+
+  const taskbarMenu = useSelector<RootState, TaskbarState["taskbarMenu"]>(
+    (state) => state.taskbar.taskbarMenu
   );
 
   const setFocusedDesktopApp = useCallback<
@@ -127,6 +132,16 @@ export function DesktopMainView() {
     [focusedApp, setFocusedDesktopApp]
   );
 
+  const handleClick = useCallback(
+    (e) => {
+      unfocusApp(e);
+      if (taskbarMenu !== undefined) {
+        dispatch(setTaskbarMenu());
+      }
+    },
+    [dispatch, taskbarMenu, unfocusApp]
+  );
+
   return (
     <Flex
       flexGrow={1}
@@ -134,7 +149,7 @@ export function DesktopMainView() {
       backgroundRepeat="repeat"
       pos="relative"
       backgroundPosition="center"
-      onClick={unfocusApp}
+      onClick={handleClick}
     >
       <DragArea className="drag-area" ref={dragConstraintRef}>
         <DesktopAppContent dragConstraintRef={dragConstraintRef} />
