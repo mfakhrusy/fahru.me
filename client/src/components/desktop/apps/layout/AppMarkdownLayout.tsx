@@ -2,7 +2,7 @@ import { memo, useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { AppLayout } from "@/components/desktop/apps/layout/AppLayout";
 import { Markdown } from "@/components/shared/Markdown";
-import type { DesktopApp } from "@/lib/desktop/desktop";
+import type { App } from "@/lib/apps/apps";
 import useDelayRenderOnTouchDevice from "@/lib/useDelayRenderOnTouchDevice";
 import {
   setActiveDesktopApp as setActiveDesktopAppAction,
@@ -22,7 +22,7 @@ export const AppMarkdownLayout = memo(function AppAboutMe({
   const shouldRenderContent = useDelayRenderOnTouchDevice({ delayAmount: 150 });
 
   const setActiveDesktopApp = useCallback<
-    (args: DesktopApp) => SetActiveDesktopAppAction
+    (args: App) => SetActiveDesktopAppAction
   >((payload) => dispatch(setActiveDesktopAppAction(payload)), [dispatch]);
 
   const onClose = () => setActiveDesktopApp("DesktopMainView");

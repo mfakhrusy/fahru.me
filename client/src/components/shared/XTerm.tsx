@@ -6,7 +6,7 @@ import { isAndroid } from "react-device-detect";
 import { useDispatch } from "react-redux";
 import { Terminal as Terminal_ } from "xterm";
 import { FitAddon } from "xterm-addon-fit";
-import { DesktopApp } from "@/lib/desktop/desktop";
+import { type App } from "@/lib/apps/apps";
 import { executeCommand } from "@/lib/terminal/terminal";
 import {
   setActiveDesktopApp as setActiveDesktopAppAction,
@@ -34,7 +34,7 @@ export default function XTerm(props: Props) {
   const router = useRouter();
   const dispatch = useDispatch();
   const setActiveDesktopApp = useCallback<
-    (args: DesktopApp) => SetActiveDesktopAppAction
+    (args: App) => SetActiveDesktopAppAction
   >((payload) => dispatch(setActiveDesktopAppAction(payload)), [dispatch]);
 
   useEffect(() => {

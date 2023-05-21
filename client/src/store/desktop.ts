@@ -1,11 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { DesktopApp } from "@/lib/desktop/desktop";
+import { App } from "@/lib/apps/apps";
 
 export type ModalState = "noModal" | "shutdownModal" | "rebootModal";
 
 type State = {
-  activeDesktopApp: DesktopApp;
-  focusedDesktopApp: DesktopApp;
+  activeDesktopApp: App;
+  focusedDesktopApp: App;
   modal: ModalState;
   isActiveAppFullScreen: boolean;
   isTimeWidgetActive: boolean;
@@ -14,17 +14,17 @@ type State = {
 
 export type SetActiveDesktopAppAction = {
   type: string;
-  payload: DesktopApp;
+  payload: App;
 };
 
 export type SetFocusedDesktopAppAction = {
   type: string;
-  payload: DesktopApp;
+  payload: App;
 };
 
 export type EnableAppMenuAction = {
   type: string;
-  payload: DesktopApp;
+  payload: App;
 };
 
 export type SetModalAction = {

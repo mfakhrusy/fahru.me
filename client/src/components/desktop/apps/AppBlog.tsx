@@ -5,7 +5,7 @@ import { useState, useCallback } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { AppLayout } from "@/components/desktop/apps/layout/AppLayout";
-import type { DesktopApp } from "@/lib/desktop/desktop";
+import type { App } from "@/lib/apps/apps";
 import useDelayRenderOnTouchDevice from "@/lib/useDelayRenderOnTouchDevice";
 import useIsTouchDevice from "@/lib/useIsTouchDevice";
 import type { RootState } from "@/store";
@@ -19,7 +19,7 @@ export function AppBlog() {
   const shouldRenderContent = useDelayRenderOnTouchDevice({ delayAmount: 150 });
   const [isIntro, setIsIntro] = useState(true);
   const setActiveDesktopApp = useCallback<
-    (args: DesktopApp) => SetActiveDesktopAppAction
+    (args: App) => SetActiveDesktopAppAction
   >((payload) => dispatch(setActiveDesktopAppAction(payload)), [dispatch]);
 
   const onClose = () => setActiveDesktopApp("DesktopMainView");

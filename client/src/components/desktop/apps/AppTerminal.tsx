@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { AppLayout } from "@/components/desktop/apps/layout/AppLayout";
 import { Terminal } from "@/components/shared/Terminal";
-import type { DesktopApp } from "@/lib/desktop/desktop";
+import type { App } from "@/lib/apps/apps";
 import useDelayRenderOnTouchDevice from "@/lib/useDelayRenderOnTouchDevice";
 import useIsTouchDevice from "@/lib/useIsTouchDevice";
 import {
@@ -17,7 +17,7 @@ export function AppTerminal() {
   const [isClosingDown, setIsClosingDown] = useState(false);
 
   const setActiveDesktopApp = useCallback<
-    (args: DesktopApp) => SetActiveDesktopAppAction
+    (args: App) => SetActiveDesktopAppAction
   >((payload) => dispatch(setActiveDesktopAppAction(payload)), [dispatch]);
 
   const onClose = useCallback(

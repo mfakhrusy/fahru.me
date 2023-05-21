@@ -3,7 +3,7 @@ import { Divider, Flex, Heading, Image, Text, Link } from "@chakra-ui/react";
 import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { AppLayout } from "@/components/desktop/apps/layout/AppLayout";
-import type { DesktopApp } from "@/lib/desktop/desktop";
+import type { App } from "@/lib/apps/apps";
 import useDelayRenderOnTouchDevice from "@/lib/useDelayRenderOnTouchDevice";
 import {
   setActiveDesktopApp as setActiveDesktopAppAction,
@@ -15,7 +15,7 @@ export function AppProjects() {
   const dispatch = useDispatch();
 
   const setActiveDesktopApp = useCallback<
-    (args: DesktopApp) => SetActiveDesktopAppAction
+    (args: App) => SetActiveDesktopAppAction
   >((payload) => dispatch(setActiveDesktopAppAction(payload)), [dispatch]);
 
   const onClose = () => setActiveDesktopApp("DesktopMainView");
