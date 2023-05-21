@@ -1,7 +1,7 @@
 import { Flex } from "@chakra-ui/react";
 import React, { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { DesktopDragArea } from "@/components/desktop/DektopDragArea";
+import { DesktopDragArea } from "@/components/desktop/DesktopDragArea";
 import { DesktopInfoPopover } from "@/components/desktop/DesktopInfoPopover";
 import { DesktopRebootModal } from "@/components/desktop/DesktopRebootModal";
 import { DesktopShutdownModal } from "@/components/desktop/DesktopShutdownModal";
