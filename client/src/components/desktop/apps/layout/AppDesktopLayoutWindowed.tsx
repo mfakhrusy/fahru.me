@@ -27,6 +27,8 @@ const Container = styled(motion.div)`
   z-index: ${zIndex.draggableAppWindow};
   margin-top: 3vh;
   margin-left: 103vw;
+  position: absolute;
+  left: 0;
 `;
 
 type AppDesktopLayoutWindowedProps = {

@@ -152,10 +152,9 @@ export function DesktopMainView() {
       onClick={handleClick}
     >
       <DragArea className="drag-area" ref={dragConstraintRef}>
-        <DesktopAppContent />
-        <Flex pos="absolute" top="0" w="100%">
+        <Flex pos="absolute" top="0" w="100%" paddingLeft="100vw">
+          <DesktopAppContent />
           {/* 100vw because drag area extends to left and right side of the visible screen, so we need to add some "left buffer" so desktop icons can appear in the middle */}
-          <Box w="100vw" h="100px" />
           {makeDesktopIcons().map((desktopIcon, i) => (
             <React.Fragment key={`mainview-${desktopIcon.appName}`}>
               <DesktopIcon
