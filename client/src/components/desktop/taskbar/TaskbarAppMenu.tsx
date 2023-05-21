@@ -5,8 +5,8 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import {
   type App,
-  apps,
-  makeApps,
+  makeLocalApps,
+  makeMarkdownBasedApps,
 } from "@/lib/apps/apps";
 import height from "@/lib/height";
 import zIndex from "@/lib/zIndex";
@@ -56,41 +56,56 @@ export function TaskbarAppMenu() {
           All
         </Flex>
         <Flex w="60%" flexDir="column" pl={2}>
-          {apps
-            .filter((app) => app !== "DesktopMainView")
-            .map((app) => {
-              const appIconName = makeApps().filter(
-                (item) => item.appName === app
-              )[0]?.iconName;
-
-              const appTitle = makeApps().filter(
-                (item) => item.appName === app
-              )[0]?.title;
-
-              return (
-                <Flex
-                  key={app}
-                  alignItems="center"
-                  p={2}
-                  _hover={{ bgColor: "debian.600" }}
-                  borderRadius="5px"
-                  cursor="pointer"
-                  onClick={() => {
-                    dispatch(setTaskbarMenu());
-                    setActiveDesktopApp(app);
-                  }}
-                >
-                  <Image
-                    src={`/icons/${appIconName}`}
-                    w="30px"
-                    h="30px"
-                    alt={appTitle}
-                  />
-                  <Box w={2} />
-                  <Text userSelect="none">{appTitle}</Text>
-                </Flex>
-              );
-            })}
+          {makeLocalApps().map((app) => {
+            return (
+              <Flex
+                key={app.appName}
+                alignItems="center"
+                p={2}
+                _hover={{ bgColor: "debian.600" }}
+                borderRadius="5px"
+                cursor="pointer"
+                onClick={() => {
+                  dispatch(setTaskbarMenu());
+                  setActiveDesktopApp(app.appName);
+                }}
+              >
+                <Image
+                  src={`/icons/${app.iconName}`}
+                  w="30px"
+                  h="30px"
+                  alt={app.title}
+                />
+                <Box w={2} />
+                <Text userSelect="none">{app.title}</Text>
+              </Flex>
+            );
+          })}
+          {makeMarkdownBasedApps().map((app) => {
+            return (
+              <Flex
+                key={app.appName}
+                alignItems="center"
+                p={2}
+                _hover={{ bgColor: "debian.600" }}
+                borderRadius="5px"
+                cursor="pointer"
+                onClick={() => {
+                  dispatch(setTaskbarMenu());
+                  setActiveDesktopApp(app.appName);
+                }}
+              >
+                <Image
+                  src={`/icons/${app.iconName}`}
+                  w="30px"
+                  h="30px"
+                  alt={app.title}
+                />
+                <Box w={2} />
+                <Text userSelect="none">{app.title}</Text>
+              </Flex>
+            );
+          })}
         </Flex>
       </Flex>
       <Flex

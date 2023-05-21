@@ -8,7 +8,8 @@ import { DesktopIcon } from "@/components/desktop/DesktopIcon";
 import { DragContext } from "@/context/DragContext";
 import {
   type App,
-  makeApps,
+  makeLocalApps,
+  makeMarkdownBasedApps,
 } from "@/lib/apps/apps";
 import type { RootState } from "@/store";
 import {
@@ -51,7 +52,7 @@ export const DesktopDragArea = () => {
   return (
     <DragArea className="drag-area" ref={dragConstraintRef}>
       <Flex pos="absolute" top="0" w="100%" paddingLeft="100vw">
-        {makeApps().map((desktopIcon, i) => (
+        {makeLocalApps().map((desktopIcon, i) => (
           <React.Fragment key={`mainview-${desktopIcon.appName}`}>
             <DesktopIcon
               iconName={desktopIcon.iconName}
@@ -61,9 +62,22 @@ export const DesktopDragArea = () => {
               isFocused={focusedApp === desktopIcon.appName}
               title={desktopIcon.title}
             />
-            {i !== makeApps().length - 1 ? (
-              <Box w="15px" h="1px" />
-            ) : null}
+            {i !== makeLocalApps().length - 1 ? <Box w="15px" h="1px" /> : null}
+            {activeApp === desktopIcon.appName ? desktopIcon.component : null}
+          </React.Fragment>
+        ))}
+        <Box w="15px" h="1px" />
+        {makeMarkdownBasedApps().map((desktopIcon, i) => (
+          <React.Fragment key={`mainview-${desktopIcon.appName}`}>
+            <DesktopIcon
+              iconName={desktopIcon.iconName}
+              dragConstraintRef={dragConstraintRef}
+              onClick={() => setFocusedDesktopApp(desktopIcon.appName)}
+              onDoubleClick={() => setActiveDesktopApp(desktopIcon.appName)}
+              isFocused={focusedApp === desktopIcon.appName}
+              title={desktopIcon.title}
+            />
+            {i !== makeLocalApps().length - 1 ? <Box w="15px" h="1px" /> : null}
             {activeApp === desktopIcon.appName ? desktopIcon.component : null}
           </React.Fragment>
         ))}

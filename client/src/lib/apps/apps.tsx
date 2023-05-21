@@ -8,7 +8,7 @@ import { AppTerminal } from "@/components/desktop/apps/AppTerminal";
 import { AppTodo } from "@/components/desktop/apps/AppTodo";
 import { AppWorkHistory } from "@/components/desktop/apps/AppWorkHistory";
 
-export const apps = [
+const apps = [
   "DesktopMainView",
   "AppTerminal",
   "AppAboutMe",
@@ -30,7 +30,7 @@ type DesktopIcon = {
   component: React.ReactNode;
 };
 
-export function makeApps(): Array<DesktopIcon> {
+export function makeMarkdownBasedApps(): Array<DesktopIcon> {
   return [
     {
       iconName: "config-users.png",
@@ -51,12 +51,6 @@ export function makeApps(): Array<DesktopIcon> {
       component: <AppContacts />,
     },
     {
-      iconName: "games.png",
-      appName: "AppProjects",
-      title: "Hobby Projects",
-      component: <AppProjects />,
-    },
-    {
       iconName: "education.png",
       appName: "AppEducation",
       title: "Education",
@@ -69,6 +63,23 @@ export function makeApps(): Array<DesktopIcon> {
       component: <AppWorkHistory />,
     },
     {
+      iconName: "puzzle.png",
+      appName: "AppTodo",
+      title: "To-Dos",
+      component: <AppTodo />,
+    },
+  ];
+}
+
+export function makeLocalApps(): Array<DesktopIcon> {
+  return [
+    {
+      iconName: "games.png",
+      appName: "AppProjects",
+      title: "Hobby Projects",
+      component: <AppProjects />,
+    },
+    {
       iconName: "book.png",
       appName: "AppBlog",
       title: "Blog",
@@ -79,12 +90,6 @@ export function makeApps(): Array<DesktopIcon> {
       appName: "AppTerminal",
       title: "Terminal",
       component: <AppTerminal />,
-    },
-    {
-      iconName: "puzzle.png",
-      appName: "AppTodo",
-      title: "To-Dos",
-      component: <AppTodo />,
     },
   ];
 }
