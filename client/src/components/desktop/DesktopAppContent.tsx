@@ -1,15 +1,13 @@
 import { useSelector } from "react-redux";
-import {
-  AppAboutMe,
-  AppAboutSite,
-  AppBlog,
-  AppContacts,
-  AppEducation,
-  AppProjects,
-  AppTerminal,
-  AppTodo,
-  AppWorkHistory,
-} from "@/components/desktop/apps";
+import { AppAboutMe } from "@/components/desktop/apps/AppAboutMe";
+import { AppAboutSite } from "@/components/desktop/apps/AppAboutSite";
+import { AppBlog } from "@/components/desktop/apps/AppBlog";
+import { AppContacts } from "@/components/desktop/apps/AppContacts";
+import { AppEducation } from "@/components/desktop/apps/AppEducation";
+import { AppProjects } from "@/components/desktop/apps/AppProjects";
+import { AppTerminal } from "@/components/desktop/apps/AppTerminal";
+import { AppTodo } from "@/components/desktop/apps/AppTodo";
+import { AppWorkHistory } from "@/components/desktop/apps/AppWorkHistory";
 import type { DesktopApp } from "@/lib/desktop/desktop";
 import type { RootState } from "@/store";
 
