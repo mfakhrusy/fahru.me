@@ -4,10 +4,10 @@ import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import {
-  type DesktopApp,
-  desktopApp,
-  makeDesktopIcons,
-} from "@/lib/desktop/desktop";
+  type App,
+  apps,
+  makeApps,
+} from "@/lib/apps/apps";
 import height from "@/lib/height";
 import zIndex from "@/lib/zIndex";
 import type { RootState } from "@/store";
@@ -24,7 +24,7 @@ export function TaskbarAppMenu() {
   const dispatch = useDispatch();
 
   const setActiveDesktopApp = useCallback<
-    (args: DesktopApp) => SetActiveDesktopAppAction
+    (args: App) => SetActiveDesktopAppAction
   >((payload) => dispatch(setActiveDesktopAppAction(payload)), [dispatch]);
 
   const setModal = useCallback<(args: ModalState) => SetModalAction>(
@@ -56,14 +56,14 @@ export function TaskbarAppMenu() {
           All
         </Flex>
         <Flex w="60%" flexDir="column" pl={2}>
-          {desktopApp
+          {apps
             .filter((app) => app !== "DesktopMainView")
             .map((app) => {
-              const appIconName = makeDesktopIcons().filter(
+              const appIconName = makeApps().filter(
                 (item) => item.appName === app
               )[0]?.iconName;
 
-              const appTitle = makeDesktopIcons().filter(
+              const appTitle = makeApps().filter(
                 (item) => item.appName === app
               )[0]?.title;
 

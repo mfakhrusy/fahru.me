@@ -6,7 +6,10 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { DesktopIcon } from "@/components/desktop/DesktopIcon";
 import { DragContext } from "@/context/DragContext";
-import { makeDesktopIcons, type DesktopApp } from "@/lib/desktop/desktop";
+import {
+  type App,
+  makeApps,
+} from "@/lib/apps/apps";
 import type { RootState } from "@/store";
 import {
   type SetActiveDesktopAppAction,
@@ -29,26 +32,26 @@ export const DesktopDragArea = () => {
   const dragConstraintRef = useContext(DragContext);
   const dispatch = useDispatch();
 
-  const focusedApp = useSelector<RootState, DesktopApp>(
+  const focusedApp = useSelector<RootState, App>(
     (state) => state.desktop.focusedDesktopApp
   );
 
-  const activeApp = useSelector<RootState, DesktopApp>(
+  const activeApp = useSelector<RootState, App>(
     (state) => state.desktop.activeDesktopApp
   );
 
   const setFocusedDesktopApp = useCallback<
-    (args: DesktopApp) => SetFocusedDesktopAppAction
+    (args: App) => SetFocusedDesktopAppAction
   >((payload) => dispatch(setFocusedDesktopAppAction(payload)), [dispatch]);
 
   const setActiveDesktopApp = useCallback<
-    (args: DesktopApp) => SetActiveDesktopAppAction
+    (args: App) => SetActiveDesktopAppAction
   >((payload) => dispatch(setActiveDesktopAppAction(payload)), [dispatch]);
 
   return (
     <DragArea className="drag-area" ref={dragConstraintRef}>
       <Flex pos="absolute" top="0" w="100%" paddingLeft="100vw">
-        {makeDesktopIcons().map((desktopIcon, i) => (
+        {makeApps().map((desktopIcon, i) => (
           <React.Fragment key={`mainview-${desktopIcon.appName}`}>
             <DesktopIcon
               iconName={desktopIcon.iconName}
@@ -58,7 +61,7 @@ export const DesktopDragArea = () => {
               isFocused={focusedApp === desktopIcon.appName}
               title={desktopIcon.title}
             />
-            {i !== makeDesktopIcons().length - 1 ? (
+            {i !== makeApps().length - 1 ? (
               <Box w="15px" h="1px" />
             ) : null}
             {activeApp === desktopIcon.appName ? desktopIcon.component : null}

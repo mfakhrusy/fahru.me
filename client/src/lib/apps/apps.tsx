@@ -8,7 +8,7 @@ import { AppTerminal } from "@/components/desktop/apps/AppTerminal";
 import { AppTodo } from "@/components/desktop/apps/AppTodo";
 import { AppWorkHistory } from "@/components/desktop/apps/AppWorkHistory";
 
-export const desktopApp = [
+export const apps = [
   "DesktopMainView",
   "AppTerminal",
   "AppAboutMe",
@@ -21,16 +21,16 @@ export const desktopApp = [
   "AppTodo",
 ] as const;
 
-export type DesktopApp = (typeof desktopApp)[number];
+export type App = (typeof apps)[number];
 
 type DesktopIcon = {
   iconName: string;
   title: string;
-  appName: DesktopApp;
+  appName: App;
   component: React.ReactNode;
 };
 
-export function makeDesktopIcons(): Array<DesktopIcon> {
+export function makeApps(): Array<DesktopIcon> {
   return [
     {
       iconName: "config-users.png",

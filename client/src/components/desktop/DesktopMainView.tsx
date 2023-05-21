@@ -5,8 +5,8 @@ import { DesktopDragArea } from "@/components/desktop/DesktopDragArea";
 import { DesktopInfoPopover } from "@/components/desktop/DesktopInfoPopover";
 import { DesktopRebootModal } from "@/components/desktop/DesktopRebootModal";
 import { DesktopShutdownModal } from "@/components/desktop/DesktopShutdownModal";
+import type { App } from "@/lib/apps/apps";
 import className from "@/lib/className";
-import { type DesktopApp } from "@/lib/desktop/desktop";
 import type { RootState } from "@/store";
 import {
   SetActiveDesktopAppAction,
@@ -24,7 +24,7 @@ import { TaskbarState, setTaskbarMenu } from "@/store/taskbar";
 export function DesktopMainView() {
   const dispatch = useDispatch();
 
-  const focusedApp = useSelector<RootState, DesktopApp>(
+  const focusedApp = useSelector<RootState, App>(
     (state) => state.desktop.focusedDesktopApp
   );
 
@@ -37,11 +37,11 @@ export function DesktopMainView() {
   );
 
   const setFocusedDesktopApp = useCallback<
-    (args: DesktopApp) => SetFocusedDesktopAppAction
+    (args: App) => SetFocusedDesktopAppAction
   >((payload) => dispatch(setFocusedDesktopAppAction(payload)), [dispatch]);
 
   const setActiveDesktopApp = useCallback<
-    (args: DesktopApp) => SetActiveDesktopAppAction
+    (args: App) => SetActiveDesktopAppAction
   >((payload) => dispatch(setActiveDesktopAppAction(payload)), [dispatch]);
 
   const setModal = useCallback<(args: ModalState) => SetModalAction>(

@@ -3,7 +3,7 @@ import React, { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { DesktopIcon } from "@/components/desktop/DesktopIcon";
-import { type DesktopApp, makeDesktopIcons } from "@/lib/desktop/desktop";
+import { makeApps, type App } from "@/lib/apps/apps";
 import type { RootState } from "@/store";
 import {
   SetActiveDesktopAppAction,
@@ -13,10 +13,10 @@ import {
 export function DesktopTouchView() {
   const dispatch = useDispatch();
   const setActiveDesktopApp = useCallback<
-    (args: DesktopApp) => SetActiveDesktopAppAction
+    (args: App) => SetActiveDesktopAppAction
   >((payload) => dispatch(setActiveDesktopAppAction(payload)), [dispatch]);
 
-  const activeApp = useSelector<RootState, DesktopApp>(
+  const activeApp = useSelector<RootState, App>(
     (state) => state.desktop.activeDesktopApp
   );
 
@@ -30,7 +30,7 @@ export function DesktopTouchView() {
       backgroundPosition="center"
     >
       <Flex flexWrap="wrap" h="30%">
-        {makeDesktopIcons().map((desktopIcon) => (
+        {makeApps().map((desktopIcon) => (
           <React.Fragment key={`touchview-${desktopIcon.appName}`}>
             <DesktopIcon
               key={`touchview-${desktopIcon.appName}`}
