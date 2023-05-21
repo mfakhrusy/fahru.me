@@ -53,6 +53,7 @@ export function AppDesktopLayoutContent({
           color="aliceblue"
           fontWeight="600"
           letterSpacing="wider"
+          userSelect="none"
         >
           {title}
         </Text>
