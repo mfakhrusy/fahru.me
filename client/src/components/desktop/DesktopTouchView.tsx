@@ -1,9 +1,10 @@
 import { Flex } from "@chakra-ui/react";
-import { useCallback } from "react";
+import React, { useCallback } from "react";
 import { useDispatch } from "react-redux";
-import { DesktopAppContent } from "@/components/desktop/DesktopAppContent";
+import { useSelector } from "react-redux";
 import { DesktopIcon } from "@/components/desktop/DesktopIcon";
-import { DesktopApp, makeDesktopIcons } from "@/lib/desktop/desktop";
+import { type DesktopApp, makeDesktopIcons } from "@/lib/desktop/desktop";
+import type { RootState } from "@/store";
 import {
   SetActiveDesktopAppAction,
   setActiveDesktopApp as setActiveDesktopAppAction,
@@ -14,6 +15,10 @@ export function DesktopTouchView() {
   const setActiveDesktopApp = useCallback<
     (args: DesktopApp) => SetActiveDesktopAppAction
   >((payload) => dispatch(setActiveDesktopAppAction(payload)), [dispatch]);
+
+  const activeApp = useSelector<RootState, DesktopApp>(
+    (state) => state.desktop.activeDesktopApp
+  );
 
   return (
     <Flex
@@ -26,15 +31,17 @@ export function DesktopTouchView() {
     >
       <Flex flexWrap="wrap" h="30%">
         {makeDesktopIcons().map((desktopIcon) => (
-          <DesktopIcon
-            key={`touchview-${desktopIcon.appName}`}
-            iconName={desktopIcon.iconName}
-            onClick={() => setActiveDesktopApp(desktopIcon.appName)}
-            title={desktopIcon.title}
-          />
+          <React.Fragment key={`touchview-${desktopIcon.appName}`}>
+            <DesktopIcon
+              key={`touchview-${desktopIcon.appName}`}
+              iconName={desktopIcon.iconName}
+              onClick={() => setActiveDesktopApp(desktopIcon.appName)}
+              title={desktopIcon.title}
+            />
+            {activeApp === desktopIcon.appName ? desktopIcon.component : null}
+          </React.Fragment>
         ))}
       </Flex>
-      <DesktopAppContent />
     </Flex>
   );
 }

@@ -4,10 +4,9 @@ import { motion } from "framer-motion";
 import React, { useCallback, useContext } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { DesktopAppContent } from "@/components/desktop/DesktopAppContent";
 import { DesktopIcon } from "@/components/desktop/DesktopIcon";
 import { DragContext } from "@/context/DragContext";
-import { type DesktopApp, makeDesktopIcons } from "@/lib/desktop/desktop";
+import { makeDesktopIcons, type DesktopApp } from "@/lib/desktop/desktop";
 import type { RootState } from "@/store";
 import {
   type SetActiveDesktopAppAction,
@@ -34,6 +33,10 @@ export const DesktopDragArea = () => {
     (state) => state.desktop.focusedDesktopApp
   );
 
+  const activeApp = useSelector<RootState, DesktopApp>(
+    (state) => state.desktop.activeDesktopApp
+  );
+
   const setFocusedDesktopApp = useCallback<
     (args: DesktopApp) => SetFocusedDesktopAppAction
   >((payload) => dispatch(setFocusedDesktopAppAction(payload)), [dispatch]);
@@ -45,8 +48,6 @@ export const DesktopDragArea = () => {
   return (
     <DragArea className="drag-area" ref={dragConstraintRef}>
       <Flex pos="absolute" top="0" w="100%" paddingLeft="100vw">
-        <DesktopAppContent />
-        {/* 100vw because drag area extends to left and right side of the visible screen, so we need to add some "left buffer" so desktop icons can appear in the middle */}
         {makeDesktopIcons().map((desktopIcon, i) => (
           <React.Fragment key={`mainview-${desktopIcon.appName}`}>
             <DesktopIcon
@@ -60,6 +61,7 @@ export const DesktopDragArea = () => {
             {i !== makeDesktopIcons().length - 1 ? (
               <Box w="15px" h="1px" />
             ) : null}
+            {activeApp === desktopIcon.appName ? desktopIcon.component : null}
           </React.Fragment>
         ))}
       </Flex>
