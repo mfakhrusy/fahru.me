@@ -10,7 +10,7 @@ type Props = {
 
 export function Typewriter({
   text,
-  onFinish = () => undefined,
+  onFinish,
   stepTimeSecond = 0.1,
   onFinishDelay = 100,
 }: Props) {
@@ -19,7 +19,9 @@ export function Typewriter({
   const stepSize = 1 / text.length;
 
   useEffect(() => {
-    setTimeout(() => onFinish(), duration * 1000 + onFinishDelay);
+    if (onFinish) {
+      setTimeout(() => onFinish(), duration * 1000 + onFinishDelay);
+    }
   }, [duration, onFinish, onFinishDelay]);
 
   return useMemo(
@@ -28,10 +30,10 @@ export function Typewriter({
         style={{
           opacity: 0,
         }}
-        animate={{ opacity: [0, 1] }}
+        animate={{ opacity: [0, 1, 1] }}
         transition={{
           duration: stepTimeSecond,
-          times: [0, 1],
+          times: [0, 1, 1],
         }}
       >
         {textArr.map((letter, index) => {
@@ -41,14 +43,15 @@ export function Typewriter({
               style={{
                 width: "8px",
                 display: "inline-flex",
+                opacity: 0,
               }}
               animate={{
-                opacity: ["0", "1"],
+                opacity: [0, 1, 1],
               }}
               transition={{
-                times: [index * stepSize, index * stepSize + stepSize],
+                times: [index * stepSize, index * stepSize + stepSize, 1],
                 duration,
-                ease: [0.16, 1, 0.3, 1],
+                ease: "linear",
               }}
             >
               {letter}

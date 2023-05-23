@@ -19,9 +19,7 @@ export function MultilineTypewriter({ texts, onFinish }: Props) {
               <Typewriter
                 key={index}
                 text={text}
-                onFinish={() =>
-                  setCurrentLine((currentLineState) => currentLineState + 1)
-                }
+                onFinish={() => setCurrentLine(currentLine + 1)}
                 onFinishDelay={150}
                 stepTimeSecond={0.07}
               />
