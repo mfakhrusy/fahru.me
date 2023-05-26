@@ -77,7 +77,9 @@ export const DesktopDragArea = () => {
               isFocused={focusedApp === desktopIcon.appName}
               title={desktopIcon.title}
             />
-            {i !== makeLocalApps().length - 1 ? <Box w="15px" h="1px" /> : null}
+            {i !== makeMarkdownBasedApps().length - 1 ? (
+              <Box w="15px" h="1px" />
+            ) : null}
             {activeApp === desktopIcon.appName ? desktopIcon.component : null}
           </React.Fragment>
         ))}
