@@ -1,10 +1,9 @@
 import { Flex } from "@chakra-ui/react";
 import React, { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { DesktopMainViewModal } from "@/components/desktop/DekstopMainViewModal";
 import { DesktopDragArea } from "@/components/desktop/DesktopDragArea";
 import { DesktopInfoPopover } from "@/components/desktop/DesktopInfoPopover";
-import { DesktopRebootModal } from "@/components/desktop/DesktopRebootModal";
-import { DesktopShutdownModal } from "@/components/desktop/DesktopShutdownModal";
 import type { App } from "@/lib/apps/apps";
 import className from "@/lib/className";
 import type { RootState } from "@/store";
@@ -13,9 +12,6 @@ import {
   SetFocusedDesktopAppAction,
   setActiveDesktopApp as setActiveDesktopAppAction,
   setFocusedDesktopApp as setFocusedDesktopAppAction,
-  type ModalState,
-  setModal as setModalAction,
-  SetModalAction,
   SetCurrentTime,
   setCurrentTime as setCurrentTimeAction,
 } from "@/store/desktop";
@@ -26,10 +22,6 @@ export function DesktopMainView() {
 
   const focusedApp = useSelector<RootState, App>(
     (state) => state.desktop.focusedDesktopApp
-  );
-
-  const modal = useSelector<RootState, ModalState>(
-    (state) => state.desktop.modal
   );
 
   const taskbarMenu = useSelector<RootState, TaskbarState["taskbarMenu"]>(
@@ -43,11 +35,6 @@ export function DesktopMainView() {
   const setActiveDesktopApp = useCallback<
     (args: App) => SetActiveDesktopAppAction
   >((payload) => dispatch(setActiveDesktopAppAction(payload)), [dispatch]);
-
-  const setModal = useCallback<(args: ModalState) => SetModalAction>(
-    (payload) => dispatch(setModalAction(payload)),
-    [dispatch]
-  );
 
   const setCurrentTime = useCallback<(currentTime: string) => SetCurrentTime>(
     (payload) => dispatch(setCurrentTimeAction(payload)),
@@ -79,25 +66,6 @@ export function DesktopMainView() {
 
     return () => window.removeEventListener("keydown", eventHandler);
   }, [focusedApp, setActiveDesktopApp, setFocusedDesktopApp]);
-
-  const renderModal = (modal: ModalState) => {
-    switch (modal) {
-      case "rebootModal":
-        return (
-          <DesktopRebootModal
-            onClose={() => setModal("noModal")}
-            isOpen={modal === "rebootModal"}
-          />
-        );
-      case "shutdownModal":
-        return (
-          <DesktopShutdownModal
-            onClose={() => setModal("noModal")}
-            isOpen={modal === "shutdownModal"}
-          />
-        );
-    }
-  };
 
   const unfocusApp = useCallback(
     (e) => {
@@ -140,7 +108,7 @@ export function DesktopMainView() {
       <Flex alignSelf="flex-end" m={4}>
         <DesktopInfoPopover />
       </Flex>
-      {renderModal(modal)}
+      <DesktopMainViewModal />
     </Flex>
   );
 }
