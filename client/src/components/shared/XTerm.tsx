@@ -56,6 +56,7 @@ export default function XTerm(props: Props) {
         terminal.write("to see available commands\r\n");
         terminal.write("type 'help' and hit ENTER or RETURN\r\n\r\n");
       }
+      // eslint-disable-next-line no-constant-condition
       if (false) {
         terminal.write("guest@fakhrusy.com ~$ ");
         terminal.write("\x1b[?25l"); // remove cursor
