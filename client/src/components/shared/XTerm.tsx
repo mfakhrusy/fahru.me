@@ -56,11 +56,12 @@ export default function XTerm(props: Props) {
         terminal.write("to see available commands\r\n");
         terminal.write("type 'help' and hit ENTER or RETURN\r\n\r\n");
       }
-      if (isAndroid) {
+      if (false) {
         terminal.write("guest@fakhrusy.com ~$ ");
         terminal.write("\x1b[?25l"); // remove cursor
         terminal.onData((data) => {
-          executeCommand({ command: data, terminal, router });
+          console.log("data: ", data);
+          // executeCommand({ command: data, terminal, router });
           terminal.write("\r" + "guest@fakhrusy.com ~$ ");
         });
       } else {
