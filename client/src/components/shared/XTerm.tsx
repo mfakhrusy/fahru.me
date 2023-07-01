@@ -56,13 +56,11 @@ export default function XTerm(props: Props) {
         terminal.write("to see available commands\r\n");
         terminal.write("type 'help' and hit ENTER or RETURN\r\n\r\n");
       }
-      // eslint-disable-next-line no-constant-condition
-      if (false) {
+      if (isAndroid) {
         terminal.write("guest@fakhrusy.com ~$ ");
         terminal.write("\x1b[?25l"); // remove cursor
         terminal.onData((data) => {
-          console.log("data: ", data);
-          // executeCommand({ command: data, terminal, router });
+          executeCommand({ command: data, terminal, router });
           terminal.write("\r" + "guest@fakhrusy.com ~$ ");
         });
       } else {
