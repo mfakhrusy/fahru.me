@@ -32,10 +32,10 @@ export function AppDesktopLayoutContent({
       pb={isFullScreen ? "2.1rem" : 4}
     >
       <Flex
-        pos="relative"
-        bgColor="debian.500"
-        minH="35px"
-        w="100%"
+        position="relative"
+        backgroundColor="debian.500"
+        minHeight="35px"
+        width="100%"
         borderTopRadius={isFullScreen ? "0" : "10px"}
         borderTop="1px solid rgba(0, 0, 0, 0.1)"
         borderRight="1px solid rgba(0, 0, 0, 0.1)"
@@ -43,6 +43,7 @@ export function AppDesktopLayoutContent({
         onPointerDown={(e) => {
           onPointerDown?.(e);
         }}
+        onDoubleClick={() => onClickFullscreen(!isFullScreen)}
       >
         <Text
           display="flex"
