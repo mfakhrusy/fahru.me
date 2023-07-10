@@ -1,6 +1,7 @@
-import { Box, Flex } from "@chakra-ui/react";
+import { Box, Flex, Text } from "@chakra-ui/react";
 import dynamic from "next/dynamic";
 import { useMemo, useState } from "react";
+import { isAndroid } from "react-device-detect";
 import { ASCIITitle } from "@/components/shared/ASCIITitle";
 import { BlackTerminalPage } from "@/components/shared/BlackTerminalPage";
 import { MultilineTypewriter } from "@/components/shared/MultilineTypewriter";
@@ -32,6 +33,15 @@ function HomeScreen() {
       <Box h={5} />
       <Flex w="100%" flexDir="column">
         {intro}
+        {isAndroid && state === "interactive" ? (
+          <>
+            <Text>
+              For Android users: press ENTER once if you have trouble typing
+              anything
+            </Text>
+            <Box h={5} />
+          </>
+        ) : null}
       </Flex>
       {state === "interactive" && <Terminal withHelp />}
     </BlackTerminalPage>
