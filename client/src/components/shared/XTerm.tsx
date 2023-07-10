@@ -53,7 +53,7 @@ export default function XTerm(props: Props) {
       fitAddon.fit();
       terminal.focus();
       if (props.withHelp) {
-        terminal.write("to see available commands\r\n");
+        terminal.write("To see available commands\r\n");
         terminal.write("type 'help' and hit ENTER or RETURN\r\n\r\n");
       }
       if (isAndroid) {
