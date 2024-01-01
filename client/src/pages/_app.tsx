@@ -4,6 +4,7 @@ import "xterm/css/xterm.css";
 import "@/styles/globals.css";
 import "@/styles/calendar.css";
 import "@/styles/markdown.css";
+import "@/styles/open-book.css";
 
 type Props = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

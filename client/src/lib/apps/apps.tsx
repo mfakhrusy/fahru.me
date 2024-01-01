@@ -3,6 +3,7 @@ import { AppAboutSite } from "@/components/desktop/apps/AppAboutSite";
 import { AppBlog } from "@/components/desktop/apps/AppBlog";
 import { AppContacts } from "@/components/desktop/apps/AppContacts";
 import { AppEducation } from "@/components/desktop/apps/AppEducation";
+import { AppGuestBook } from "@/components/desktop/apps/AppGuestBook";
 import { AppProjects } from "@/components/desktop/apps/AppProjects";
 import { AppTerminal } from "@/components/desktop/apps/AppTerminal";
 import { AppTodo } from "@/components/desktop/apps/AppTodo";
@@ -19,6 +20,7 @@ const apps = [
   "AppProjects",
   "AppBlog",
   "AppTodo",
+  "AppGuestBook",
 ] as const;
 
 export type App = (typeof apps)[number];
@@ -67,6 +69,12 @@ export function makeMarkdownBasedApps(): Array<DesktopIcon> {
       appName: "AppTodo",
       title: "To-Dos",
       component: <AppTodo />,
+    },
+    {
+      iconName: "puzzle.png",
+      appName: "AppGuestBook",
+      title: "To-Dos",
+      component: <AppGuestBook />,
     },
   ];
 }
