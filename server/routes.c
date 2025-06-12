@@ -19,8 +19,8 @@ void handle_request(int client_fd, const char *request) {
         return;
     }
 
-    if (strcmp(method, "GET") == 0 && strcmp(path, "/") == 0) {
-        get_hello(client_fd);
+    if (strcmp(method, "POST") == 0 && strcmp(path, "/login") == 0) {
+        login(client_fd, request);
     } else {
         not_found(client_fd);
     }

@@ -1,0 +1,20 @@
+1. Install SQLite
+
+sudo apt install libsqlite3-dev
+
+2. Install libssl
+
+sudo apt install libssl-dev
+
+3. Init db
+
+chmod +x init_db.sh
+./init_db.sh
+
+4. Build server
+
+make
+
+5. Run server
+
+./server

@@ -1,1 +1,3 @@
 server
+.env
+app.db

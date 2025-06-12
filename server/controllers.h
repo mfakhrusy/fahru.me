@@ -4,7 +4,7 @@
 
 #include <stddef.h>
 
-void get_hello(int client_fd);
 void not_found(int client_fd);
+void login(int client_fd, const char* request);
 
 #endif
