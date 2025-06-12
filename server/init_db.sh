@@ -36,4 +36,14 @@ INSERT INTO users (username, password_hash) VALUES (
 );
 EOF
 
+# Add sessions table
+sqlite3 "$DB_FILE" <<EOF
+CREATE TABLE IF NOT EXISTS sessions (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  session_token TEXT UNIQUE NOT NULL,
+  username TEXT NOT NULL,
+  expires_at INTEGER NOT NULL  -- UNIX timestamp
+);
+EOF
+
 echo "✅ Database initialized with admin user: $ADMIN_USERNAME"
