@@ -7,7 +7,6 @@
 
 void handle_request(int client_fd, const char *request) {
     char method[8], path[128];
-    char response[512];
 
     if (sscanf(request, "%7s %127s", method, path) != 2) {
         const char *bad_request =
@@ -21,10 +20,8 @@ void handle_request(int client_fd, const char *request) {
     }
 
     if (strcmp(method, "GET") == 0 && strcmp(path, "/") == 0) {
-        get_hello(response, sizeof(response));
+        get_hello(client_fd);
     } else {
-        not_found(response, sizeof(response));
+        not_found(client_fd);
     }
-
-    write(client_fd, response, strlen(response));
 }
