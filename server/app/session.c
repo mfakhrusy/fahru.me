@@ -91,7 +91,6 @@ int check_user_session(char *session_token) {
     sqlite3_bind_text(stmt, 1, session_token, -1, SQLITE_STATIC);
 
     rc = sqlite3_step(stmt);
-    fprintf(stderr, "sqlite3_step returned: %d\n", rc);
 
     if (rc == SQLITE_ROW) {
         time_t expires = sqlite3_column_int64(stmt, 0);
