@@ -24,73 +24,59 @@ void not_found(int client_fd) {
         perror("write error");
     }
 }
-
 void login(int client_fd, const char* request) {
     char username[64] = {0};
     char password[64] = {0};
-    char response[512];
+    char response[1024];
     char password_hash[65] = {0}; // SHA-256 hash output
 
-    // Find JSON body (skip HTTP headers)
-    const char *json_start = strstr(request, "\r\n\r\n");
-    if (!json_start) {
-        const char *error_body = "{\"error\": \"Bad request\"}";
+    // Find body (skip HTTP headers)
+    const char *body = strstr(request, "\r\n\r\n");
+    if (!body) {
+        const char *error_body = "<html><body>Bad request</body></html>";
         snprintf(response, sizeof(response),
                  "HTTP/1.1 400 Bad Request\r\n"
-                 "Content-Type: application/json\r\n"
+                 "Content-Type: text/html\r\n"
                  "Content-Length: %lu\r\n"
                  "\r\n"
                  "%s", strlen(error_body), error_body);
-        ssize_t bytes_written = write(client_fd, response, strlen(response));
-        if (bytes_written < 0) {
-            perror("write error");
-        }
-
+        write(client_fd, response, strlen(response));
         return;
     }
+    body += 4; // Move past "\r\n\r\n"
 
-    json_start += 4; // Move past "\r\n\r\n"
-
-    // Parse JSON body
-    cJSON *json = cJSON_Parse(json_start);
-    if (!json) {
-        const char *error_body = "{\"error\": \"Invalid JSON\"}";
+    // Parse form data: username=...&password=...
+    char *username_start = strstr(body, "username=");
+    char *password_start = strstr(body, "password=");
+    if (!username_start || !password_start) {
+        const char *error_body = "<html><body>Missing credentials</body></html>";
         snprintf(response, sizeof(response),
                  "HTTP/1.1 400 Bad Request\r\n"
-                 "Content-Type: application/json\r\n"
+                 "Content-Type: text/html\r\n"
                  "Content-Length: %lu\r\n"
                  "\r\n"
                  "%s", strlen(error_body), error_body);
-        ssize_t bytes_written = write(client_fd, response, strlen(response));
-        if (bytes_written < 0) {
-            perror("write error");
-        }
-
+        write(client_fd, response, strlen(response));
         return;
     }
 
-    cJSON *user_item = cJSON_GetObjectItemCaseSensitive(json, "username");
-    cJSON *pass_item = cJSON_GetObjectItemCaseSensitive(json, "password");
+    // Extract username
+    username_start += 9; // skip "username="
+    char *username_end = strchr(username_start, '&');
+    size_t username_len = username_end ? (size_t)(username_end - username_start) : strlen(username_start);
+    if (username_len >= sizeof(username)) username_len = sizeof(username) - 1;
+    strncpy(username, username_start, username_len);
+    username[username_len] = '\0';
 
-    if (cJSON_IsString(user_item) && cJSON_IsString(pass_item)) {
-        strncpy(username, user_item->valuestring, sizeof(username) - 1);
-        strncpy(password, pass_item->valuestring, sizeof(password) - 1);
-    } else {
-        const char *error_body = "{\"error\": \"Missing credentials\"}";
-        snprintf(response, sizeof(response),
-                 "HTTP/1.1 400 Bad Request\r\n"
-                 "Content-Type: application/json\r\n"
-                 "Content-Length: %lu\r\n"
-                 "\r\n"
-                 "%s", strlen(error_body), error_body);
-        ssize_t bytes_written = write(client_fd, response, strlen(response));
-        if (bytes_written < 0) {
-            perror("write error");
-        }
+    // Extract password
+    password_start += 9; // skip "password="
+    char *password_end = strchr(password_start, '&');
+    size_t password_len = password_end ? (size_t)(password_end - password_start) : strlen(password_start);
+    if (password_len >= sizeof(password)) password_len = sizeof(password) - 1;
+    strncpy(password, password_start, password_len);
+    password[password_len] = '\0';
 
-        cJSON_Delete(json);
-        return;
-    }
+    // Optionally: URL-decode username and password here
 
     // hash the password
     hash_sha256(password, password_hash);
@@ -115,88 +101,60 @@ void login(int client_fd, const char* request) {
         sqlite3_close(db);
     }
 
-    // Build JSON response using cJSON
-    cJSON *res_json = cJSON_CreateObject();
-
     if (found) {
         char session_token[65];
         if (generate_session_token(session_token, sizeof(session_token)) != 0) {
-            // handle error
-            cJSON_AddStringToObject(res_json, "error", "Failed to generate session token");
-            char *res_str = cJSON_PrintUnformatted(res_json);
+            const char *error_body = "<html><body>Failed to generate session token</body></html>";
             snprintf(response, sizeof(response),
                      "HTTP/1.1 500 Internal Server Error\r\n"
-                     "Content-Type: application/json\r\n"
+                     "Content-Type: text/html\r\n"
                      "Content-Length: %lu\r\n"
                      "\r\n"
-                     "%s", strlen(res_str), res_str);
-            ssize_t bytes_written = write(client_fd, response, strlen(response));
-            if (bytes_written < 0) {
-                perror("write error");
-            }
-            free(res_str);
-            cJSON_Delete(res_json);
+                     "%s", strlen(error_body), error_body);
+            write(client_fd, response, strlen(response));
             return;
         }
 
         // insert into DB
         if (insert_session(db, username, session_token) != SQLITE_OK) {
-            // handle error
-            cJSON_AddStringToObject(res_json, "error", "Failed to create session");
-            char *res_str = cJSON_PrintUnformatted(res_json);
+            const char *error_body = "<html><body>Failed to create session</body></html>";
             snprintf(response, sizeof(response),
                      "HTTP/1.1 500 Internal Server Error\r\n"
-                     "Content-Type: application/json\r\n"
+                     "Content-Type: text/html\r\n"
                      "Content-Length: %lu\r\n"
                      "\r\n"
-                     "%s", strlen(res_str), res_str);
-            ssize_t bytes_written = write(client_fd, response, strlen(response));
-            if (bytes_written < 0) {
-                perror("write error");
-            }
-            free(res_str);
-            cJSON_Delete(res_json);
+                     "%s", strlen(error_body), error_body);
+            write(client_fd, response, strlen(response));
             return;
         }
 
-        cJSON_AddStringToObject(res_json, "message", "Login successful");
-        char *res_str = cJSON_PrintUnformatted(res_json);
+        // Redirect to home page with Set-Cookie
         snprintf(response, sizeof(response),
-                 "HTTP/1.1 200 OK\r\n"
-                 "Content-Type: application/json\r\n"
-                 "Content-Length: %lu\r\n"
+                 "HTTP/1.1 302 Found\r\n"
+                 "Location: /\r\n"
                  "Set-Cookie: session_token=%s; HttpOnly\r\n"
-                 "\r\n"
-                 "%s",
-                 strlen(res_str), session_token, res_str);
-        ssize_t bytes_written = write(client_fd, response, strlen(response));
-        if (bytes_written < 0) {
-            perror("write error");
-        }
-
-        free(res_str);
+                 "Content-Length: 0\r\n"
+                 "\r\n", session_token);
+        write(client_fd, response, strlen(response));
     } else {
-        cJSON_AddStringToObject(res_json, "error", "Invalid credentials");
-        char *res_str = cJSON_PrintUnformatted(res_json);
+        // Show login page again with error message
+        const char *error_html =
+            "<!DOCTYPE html><html><body>"
+            "<h1>Login Failed</h1>"
+            "<p>Invalid credentials. <a href=\"/login\">Try again</a></p>"
+            "</body></html>";
         snprintf(response, sizeof(response),
                  "HTTP/1.1 401 Unauthorized\r\n"
-                 "Content-Type: application/json\r\n"
+                 "Content-Type: text/html\r\n"
                  "Content-Length: %lu\r\n"
                  "\r\n"
-                 "%s", strlen(res_str), res_str);
-        ssize_t bytes_written = write(client_fd, response, strlen(response));
-        if (bytes_written < 0) {
-            perror("write error");
-        }
-        free(res_str);
+                 "%s", strlen(error_html), error_html);
+        write(client_fd, response, strlen(response));
     }
-
-    cJSON_Delete(res_json);
-    cJSON_Delete(json);
 }
 
 void get_login(int client_fd, const char *request) {
-    char response[1024];
+    char response[2048];
     const char *html_template = 
         "<!DOCTYPE html>"
         "<html lang=\"en\">"
