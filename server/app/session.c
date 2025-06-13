@@ -24,10 +24,21 @@ int generate_session_token(char *out, size_t out_len) {
 }
 
 int insert_session(sqlite3 *db, const char *username, const char *session_token) {
+    int sqliteopen = sqlite3_open("app.db", &db);
+    if (sqliteopen != SQLITE_OK) {
+        fprintf(stderr, "sqlite3_open failed: %s\n", sqlite3_errmsg(db));
+        return sqliteopen;
+    }
+
     const char *sql = "INSERT INTO sessions (session_token, username, expires_at) VALUES (?, ?, ?)";
     sqlite3_stmt *stmt;
     int rc = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
-    if (rc != SQLITE_OK) return rc;
+    if (rc != SQLITE_OK) {
+        fprintf(stderr, "sqlite3_prepare_v2 failed: %s\n", sqlite3_errmsg(db));
+        fprintf(stderr, "session_token: %s, username: %s\n", session_token, username);
+        fprintf(stderr, "rc: %d\n", rc);
+        return rc;
+    }
 
     time_t now = time(NULL);
     time_t expires = now + 3600 * 24; // expire in 24h
@@ -39,6 +50,9 @@ int insert_session(sqlite3 *db, const char *username, const char *session_token)
     rc = sqlite3_step(stmt);
     sqlite3_finalize(stmt);
 
-    if (rc != SQLITE_DONE) return rc;
+    if (rc != SQLITE_DONE) {
+        fprintf(stderr, "sqlite3_step failed: %s\n", sqlite3_errmsg(db));
+        return rc;
+    }
     return SQLITE_OK;
 }
