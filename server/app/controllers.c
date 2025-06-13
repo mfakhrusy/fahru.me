@@ -24,6 +24,7 @@ void not_found(int client_fd) {
         perror("write error");
     }
 }
+
 void login(int client_fd, const char* request) {
     char username[64] = {0};
     char password[64] = {0};
@@ -40,7 +41,10 @@ void login(int client_fd, const char* request) {
                  "Content-Length: %lu\r\n"
                  "\r\n"
                  "%s", strlen(error_body), error_body);
-        write(client_fd, response, strlen(response));
+        int bytes_written = write(client_fd, response, strlen(response));
+        if (bytes_written < 0) {
+            perror("write error");
+        }
         return;
     }
     body += 4; // Move past "\r\n\r\n"
@@ -56,7 +60,10 @@ void login(int client_fd, const char* request) {
                  "Content-Length: %lu\r\n"
                  "\r\n"
                  "%s", strlen(error_body), error_body);
-        write(client_fd, response, strlen(response));
+        int bytes_written = write(client_fd, response, strlen(response));
+        if (bytes_written < 0) {
+            perror("write error");
+        }
         return;
     }
 
@@ -111,7 +118,10 @@ void login(int client_fd, const char* request) {
                      "Content-Length: %lu\r\n"
                      "\r\n"
                      "%s", strlen(error_body), error_body);
-            write(client_fd, response, strlen(response));
+            int bytes_written = write(client_fd, response, strlen(response));
+            if (bytes_written < 0) {
+                perror("write error");
+            }
             return;
         }
 
@@ -124,7 +134,10 @@ void login(int client_fd, const char* request) {
                      "Content-Length: %lu\r\n"
                      "\r\n"
                      "%s", strlen(error_body), error_body);
-            write(client_fd, response, strlen(response));
+            int bytes_written = write(client_fd, response, strlen(response));
+            if (bytes_written < 0) {
+                perror("write error");
+            }
             return;
         }
 
@@ -135,7 +148,10 @@ void login(int client_fd, const char* request) {
                  "Set-Cookie: session_token=%s; HttpOnly\r\n"
                  "Content-Length: 0\r\n"
                  "\r\n", session_token);
-        write(client_fd, response, strlen(response));
+        int bytes_written = write(client_fd, response, strlen(response));
+        if (bytes_written < 0) {
+            perror("write error");
+        }
     } else {
         // Show login page again with error message
         const char *error_html =
@@ -149,7 +165,10 @@ void login(int client_fd, const char* request) {
                  "Content-Length: %lu\r\n"
                  "\r\n"
                  "%s", strlen(error_html), error_html);
-        write(client_fd, response, strlen(response));
+        int bytes_written = write(client_fd, response, strlen(response));
+        if (bytes_written < 0) {
+            perror("write error");
+        }
     }
 }
 
