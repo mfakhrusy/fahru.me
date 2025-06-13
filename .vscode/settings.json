@@ -1,6 +1,15 @@
 {
     "files.associations": {
         "sqlite3.h": "c",
-        "controllers.h": "c"
+        "controllers.h": "c",
+        "session.h": "c",
+        "exception": "c",
+        "memory_resource": "c",
+        "iosfwd": "c",
+        "new": "c",
+        "ostream": "c",
+        "streambuf": "c",
+        "webui.h": "c",
+        "stdio.h": "c"
     }
 }

@@ -10,6 +10,7 @@ SRCS = \
 	app/routes.c \
 	app/controllers.c \
 	app/crypto.c \
+	app/session.c \
 	lib/cjson/cJSON.c
 LIBS = -lsqlite3 -lssl
 CUSTOM_LIBS = -lcrypto

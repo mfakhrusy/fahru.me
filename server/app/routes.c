@@ -2,6 +2,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include "routes.h"
 #include "controllers.h"
 
@@ -15,12 +16,19 @@ void handle_request(int client_fd, const char *request) {
             "Content-Length: 25\r\n"
             "\r\n"
             "{\"error\": \"Bad Request\"}";
-        write(client_fd, bad_request, strlen(bad_request));
+        ssize_t bytes_written = write(client_fd, bad_request, strlen(bad_request));
+        if (bytes_written < 0) {
+            perror("write error");
+        }
+        close(client_fd);
+        free((void *)request);
         return;
     }
 
     if (strcmp(method, "POST") == 0 && strcmp(path, "/login") == 0) {
         login(client_fd, request);
+    } else if (strcmp(method, "GET") == 0 && strcmp(path, "/login") == 0) {
+        get_login(client_fd, request);
     } else {
         not_found(client_fd);
     }

@@ -3,9 +3,11 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include "cjson/cJSON.h"
 #include "controllers.h"
 #include "crypto.h"
+#include "session.h"
 
 void not_found(int client_fd) {
     char response[512];
@@ -17,7 +19,10 @@ void not_found(int client_fd) {
         "\r\n"
         "%s", strlen(body), body);
 
-    write(client_fd, response, strlen(response));
+    ssize_t bytes_written = write(client_fd, response, strlen(response));
+    if (bytes_written < 0) {
+        perror("write error");
+    }
 }
 
 void login(int client_fd, const char* request) {
@@ -36,7 +41,11 @@ void login(int client_fd, const char* request) {
                  "Content-Length: %lu\r\n"
                  "\r\n"
                  "%s", strlen(error_body), error_body);
-        write(client_fd, response, strlen(response));
+        ssize_t bytes_written = write(client_fd, response, strlen(response));
+        if (bytes_written < 0) {
+            perror("write error");
+        }
+
         return;
     }
 
@@ -52,7 +61,11 @@ void login(int client_fd, const char* request) {
                  "Content-Length: %lu\r\n"
                  "\r\n"
                  "%s", strlen(error_body), error_body);
-        write(client_fd, response, strlen(response));
+        ssize_t bytes_written = write(client_fd, response, strlen(response));
+        if (bytes_written < 0) {
+            perror("write error");
+        }
+
         return;
     }
 
@@ -70,7 +83,11 @@ void login(int client_fd, const char* request) {
                  "Content-Length: %lu\r\n"
                  "\r\n"
                  "%s", strlen(error_body), error_body);
-        write(client_fd, response, strlen(response));
+        ssize_t bytes_written = write(client_fd, response, strlen(response));
+        if (bytes_written < 0) {
+            perror("write error");
+        }
+
         cJSON_Delete(json);
         return;
     }
@@ -98,20 +115,65 @@ void login(int client_fd, const char* request) {
         sqlite3_close(db);
     }
 
-
     // Build JSON response using cJSON
     cJSON *res_json = cJSON_CreateObject();
 
     if (found) {
+        char session_token[65];
+        if (generate_session_token(session_token, sizeof(session_token)) != 0) {
+            // handle error
+            cJSON_AddStringToObject(res_json, "error", "Failed to generate session token");
+            char *res_str = cJSON_PrintUnformatted(res_json);
+            snprintf(response, sizeof(response),
+                     "HTTP/1.1 500 Internal Server Error\r\n"
+                     "Content-Type: application/json\r\n"
+                     "Content-Length: %lu\r\n"
+                     "\r\n"
+                     "%s", strlen(res_str), res_str);
+            ssize_t bytes_written = write(client_fd, response, strlen(response));
+            if (bytes_written < 0) {
+                perror("write error");
+            }
+            free(res_str);
+            cJSON_Delete(res_json);
+            return;
+        }
+
+        // insert into DB
+        if (insert_session(db, username, session_token) != SQLITE_OK) {
+            // handle error
+            cJSON_AddStringToObject(res_json, "error", "Failed to create session");
+            char *res_str = cJSON_PrintUnformatted(res_json);
+            snprintf(response, sizeof(response),
+                     "HTTP/1.1 500 Internal Server Error\r\n"
+                     "Content-Type: application/json\r\n"
+                     "Content-Length: %lu\r\n"
+                     "\r\n"
+                     "%s", strlen(res_str), res_str);
+            ssize_t bytes_written = write(client_fd, response, strlen(response));
+            if (bytes_written < 0) {
+                perror("write error");
+            }
+            free(res_str);
+            cJSON_Delete(res_json);
+            return;
+        }
+
         cJSON_AddStringToObject(res_json, "message", "Login successful");
         char *res_str = cJSON_PrintUnformatted(res_json);
         snprintf(response, sizeof(response),
                  "HTTP/1.1 200 OK\r\n"
                  "Content-Type: application/json\r\n"
                  "Content-Length: %lu\r\n"
+                 "Set-Cookie: session_token=%s; HttpOnly\r\n"
                  "\r\n"
-                 "%s", strlen(res_str), res_str);
-        write(client_fd, response, strlen(response));
+                 "%s",
+                 strlen(res_str), session_token, res_str);
+        ssize_t bytes_written = write(client_fd, response, strlen(response));
+        if (bytes_written < 0) {
+            perror("write error");
+        }
+
         free(res_str);
     } else {
         cJSON_AddStringToObject(res_json, "error", "Invalid credentials");
@@ -122,10 +184,101 @@ void login(int client_fd, const char* request) {
                  "Content-Length: %lu\r\n"
                  "\r\n"
                  "%s", strlen(res_str), res_str);
-        write(client_fd, response, strlen(response));
+        ssize_t bytes_written = write(client_fd, response, strlen(response));
+        if (bytes_written < 0) {
+            perror("write error");
+        }
         free(res_str);
     }
 
     cJSON_Delete(res_json);
     cJSON_Delete(json);
+}
+
+void get_login(int client_fd, const char *request) {
+    char response[1024];
+    const char *html_template = 
+        "<!DOCTYPE html>"
+        "<html lang=\"en\">"
+        "<head>"
+        "<meta charset=\"UTF-8\">"
+        "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">"
+        "<title>Login</title>"
+        "<style>"
+        "body {"
+        "  background: #f5f5f5;"
+        "  display: flex;"
+        "  justify-content: center;"
+        "  align-items: center;"
+        "  height: 100vh;"
+        "  margin: 0;"
+        "}"
+        ".login-container {"
+        "  background: #fff;"
+        "  padding: 32px 24px;"
+        "  border-radius: 8px;"
+        "  box-shadow: 0 2px 8px rgba(0,0,0,0.1);"
+        "  min-width: 300px;"
+        "  text-align: center;"
+        "}"
+        ".login-container input {"
+        "  width: 90%;"
+        "  padding: 8px;"
+        "  margin: 8px 0;"
+        "  border: 1px solid #ccc;"
+        "  border-radius: 4px;"
+        "}"
+        ".login-container button {"
+        "  padding: 10px 24px;"
+        "  background: #007bff;"
+        "  color: #fff;"
+        "  border: none;"
+        "  border-radius: 4px;"
+        "  cursor: pointer;"
+        "  margin-top: 12px;"
+        "}"
+        ".login-container button:hover {"
+        "  background: #0056b3;"
+        "}"
+        "</style>"
+        "</head>"
+        "<body>"
+        "<div class=\"login-container\">"
+        "<h1>Login</h1>"
+        "<form method=\"POST\" action=\"/login\">"
+        "Username:<br><input type=\"text\" name=\"username\" required><br>"
+        "Password:<br><input type=\"password\" name=\"password\" required><br>"
+        "<button type=\"submit\">Login</button>"
+        "</form>"
+        "</div>"
+        "</body>"
+        "</html>";
+
+    size_t html_len = strlen(html_template);
+
+    // Send HTTP headers first
+    int header_len = snprintf(response, sizeof(response),
+        "HTTP/1.1 200 OK\r\n"
+        "Content-Type: text/html\r\n"
+        "Content-Length: %zu\r\n"
+        "\r\n", html_len);
+
+    ssize_t bytes_written = write(client_fd, response, header_len);
+    if (bytes_written < 0) {
+        perror("write error");
+        return;
+    }
+
+    // Send the body in chunks
+    size_t sent = 0;
+    while (sent < html_len) {
+        size_t chunk = (html_len - sent > sizeof(response)) ? sizeof(response) : (html_len - sent);
+        memcpy(response, html_template + sent, chunk);
+        bytes_written = write(client_fd, response, chunk);
+        if (bytes_written < 0) {
+            perror("write error");
+            break;
+        }
+        sent += chunk;
+    }
 }
