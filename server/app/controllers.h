@@ -6,6 +6,7 @@
 
 void not_found(int client_fd);
 void login(int client_fd, const char* request);
-void get_login(int client_fd, const char *request);
+void get_login(int client_fd);
+void get_home(int client_fd, const char* request);
 
 #endif

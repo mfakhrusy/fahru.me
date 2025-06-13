@@ -172,7 +172,7 @@ void login(int client_fd, const char* request) {
     }
 }
 
-void get_login(int client_fd, const char *request) {
+void get_login(int client_fd) {
     char response[2048];
     const char *html_template = 
         "<!DOCTYPE html>"
@@ -228,6 +228,102 @@ void get_login(int client_fd, const char *request) {
         "<button type=\"submit\">Login</button>"
         "</form>"
         "</div>"
+        "</body>"
+        "</html>";
+
+    size_t html_len = strlen(html_template);
+
+    // Send HTTP headers first
+    int header_len = snprintf(response, sizeof(response),
+        "HTTP/1.1 200 OK\r\n"
+        "Content-Type: text/html\r\n"
+        "Content-Length: %zu\r\n"
+        "\r\n", html_len);
+
+    ssize_t bytes_written = write(client_fd, response, header_len);
+    if (bytes_written < 0) {
+        perror("write error");
+        return;
+    }
+
+    // Send the body in chunks
+    size_t sent = 0;
+    while (sent < html_len) {
+        size_t chunk = (html_len - sent > sizeof(response)) ? sizeof(response) : (html_len - sent);
+        memcpy(response, html_template + sent, chunk);
+        bytes_written = write(client_fd, response, chunk);
+        if (bytes_written < 0) {
+            perror("write error");
+            break;
+        }
+        sent += chunk;
+    }
+}
+
+void get_home(int client_fd, const char* request) {
+    // Check for session token in the request
+    char *session_token = NULL;
+    const char *cookie_header = strstr(request, "Cookie: ");
+    if (cookie_header) {
+        cookie_header += 8; // Move past "Cookie: "
+        const char *token_start = strstr(cookie_header, "session_token=");
+        if (token_start) {
+            token_start += 14; // Move past "session_token="
+            const char *token_end = strchr(token_start, ';');
+            if (!token_end) {
+                token_end = cookie_header + strlen(cookie_header);
+            }
+            size_t token_len = token_end - token_start;
+            session_token = strndup(token_start, token_len);
+        }
+    }
+
+    if (!session_token) {
+        // No session token found, redirect to login
+        char response[512];
+        snprintf(response, sizeof(response),
+                 "HTTP/1.1 302 Found\r\n"
+                 "Location: /login\r\n"
+                 "Content-Length: 0\r\n"
+                 "\r\n");
+        ssize_t bytes_written = write(client_fd, response, strlen(response));
+        if (bytes_written < 0) {
+            perror("write error");
+        }
+        return;
+    }
+    int session_valid = check_user_session(session_token); // Pass NULL for db
+    if (session_valid != SQLITE_OK) {
+        // Session is invalid
+        char response[512];
+        snprintf(response, sizeof(response),
+                 "HTTP/1.1 302 Found\r\n"
+                 "Location: /login\r\n"
+                 "Content-Length: 0\r\n"
+                 "\r\n");
+        ssize_t bytes_written = write(client_fd, response, strlen(response));
+        if (bytes_written < 0) {
+            perror("write error");
+        }
+        free((void *)session_token);
+        return;
+    }
+
+    // session token is valid, proceed to serve the home page
+    // free the session token after use
+    free((void *)session_token);
+
+    char response[2048];
+    const char *html_template = 
+        "<!DOCTYPE html>"
+        "<html lang=\"en\">"
+        "<head>"
+        "<meta charset=\"UTF-8\">"
+        "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">"
+        "<title>Home</title>"
+        "</head>"
+        "<body>"
+        "<h1>Welcome to the Home Page!</h1>"
         "</body>"
         "</html>";
 

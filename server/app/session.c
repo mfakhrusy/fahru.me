@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <fcntl.h>
+#include <string.h>
 #include <unistd.h>
 #include <time.h>
 #include <sqlite3.h>
@@ -49,10 +50,67 @@ int insert_session(sqlite3 *db, const char *username, const char *session_token)
 
     rc = sqlite3_step(stmt);
     sqlite3_finalize(stmt);
+    sqlite3_close_v2(db);
 
     if (rc != SQLITE_DONE) {
         fprintf(stderr, "sqlite3_step failed: %s\n", sqlite3_errmsg(db));
         return rc;
     }
     return SQLITE_OK;
+}
+
+int check_user_session(char *session_token) {
+    // remove the last 4 characters if it's "\r\n\r\n"
+    size_t len = strlen(session_token);
+    if (len >= 4 && strcmp(session_token + len - 4, "\r\n\r\n") == 0) {
+        session_token[len - 4] = '\0';
+    }
+
+    sqlite3 *db;
+    sqlite3_stmt *stmt;
+    const char *sql = "SELECT expires_at FROM sessions WHERE session_token = ?";
+
+    sqlite3_open("app.db", &db);
+    if (!db) {
+        fprintf(stderr, "sqlite3_open failed: %s\n", sqlite3_errmsg(db));
+        return SQLITE_ERROR;
+    }
+
+    if (!session_token) {
+        fprintf(stderr, "Session token is NULL\n");
+        sqlite3_close_v2(db);
+        return SQLITE_ERROR;
+    }
+
+    int rc = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL);
+    if (rc != SQLITE_OK) {
+        fprintf(stderr, "sqlite3_prepare_v2 failed: %s\n", sqlite3_errmsg(db));
+        return rc;
+    }
+
+    sqlite3_bind_text(stmt, 1, session_token, -1, SQLITE_STATIC);
+
+    rc = sqlite3_step(stmt);
+    fprintf(stderr, "sqlite3_step returned: %d\n", rc);
+
+    if (rc == SQLITE_ROW) {
+        time_t expires = sqlite3_column_int64(stmt, 0);
+        time_t now = time(NULL);
+        sqlite3_finalize(stmt);
+        sqlite3_close_v2(db);
+        if (expires > now) {
+            return SQLITE_OK; // User has a valid session
+        } else {
+            return SQLITE_ERROR; // Session expired
+        }
+    } else if (rc == SQLITE_DONE) {
+        sqlite3_finalize(stmt);
+        sqlite3_close_v2(db);
+        return SQLITE_ERROR; // No session found
+    } else {
+        fprintf(stderr, "sqlite3_step failed: %s\n", sqlite3_errmsg(db));
+        sqlite3_finalize(stmt);
+        sqlite3_close_v2(db);
+        return rc;
+    }
 }

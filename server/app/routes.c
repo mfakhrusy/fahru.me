@@ -25,10 +25,12 @@ void handle_request(int client_fd, const char *request) {
         return;
     }
 
-    if (strcmp(method, "POST") == 0 && strcmp(path, "/login") == 0) {
+    if (strcmp(method, "GET") == 0 && strcmp(path, "/") == 0) {
+        get_home(client_fd, request);
+    } else if (strcmp(method, "POST") == 0 && strcmp(path, "/login") == 0) {
         login(client_fd, request);
     } else if (strcmp(method, "GET") == 0 && strcmp(path, "/login") == 0) {
-        get_login(client_fd, request);
+        get_login(client_fd);
     } else {
         not_found(client_fd);
     }
