@@ -28,7 +28,7 @@ void handle_request(int client_fd, const char *request) {
     if (strcmp(method, "GET") == 0 && strcmp(path, "/") == 0) {
         get_home(client_fd, request);
     } else if (strcmp(method, "POST") == 0 && strcmp(path, "/login") == 0) {
-        login(client_fd, request);
+        post_login(client_fd, request);
     } else if (strcmp(method, "GET") == 0 && strcmp(path, "/login") == 0) {
         get_login(client_fd, request);
     } else {

@@ -25,7 +25,7 @@ void not_found(int client_fd) {
     }
 }
 
-void login(int client_fd, const char* request) {
+void post_login(int client_fd, const char* request) {
     char username[64] = {0};
     char password[64] = {0};
     char response[1024];
