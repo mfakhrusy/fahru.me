@@ -172,7 +172,43 @@ void login(int client_fd, const char* request) {
     }
 }
 
-void get_login(int client_fd) {
+void get_login(int client_fd, const char* request) {
+    // check if user has a valid session
+    char *session_token = NULL;
+    const char *cookie_header = strstr(request, "Cookie: ");
+    if (cookie_header) {
+        cookie_header += 8; // Move past "Cookie: "
+        const char *token_start = strstr(cookie_header, "session_token=");
+        if (token_start) {
+            token_start += 14; // Move past "session_token="
+            const char *token_end = strchr(token_start, ';');
+            if (!token_end) {
+                token_end = cookie_header + strlen(cookie_header);
+            }
+            size_t token_len = token_end - token_start;
+            session_token = strndup(token_start, token_len);
+        }
+    }
+    int session_valid = SQLITE_ERROR;
+    if (session_token) {
+        session_valid = check_user_session(session_token); // Pass NULL for db
+        free(session_token); // Free the session token after use
+    }
+    if (session_valid == SQLITE_OK) {
+        // User already logged in, redirect to home
+        char response[512];
+        snprintf(response, sizeof(response),
+                 "HTTP/1.1 302 Found\r\n"
+                 "Location: /\r\n"
+                 "Content-Length: 0\r\n"
+                 "\r\n");
+        ssize_t bytes_written = write(client_fd, response, strlen(response));
+        if (bytes_written < 0) {
+            perror("write error");
+        }
+        return;
+    }
+
     char response[2048];
     const char *html_template = 
         "<!DOCTYPE html>"
