@@ -31,6 +31,16 @@ void handle_request(int client_fd, const char *request) {
         post_login(client_fd, request);
     } else if (strcmp(method, "GET") == 0 && strcmp(path, "/login") == 0) {
         get_login(client_fd, request);
+    } else if (strcmp(method, "GET") == 0 && strcmp(path, "/guestbook") == 0) {
+        get_guestbook_page(client_fd, request);
+    } else if (strcmp(method, "GET") == 0 && strcmp(path, "/guestbook/list") == 0) {
+        get_guestbook_list(client_fd, request);
+    } else if (strcmp(method, "POST") == 0 && strcmp(path, "/guestbook") == 0) {
+        post_guestbook_entry(client_fd, request);
+    // } else if (strcmp(method, "POST") == 0 && strcmp(path, "/guestbook/verify") == 0) {
+        // verify_guestbook_entry(client_fd, request);
+    // } else if (strcmp(method, "DELETE") == 0 && strncmp(path, "/guestbook/", 11) == 0) {
+        // delete_guestbook_entry(client_fd, request);
     } else {
         not_found(client_fd);
     }

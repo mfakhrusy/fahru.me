@@ -357,8 +357,32 @@ void get_home(int client_fd, const char* request) {
         "<meta charset=\"UTF-8\">"
         "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">"
         "<title>Home</title>"
+        "<style>"
+        "body {"
+        "  font-family: Arial, sans-serif;"
+        "  margin: 0;"
+        "  padding: 0;"
+        "}"
+        "nav {"
+        "  background: #007bff;"
+        "  padding: 12px 24px;"
+        "}"
+        "nav a {"
+        "  color: #fff;"
+        "  text-decoration: none;"
+        "  font-weight: bold;"
+        "  margin-right: 16px;"
+        "}"
+        "nav a:hover {"
+        "  text-decoration: underline;"
+        "}"
+        "</style>"
         "</head>"
         "<body>"
+        "<nav>"
+        "<a href=\"/\">Home</a>"
+        "<a href=\"/guestbook\">Guest book</a>"
+        "</nav>"
         "<h1>Welcome to the Home Page!</h1>"
         "</body>"
         "</html>";
@@ -389,5 +413,424 @@ void get_home(int client_fd, const char* request) {
             break;
         }
         sent += chunk;
+    }
+}
+
+void get_guestbook_page(int client_fd, const char* request) {
+    // Check for session token in the request
+    char *session_token = NULL;
+    const char *cookie_header = strstr(request, "Cookie: ");
+    if (cookie_header) {
+        cookie_header += 8; // Move past "Cookie: "
+        const char *token_start = strstr(cookie_header, "session_token=");
+        if (token_start) {
+            token_start += 14; // Move past "session_token="
+            const char *token_end = strchr(token_start, ';');
+            if (!token_end) {
+                token_end = cookie_header + strlen(cookie_header);
+            }
+            size_t token_len = token_end - token_start;
+            session_token = strndup(token_start, token_len);
+        }
+    }
+
+    if (!session_token) {
+        // No session token found, redirect to login
+        char response[512];
+        snprintf(response, sizeof(response),
+                 "HTTP/1.1 302 Found\r\n"
+                 "Location: /login\r\n"
+                 "Content-Length: 0\r\n"
+                 "\r\n");
+        ssize_t bytes_written = write(client_fd, response, strlen(response));
+        if (bytes_written < 0) {
+            perror("write error");
+        }
+        return;
+    }
+    int session_valid = check_user_session(session_token); // Pass NULL for db
+    if (session_valid != SQLITE_OK) {
+        // Session is invalid
+        char response[512];
+        snprintf(response, sizeof(response),
+                 "HTTP/1.1 302 Found\r\n"
+                 "Location: /login\r\n"
+                 "Content-Length: 0\r\n"
+                 "\r\n");
+        ssize_t bytes_written = write(client_fd, response, strlen(response));
+        if (bytes_written < 0) {
+            perror("write error");
+        }
+        free((void *)session_token);
+        return;
+    }
+
+    // session token is valid, proceed to serve the home page
+    // free the session token after use
+    free((void *)session_token);
+
+    char response[2048];
+    const char *html_template = 
+        "<!DOCTYPE html>"
+        "<html lang=\"en\">"
+        "<head>"
+        "<meta charset=\"UTF-8\">"
+        "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">"
+        "<title>Home</title>"
+        "<style>"
+        "body {"
+        "  font-family: Arial, sans-serif;"
+        "  margin: 0;"
+        "  padding: 0;"
+        "}"
+        "nav {"
+        "  background: #007bff;"
+        "  padding: 12px 24px;"
+        "}"
+        "nav a {"
+        "  color: #fff;"
+        "  text-decoration: none;"
+        "  font-weight: bold;"
+        "  margin-right: 16px;"
+        "}"
+        "nav a:hover {"
+        "  text-decoration: underline;"
+        "}"
+        "</style>"
+        "</head>"
+        "<body>"
+        "<nav>"
+        "<a href=\"/\">Home</a>"
+        "<a href=\"/guestbook\">Guest book</a>"
+        "</nav>"
+        "<h1>Guestbook page!</h1>"
+        "</body>"
+        "</html>";
+
+    size_t html_len = strlen(html_template);
+
+    // Send HTTP headers first
+    int header_len = snprintf(response, sizeof(response),
+        "HTTP/1.1 200 OK\r\n"
+        "Content-Type: text/html\r\n"
+        "Content-Length: %zu\r\n"
+        "\r\n", html_len);
+
+    ssize_t bytes_written = write(client_fd, response, header_len);
+    if (bytes_written < 0) {
+        perror("write error");
+        return;
+    }
+
+    // Send the body in chunks
+    size_t sent = 0;
+    while (sent < html_len) {
+        size_t chunk = (html_len - sent > sizeof(response)) ? sizeof(response) : (html_len - sent);
+        memcpy(response, html_template + sent, chunk);
+        bytes_written = write(client_fd, response, chunk);
+        if (bytes_written < 0) {
+            perror("write error");
+            break;
+        }
+        sent += chunk;
+    }
+}
+
+void get_guestbook_list(int client_fd, const char* request) {
+    // Check for session token in the request
+    char *session_token = NULL;
+    const char *cookie_header = strstr(request, "Cookie: ");
+    if (cookie_header) {
+        cookie_header += 8; // Move past "Cookie: "
+        const char *token_start = strstr(cookie_header, "session_token=");
+        if (token_start) {
+            token_start += 14; // Move past "session_token="
+            const char *token_end = strchr(token_start, ';');
+            if (!token_end) {
+                token_end = cookie_header + strlen(cookie_header);
+            }
+            size_t token_len = token_end - token_start;
+            session_token = strndup(token_start, token_len);
+        }
+    }
+
+    if (!session_token) {
+        // No session token found, redirect to login
+        char response[512];
+        snprintf(response, sizeof(response),
+                 "HTTP/1.1 302 Found\r\n"
+                 "Location: /login\r\n"
+                 "Content-Length: 0\r\n"
+                 "\r\n");
+        ssize_t bytes_written = write(client_fd, response, strlen(response));
+        if (bytes_written < 0) {
+            perror("write error");
+        }
+        return;
+    }
+
+    int session_valid = check_user_session(session_token); // Pass NULL for db
+    if (session_valid != SQLITE_OK) {
+        // Session is invalid
+        char response[512];
+        snprintf(response, sizeof(response),
+                 "HTTP/1.1 302 Found\r\n"
+                 "Location: /login\r\n"
+                 "Content-Length: 0\r\n"
+                 "\r\n");
+        ssize_t bytes_written = write(client_fd, response, strlen(response));
+        if (bytes_written < 0) {
+            perror("write error");
+        }
+        free((void *)session_token);
+        return;
+    }
+
+    // session token is valid, proceed to serve the guestbook list
+    free((void *)session_token);
+
+    sqlite3 *db;
+    sqlite3_stmt *stmt;
+    const char *sql = "SELECT id, name, email, website, message, verified, deleted, created_at FROM guestbook ORDER BY created_at DESC";
+    
+    if (sqlite3_open("app.db", &db) != SQLITE_OK) {
+        perror("sqlite3_open failed");
+        return;
+    }
+
+    if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) != SQLITE_OK) {
+        fprintf(stderr, "sqlite3_prepare_v2 failed: %s\n", sqlite3_errmsg(db));
+        sqlite3_close(db);
+        return;
+    }
+
+    cJSON *json = cJSON_CreateArray();
+    while (sqlite3_step(stmt) == SQLITE_ROW) {
+        cJSON *entry = cJSON_CreateObject();
+        int id = sqlite3_column_int(stmt, 0);
+        const char *name = (const char *)sqlite3_column_text(stmt, 1);
+        const char *email = (const char *)sqlite3_column_text(stmt, 2);
+        const char *website = (const char *)sqlite3_column_text(stmt, 3);
+        const char *message = (const char *)sqlite3_column_text(stmt, 4);
+        int verified = sqlite3_column_int(stmt, 5);
+        int deleted = sqlite3_column_int(stmt, 6);
+        int created_at = sqlite3_column_int(stmt, 7);
+
+        cJSON_AddNumberToObject(entry, "id", id);
+        cJSON_AddStringToObject(entry, "name", name);
+        cJSON_AddStringToObject(entry, "email", email);
+        cJSON_AddStringToObject(entry, "website", website);
+        cJSON_AddStringToObject(entry, "message", message);
+        cJSON_AddBoolToObject(entry, "verified", verified);
+        cJSON_AddBoolToObject(entry, "deleted", deleted);
+        cJSON_AddNumberToObject(entry, "created_at", created_at);
+        cJSON_AddItemToArray(json, entry);
+    }
+    sqlite3_finalize(stmt);
+    sqlite3_close(db);
+    char *json_string = cJSON_PrintUnformatted(json);
+    cJSON_Delete(json);
+    if (!json_string) {
+        perror("cJSON_PrintUnformatted failed");
+        return;
+    }
+    char header[256];
+    int header_len = snprintf(header, sizeof(header),
+             "HTTP/1.1 200 OK\r\n"
+             "Content-Type: application/json\r\n"
+             "Content-Length: %zu\r\n"
+             "\r\n", strlen(json_string));
+    ssize_t bytes_written = write(client_fd, header, header_len);
+    if (bytes_written < 0) {
+        perror("write error");
+        free(json_string);
+        return;
+    }
+
+    size_t sent = 0;
+    size_t json_len = strlen(json_string);
+    while (sent < json_len) {
+        size_t chunk = (json_len - sent > 2048) ? 2048 : (json_len - sent);
+        bytes_written = write(client_fd, json_string + sent, chunk);
+        if (bytes_written < 0) {
+            perror("write error");
+            break;
+        }
+        sent += chunk;
+    }
+    free(json_string);
+}
+
+void post_guestbook_entry(int client_fd, const char* request) {
+    // Check for session token in the request
+    char *session_token = NULL;
+    const char *cookie_header = strstr(request, "Cookie: ");
+    if (cookie_header) {
+        cookie_header += 8; // Move past "Cookie: "
+        const char *token_start = strstr(cookie_header, "session_token=");
+        if (token_start) {
+            token_start += 14; // Move past "session_token="
+            const char *token_end = strchr(token_start, ';');
+            if (!token_end) {
+                token_end = cookie_header + strlen(cookie_header);
+            }
+            size_t token_len = token_end - token_start;
+            session_token = strndup(token_start, token_len);
+        }
+    }
+
+    if (!session_token) {
+        // No session token found, redirect to login
+        char response[512];
+        snprintf(response, sizeof(response),
+                 "HTTP/1.1 302 Found\r\n"
+                 "Location: /login\r\n"
+                 "Content-Length: 0\r\n"
+                 "\r\n");
+        ssize_t bytes_written = write(client_fd, response, strlen(response));
+        if (bytes_written < 0) {
+            perror("write error");
+        }
+        return;
+    }
+
+    int session_valid = check_user_session(session_token); // Pass NULL for db
+    if (session_valid != SQLITE_OK) {
+        // Session is invalid
+        char response[512];
+        snprintf(response, sizeof(response),
+                 "HTTP/1.1 302 Found\r\n"
+                 "Location: /login\r\n"
+                 "Content-Length: 0\r\n"
+                 "\r\n");
+        ssize_t bytes_written = write(client_fd, response, strlen(response));
+        if (bytes_written < 0) {
+            perror("write error");
+        }
+        free((void *)session_token);
+        return;
+    }
+
+    // session token is valid, proceed to handle guestbook entry
+    free((void *)session_token);
+
+    // Find body (skip HTTP headers)
+    const char *body = strstr(request, "\r\n\r\n");
+    if (!body) {
+        const char *error_body = "{\"error\": \"Bad request\"}";
+        char response[512];
+        snprintf(response, sizeof(response),
+                 "HTTP/1.1 400 Bad Request\r\n"
+                 "Content-Type: application/json\r\n"
+                 "Content-Length: %lu\r\n"
+                 "\r\n"
+                 "%s", strlen(error_body), error_body);
+        int bytes_written = write(client_fd, response, strlen(response));
+        if (bytes_written < 0) {
+            perror("write error");
+        }
+        return;
+    }
+
+    body += 4; // Move past "\r\n\r\n"
+    // Parse json data
+    cJSON *json = cJSON_Parse(body);
+    if (!json) {
+        const char *error_body = "{\"error\": \"Invalid JSON\"}";
+        char response[512];
+        snprintf(response, sizeof(response),
+                 "HTTP/1.1 400 Bad Request\r\n"
+                 "Content-Type: application/json\r\n"
+                 "Content-Length: %lu\r\n"
+                 "\r\n"
+                 "%s", strlen(error_body), error_body);
+        int bytes_written = write(client_fd, response, strlen(response));
+        if (bytes_written < 0) {
+            perror("write error");
+        }
+        return;
+    }
+
+    const char *name = cJSON_GetObjectItemCaseSensitive(json, "name")->valuestring;
+    const char *email = cJSON_GetObjectItemCaseSensitive(json, "email")->valuestring;
+    const char *website = cJSON_GetObjectItemCaseSensitive(json, "website")->valuestring;
+    const char *message = cJSON_GetObjectItemCaseSensitive(json, "message")->valuestring;
+
+    if (!name || !message) {
+        cJSON_Delete(json);
+        const char *error_body = "{\"error\": \"Missing fields\"}";
+        char response[512];
+        snprintf(response, sizeof(response),
+                 "HTTP/1.1 400 Bad Request\r\n"
+                 "Content-Type: application/json\r\n"
+                 "Content-Length: %lu\r\n"
+                 "\r\n"
+                 "%s", strlen(error_body), error_body);
+        int bytes_written = write(client_fd, response, strlen(response));
+        if (bytes_written < 0) {
+            perror("write error");
+        }
+        return;
+    }
+
+    // Insert into the database
+    sqlite3 *db;
+    sqlite3_stmt *stmt;
+    const char *sql = "INSERT INTO guestbook (name, email, website, message, verified, deleted) VALUES (?, ?, ?, ?, 0, 0)";
+    if (sqlite3_open("app.db", &db) != SQLITE_OK) {
+        perror("sqlite3_open failed");
+        cJSON_Delete(json);
+        return;
+    }
+    if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) != SQLITE_OK) {
+        fprintf(stderr, "sqlite3_prepare_v2 failed: %s\n", sqlite3_errmsg(db));
+        sqlite3_close(db);
+        cJSON_Delete(json);
+        return;
+    }
+    sqlite3_bind_text(stmt, 1, name, -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 2, email, -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 3, website, -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 4, message, -1, SQLITE_STATIC);
+
+    int rc = sqlite3_step(stmt);
+
+    if (rc != SQLITE_DONE) {
+        fprintf(stderr, "sqlite3_step failed: %s\n", sqlite3_errmsg(db));
+        const char *error_body = "{\"error\": \"Failed to insert entry\"}";
+        char response[512];
+        snprintf(response, sizeof(response),
+             "HTTP/1.1 400 Bad Request\r\n"
+             "Content-Type: application/json\r\n"
+             "Content-Length: %lu\r\n"
+             "\r\n"
+             "%s", strlen(error_body), error_body);
+        int bytes_written = write(client_fd, response, strlen(response));
+        if (bytes_written < 0) {
+            perror("write error");
+        }
+
+        // cleanup
+        sqlite3_finalize(stmt);
+        sqlite3_close(db);
+        cJSON_Delete(json);
+        // Return early on error
+        return;
+    }
+
+    // cleanup
+    sqlite3_finalize(stmt);
+    sqlite3_close(db);
+    cJSON_Delete(json);
+    // Respond with success
+    char response[512];
+    snprintf(response, sizeof(response),
+             "HTTP/1.1 201 Created\r\n"
+             "Content-Type: application/json\r\n"
+             "Content-Length: 0\r\n"
+             "\r\n");
+    ssize_t bytes_written = write(client_fd, response, strlen(response));
+    if (bytes_written < 0) {
+        perror("write error");
     }
 }

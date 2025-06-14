@@ -46,4 +46,18 @@ CREATE TABLE IF NOT EXISTS sessions (
 );
 EOF
 
+# add guestbook table
+sqlite3 "$DB_FILE" <<EOF
+CREATE TABLE IF NOT EXISTS guestbook (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT NOT NULL,
+  email TEXT,
+  website TEXT,
+  message TEXT NOT NULL,
+  verified BOOLEAN NOT NULL DEFAULT 0,
+  deleted BOOLEAN NOT NULL DEFAULT 0,
+  created_at INTEGER NOT NULL  -- UNIX timestamp
+);
+EOF
+
 echo "✅ Database initialized with admin user: $ADMIN_USERNAME"
