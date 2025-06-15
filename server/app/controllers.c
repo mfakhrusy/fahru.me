@@ -465,18 +465,75 @@ void get_guestbook_page(int client_fd, const char* request) {
         return;
     }
 
-    // session token is valid, proceed to serve the home page
-    // free the session token after use
+    // session token is valid, proceed to serve the guestbook page
     free((void *)session_token);
 
-    char response[2048];
-    const char *html_template = 
+    // get guestbook list from db
+    sqlite3 *db;
+    sqlite3_stmt *stmt;
+    const char *sql = "SELECT id, name, email, website, message, verified, deleted, created_at FROM guestbook ORDER BY created_at DESC";
+    if (sqlite3_open("app.db", &db) != SQLITE_OK) {
+        perror("sqlite3_open failed");
+        return;
+    }
+    if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) != SQLITE_OK) {
+        fprintf(stderr, "sqlite3_prepare_v2 failed: %s\n", sqlite3_errmsg(db));
+        sqlite3_close(db);
+        return;
+    }
+    cJSON *json = cJSON_CreateArray();
+
+    while (sqlite3_step(stmt) == SQLITE_ROW) {
+        cJSON *entry = cJSON_CreateObject();
+        int id = sqlite3_column_int(stmt, 0);
+        const char *name = (const char *)sqlite3_column_text(stmt, 1);
+        const char *email = (const char *)sqlite3_column_text(stmt, 2);
+        const char *website = (const char *)sqlite3_column_text(stmt, 3);
+        const char *message = (const char *)sqlite3_column_text(stmt, 4);
+
+        int verified = sqlite3_column_int(stmt, 5);
+        int deleted = sqlite3_column_int(stmt, 6);
+
+        const char *created_at = (const char *)sqlite3_column_text(stmt, 7);
+
+        cJSON_AddNumberToObject(entry, "id", id);
+        cJSON_AddStringToObject(entry, "name", name ? name : "");
+        cJSON_AddStringToObject(entry, "email", email ? email : "");
+        cJSON_AddStringToObject(entry, "website", website ? website : "");
+        cJSON_AddStringToObject(entry, "message", message ? message : "");
+        cJSON_AddBoolToObject(entry, "verified", verified);
+        cJSON_AddBoolToObject(entry, "deleted", deleted);
+        cJSON_AddStringToObject(entry, "created_at", created_at ? created_at : "");
+
+        cJSON_AddItemToArray(json, entry);
+    }
+    sqlite3_finalize(stmt);
+    sqlite3_close(db);
+    // Convert JSON to string
+    char *json_string = cJSON_PrintUnformatted(json);
+    cJSON_Delete(json);
+    if (!json_string) {
+        perror("cJSON_PrintUnformatted failed");
+        return;
+    }
+
+    // Prepare the HTML with the JSON string injected
+    // Use a large enough buffer for the HTML
+    size_t html_buf_size = 32768;
+    char *html_buf = malloc(html_buf_size);
+    if (!html_buf) {
+        free(json_string);
+        perror("malloc failed");
+        return;
+    }
+
+    const char *html_template =
         "<!DOCTYPE html>"
         "<html lang=\"en\">"
         "<head>"
         "<meta charset=\"UTF-8\">"
         "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">"
-        "<title>Home</title>"
+        "<title>Guestbook</title>"
         "<style>"
         "body {"
         "  font-family: Arial, sans-serif;"
@@ -504,36 +561,71 @@ void get_guestbook_page(int client_fd, const char* request) {
         "<a href=\"/guestbook\">Guest book</a>"
         "</nav>"
         "<h1>Guestbook page!</h1>"
+        "<h2>Entries:</h2>"
+        "<ul id=\"guestbook-list\">"
+        "</ul>"
+        "<script>"
+        "const entries = JSON.parse(`%s`);"
+        "const list = document.getElementById('guestbook-list');"
+        "entries.forEach(entry => {"
+        "  const item = document.createElement('li');"
+        "  item.innerHTML = `<strong>${entry.name}</strong> (${entry.email})<br>"
+        "                   <a href=\"${entry.website}\" target=\"_blank\">${entry.website}</a><br>"
+        "                   <p>${entry.message}</p>"
+        "                   <small>Created at: ${entry.created_at}</small>`;"
+        "  if (entry.verified) {"
+        "    item.innerHTML += ' <span style=\"color: green;\">(Verified)</span>';"
+        "  } else {"
+        "    item.innerHTML += ' <span style=\"color: red;\">(Not Verified)</span>';"
+        "  }"
+        "  if (entry.deleted) {"
+        "    item.innerHTML += ' <span style=\"color: gray;\">(Deleted)</span>';"
+        "  }"
+        "  list.appendChild(item);"
+        "});"
+        "</script>"
         "</body>"
         "</html>";
 
-    size_t html_len = strlen(html_template);
+    // Compose the HTML with the JSON string injected
+    int html_len = snprintf(html_buf, html_buf_size, html_template, json_string);
 
-    // Send HTTP headers first
-    int header_len = snprintf(response, sizeof(response),
-        "HTTP/1.1 200 OK\r\n"
-        "Content-Type: text/html\r\n"
-        "Content-Length: %zu\r\n"
-        "\r\n", html_len);
+    free(json_string);
 
-    ssize_t bytes_written = write(client_fd, response, header_len);
-    if (bytes_written < 0) {
-        perror("write error");
+    if (html_len < 0 || (size_t)html_len >= html_buf_size) {
+        free(html_buf);
+        perror("snprintf for html_buf failed or truncated");
         return;
     }
 
-    // Send the body in chunks
+    // Send HTTP headers first
+    char header[256];
+    int header_len = snprintf(header, sizeof(header),
+        "HTTP/1.1 200 OK\r\n"
+        "Content-Type: text/html\r\n"
+        "Content-Length: %d\r\n"
+        "\r\n", html_len);
+
+    ssize_t bytes_written = write(client_fd, header, header_len);
+    if (bytes_written < 0) {
+        perror("write error");
+        free(html_buf);
+        return;
+    }
+
+    // Send the HTML body in chunks
     size_t sent = 0;
-    while (sent < html_len) {
-        size_t chunk = (html_len - sent > sizeof(response)) ? sizeof(response) : (html_len - sent);
-        memcpy(response, html_template + sent, chunk);
-        bytes_written = write(client_fd, response, chunk);
+    while (sent < (size_t)html_len) {
+        size_t chunk = ((size_t)html_len - sent > 2048) ? 2048 : ((size_t)html_len - sent);
+        bytes_written = write(client_fd, html_buf + sent, chunk);
         if (bytes_written < 0) {
             perror("write error");
             break;
         }
         sent += chunk;
     }
+
+    free(html_buf);
 }
 
 void get_guestbook_list(int client_fd, const char* request) {
