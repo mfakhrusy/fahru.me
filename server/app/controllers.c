@@ -754,58 +754,6 @@ void get_guestbook_list(int client_fd, const char* request) {
 }
 
 void post_guestbook_entry(int client_fd, const char* request) {
-    // Check for session token in the request
-    char *session_token = NULL;
-    const char *cookie_header = strstr(request, "Cookie: ");
-    if (cookie_header) {
-        cookie_header += 8; // Move past "Cookie: "
-        const char *token_start = strstr(cookie_header, "session_token=");
-        if (token_start) {
-            token_start += 14; // Move past "session_token="
-            const char *token_end = strchr(token_start, ';');
-            if (!token_end) {
-                token_end = cookie_header + strlen(cookie_header);
-            }
-            size_t token_len = token_end - token_start;
-            session_token = strndup(token_start, token_len);
-        }
-    }
-
-    if (!session_token) {
-        // No session token found, redirect to login
-        char response[512];
-        snprintf(response, sizeof(response),
-                 "HTTP/1.1 302 Found\r\n"
-                 "Location: /login\r\n"
-                 "Content-Length: 0\r\n"
-                 "\r\n");
-        ssize_t bytes_written = write(client_fd, response, strlen(response));
-        if (bytes_written < 0) {
-            perror("write error");
-        }
-        return;
-    }
-
-    int session_valid = check_user_session(session_token); // Pass NULL for db
-    if (session_valid != SQLITE_OK) {
-        // Session is invalid
-        char response[512];
-        snprintf(response, sizeof(response),
-                 "HTTP/1.1 302 Found\r\n"
-                 "Location: /login\r\n"
-                 "Content-Length: 0\r\n"
-                 "\r\n");
-        ssize_t bytes_written = write(client_fd, response, strlen(response));
-        if (bytes_written < 0) {
-            perror("write error");
-        }
-        free((void *)session_token);
-        return;
-    }
-
-    // session token is valid, proceed to handle guestbook entry
-    free((void *)session_token);
-
     // Find body (skip HTTP headers)
     const char *body = strstr(request, "\r\n\r\n");
     if (!body) {
