@@ -1,68 +1,94 @@
 import { useDispatch } from "react-redux";
 import { AppLayout } from "@/components/desktop/apps/layout/AppLayout";
 import { setActiveDesktopApp } from "@/store/desktop";
+import { Button, Flex, FormControl, FormLabel, Input, List, ListItem, Textarea } from "@chakra-ui/react";
+import { useCallback } from "react";
+
+const mockGuestbookList = [
+  {
+    name: "John Doe",
+    website: "https://fahru.me",
+    message: "Hi!!!!!! hello!!!!"
+  },
+  {
+    name: "John Doe 2",
+    website: "https://fahru.me",
+    message: "Hi!!!!!! hello!!!!"
+  },
+]
 
 export const AppGuestBook = () => {
   const dispatch = useDispatch();
   const onClose = () => dispatch(setActiveDesktopApp("DesktopMainView"));
 
+  // const handleSubmit = useCallback(() => {
+  //   fetch()
+  // }, [])
+
+  const guestlist = mockGuestbookList
+
   return (
-    <AppLayout onClose={onClose} title="Guest Book">
-      <div id="wrapper">
-        <div id="container">
-          <section className="open-book">
-            <header>
-              <h1>Book Layout</h1>
-              <h6>Erin E. Sullivan</h6>
-            </header>
-            <article>
-              <h2 className="chapter-title">Waiting on projects</h2>
-              <p>
-                Erin chuckled to herself, This sounds crazy, but what if I
-                develop a section of text that looks like a book?
-              </p>
-              <p>
-                She paused, realizing that what she was about to do was a trend
-                years ago. This severely increased the chance of her project
-                being mocked after launch. What was the specific trend Erin
-                remembered? Skeuomorphism.
-              </p>
-              <p>
-                She began to jot down a list of elements that are typically in a
-                novel:
-              </p>
-              <p>
-                The true obstacle showed its form. Responsiveness. How on Earth
-                will she make this work?
-              </p>
-              <p>
-                Erin pulled out her notepad and started sketching. First she
-                began to illustrate the wireframe of the book in its entirety.
-                Then she recorded some notes on how each element would break
-                down as the screen size got smaller. After several minutes, the
-                blueprint was complete. She came to the conclusion that mobile
-                viewing must stay minimal. The pages go away, which makes the
-                page numbers no longer have a function so they must go away, and
-                if those go away then there is no need for a cover since it is
-                used to help hold and protect pages.
-              </p>
-              <p>
-                She looks back at the blinking cursor of her blank canvas in
-                Sublime Text 2. Doubt begins to linger in the back of her mind
-                with the thought of her new code never being used and her time
-                spent ends up being a waste. Her fingers were typing anyway.
-              </p>
-              <p>Erin smirked, Well at least I think its worth a try.</p>
-            </article>
-            <footer>
-              <ol id="page-numbers">
-                <li>1</li>
-                <li>2</li>
-              </ol>
-            </footer>
-          </section>
-        </div>
-      </div>
+    <AppLayout onClose={onClose} title="Guest Book" noPadding>
+      <Flex
+        w={"100%"}
+        h="100%"
+        minH={"500px"}
+        flexDir="row"
+        border={'1px solid rgba(255, 0, 0, 1)'}
+        borderRadius="10px"
+        overflow="hidden"
+      >
+        <Flex
+          w={"50%"}
+          h={"100%"}
+          flexDir="column"
+          backgroundImage={`url(/pink-flower-pattern.svg)`}
+          p={3}
+        >
+          <Flex bgColor={"white"} p={3} mb={3} borderRadius="10px">
+            Welcome! Please leave a message!
+          </Flex>
+          <Flex bgColor="white" borderRadius={"5px"}>
+            <form style={{ width: "100%", borderRadius: '5px' }}>
+              <FormControl flexDir={"column"} display={"flex"} px={2}>
+                <FormLabel mb={0} mt={2} fontSize={"xs"} htmlFor="name">
+                  From who? (required, can be pseudonym)
+                </FormLabel>
+                <Input p={2} my={2} type="text" id="name" name="name" placeholder="John Doe" required />
+              </FormControl>
+              <FormControl flexDir={"column"} display={"flex"} px={2}>
+                <FormLabel mb={0} mt={2} fontSize={"xs"} htmlFor="website">
+                  Your website (this will be shown to everyone here, it's optional)
+                </FormLabel>
+                <Input p={2} my={2} type="text" id="website" name="website" placeholder="https://fahru.me (example)"/>
+              </FormControl>
+              <FormControl flexDir={"column"} display={"flex"} px={2}>
+                <FormLabel mb={0} mt={2} fontSize={"xs"} htmlFor="message">
+                  Say something! (this will be shown to everyone here)
+                </FormLabel>
+                <Textarea p={2} my={2} id="message" name="message" placeholder="Greeting message" required/>
+              </FormControl>
+              <Button type="submit" variant={"solid"} bgColor="pink" m={3}>
+                Say hi!
+              </Button>
+            </form>
+          </Flex>
+        </Flex>
+        <Flex
+          w={"50%"}
+          h={"100%"}
+        >
+          <List>
+            {guestlist.map((item) => {
+              return (
+                <ListItem>
+                  {item.name}
+                </ListItem>
+              )
+            })}
+          </List>
+        </Flex>
+      </Flex>
     </AppLayout>
   );
 };
