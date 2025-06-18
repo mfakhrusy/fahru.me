@@ -4,6 +4,8 @@ type GuestbookEntry = {
   name: string;
   message: string;
   website?: string;
+  verified: boolean;
+  deleted: boolean;
   createdAt: string;
 };
 
