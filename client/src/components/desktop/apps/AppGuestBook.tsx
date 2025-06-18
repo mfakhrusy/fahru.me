@@ -37,7 +37,6 @@ export const AppGuestBook = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log("Success:", data);
         // Optionally, you can update the guestlist state here to reflect the new entry
       })
       .catch((error) => {
@@ -52,8 +51,6 @@ export const AppGuestBook = () => {
   const { guestbookEntries, loading, error } = useSelector(
     (state: RootState) => state.guestbook
   );
-
-  console.log("Guestbook Entries:", guestbookEntries);
 
   return (
     <AppLayout onClose={onClose} title="Guest Book" noPadding>

@@ -8,7 +8,6 @@
 #include "controllers.h"
 #include "crypto.h"
 #include "session.h"
-#include "utils.h"
 
 void not_found(int client_fd) {
     char response[512];
@@ -746,12 +745,6 @@ void post_guestbook_entry(int client_fd, const char* request) {
     const cJSON *jwebsite = cJSON_GetObjectItemCaseSensitive(json, "website");
     const cJSON *jmessage = cJSON_GetObjectItemCaseSensitive(json, "message");
 
-    printf("Received JSON: %s\n", cJSON_PrintUnformatted(json));
-    printf("Name: %s, Website: %s, Message: %s\n",
-           jname ? (jname->valuestring ? jname->valuestring : "NULL") : "NULL",
-           jwebsite ? (jwebsite->valuestring ? jwebsite->valuestring : "NULL") : "NULL",
-           jmessage ? (jmessage->valuestring ? jmessage->valuestring : "NULL") : "NULL");
-
     if (cJSON_IsString(jname) && (jname->valuestring != NULL)) {
         strncpy(name, jname->valuestring, sizeof(name) - 1);
     }
@@ -761,8 +754,6 @@ void post_guestbook_entry(int client_fd, const char* request) {
     if (cJSON_IsString(jmessage) && (jmessage->valuestring != NULL)) {
         strncpy(message, jmessage->valuestring, sizeof(message) - 1);
     }
-
-    printf("Parsed Name: %s, Website: %s, Message: %s\n", name, website, message);
 
     cJSON_Delete(json);
 

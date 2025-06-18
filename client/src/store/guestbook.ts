@@ -25,7 +25,6 @@ export const fetchGuestbook = createAsyncThunk(
     if (!response.ok) throw new Error("Failed to fetch guestbook data");
     const data = await response.json();
 
-    console.log("Fetched guestbook data:", data);
     return data as GuestbookEntry[];
   }
 );
