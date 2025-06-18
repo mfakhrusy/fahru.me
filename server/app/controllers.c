@@ -648,11 +648,11 @@ void get_guestbook_list(int client_fd) {
         cJSON *entry = cJSON_CreateObject();
         int id = sqlite3_column_int(stmt, 0);
         const char *name = (const char *)sqlite3_column_text(stmt, 1);
-        const char *website = (const char *)sqlite3_column_text(stmt, 3);
-        const char *message = (const char *)sqlite3_column_text(stmt, 4);
-        int verified = sqlite3_column_int(stmt, 5);
-        int deleted = sqlite3_column_int(stmt, 6);
-        const char *created_at = (const char *)sqlite3_column_text(stmt, 7);
+        const char *website = (const char *)sqlite3_column_text(stmt, 2);
+        const char *message = (const char *)sqlite3_column_text(stmt, 3);
+        int verified = sqlite3_column_int(stmt, 4);
+        int deleted = sqlite3_column_int(stmt, 5);
+        const char *created_at = (const char *)sqlite3_column_text(stmt, 6);
 
         cJSON_AddNumberToObject(entry, "id", id);
         cJSON_AddStringToObject(entry, "name", name);
