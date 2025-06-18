@@ -51,7 +51,6 @@ sqlite3 "$DB_FILE" <<EOF
 CREATE TABLE IF NOT EXISTS guestbook (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   name TEXT NOT NULL,
-  email TEXT,
   website TEXT,
   message TEXT NOT NULL,
   verified BOOLEAN NOT NULL DEFAULT 0,

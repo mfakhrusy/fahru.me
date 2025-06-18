@@ -25,7 +25,24 @@ void handle_request(int client_fd, const char *request) {
         return;
     }
 
-    if (strcmp(method, "GET") == 0 && strcmp(path, "/") == 0) {
+    if (strcmp(method, "OPTIONS") == 0) {
+        const char *options_response =
+            "HTTP/1.1 204 No Content\r\n"
+            "Allow: GET, POST, OPTIONS\r\n"
+            "Access-Control-Allow-Origin: *\r\n" // TODO: Adjust for security
+            "Access-Control-Allow-Methods: GET, POST, OPTIONS\r\n"
+            "Access-Control-Allow-Headers: Content-Type\r\n"
+            "Access-Control-Max-Age: 86400\r\n"
+            "Content-Length: 0\r\n"
+            "\r\n";
+        ssize_t bytes_written = write(client_fd, options_response, strlen(options_response));
+        if (bytes_written < 0) {
+            perror("write error");
+        }
+        close(client_fd);
+        free((void *)request);
+        return;
+    } else if (strcmp(method, "GET") == 0 && strcmp(path, "/") == 0) {
         get_home(client_fd, request);
     } else if (strcmp(method, "POST") == 0 && strcmp(path, "/login") == 0) {
         post_login(client_fd, request);
@@ -34,7 +51,7 @@ void handle_request(int client_fd, const char *request) {
     } else if (strcmp(method, "GET") == 0 && strcmp(path, "/guestbook") == 0) {
         get_guestbook_page(client_fd, request);
     } else if (strcmp(method, "GET") == 0 && strcmp(path, "/guestbook/list") == 0) {
-        get_guestbook_list(client_fd, request);
+        get_guestbook_list(client_fd);
     } else if (strcmp(method, "POST") == 0 && strcmp(path, "/guestbook") == 0) {
         post_guestbook_entry(client_fd, request);
     // } else if (strcmp(method, "POST") == 0 && strcmp(path, "/guestbook/verify") == 0) {

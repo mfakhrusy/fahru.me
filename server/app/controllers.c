@@ -8,6 +8,7 @@
 #include "controllers.h"
 #include "crypto.h"
 #include "session.h"
+#include "utils.h"
 
 void not_found(int client_fd) {
     char response[512];
@@ -471,7 +472,7 @@ void get_guestbook_page(int client_fd, const char* request) {
     // get guestbook list from db
     sqlite3 *db;
     sqlite3_stmt *stmt;
-    const char *sql = "SELECT id, name, email, website, message, verified, deleted, created_at FROM guestbook ORDER BY created_at DESC";
+    const char *sql = "SELECT id, name, website, message, verified, deleted, created_at FROM guestbook ORDER BY created_at DESC";
     if (sqlite3_open("app.db", &db) != SQLITE_OK) {
         perror("sqlite3_open failed");
         return;
@@ -487,7 +488,6 @@ void get_guestbook_page(int client_fd, const char* request) {
         cJSON *entry = cJSON_CreateObject();
         int id = sqlite3_column_int(stmt, 0);
         const char *name = (const char *)sqlite3_column_text(stmt, 1);
-        const char *email = (const char *)sqlite3_column_text(stmt, 2);
         const char *website = (const char *)sqlite3_column_text(stmt, 3);
         const char *message = (const char *)sqlite3_column_text(stmt, 4);
 
@@ -498,7 +498,6 @@ void get_guestbook_page(int client_fd, const char* request) {
 
         cJSON_AddNumberToObject(entry, "id", id);
         cJSON_AddStringToObject(entry, "name", name ? name : "");
-        cJSON_AddStringToObject(entry, "email", email ? email : "");
         cJSON_AddStringToObject(entry, "website", website ? website : "");
         cJSON_AddStringToObject(entry, "message", message ? message : "");
         cJSON_AddBoolToObject(entry, "verified", verified);
@@ -628,62 +627,10 @@ void get_guestbook_page(int client_fd, const char* request) {
     free(html_buf);
 }
 
-void get_guestbook_list(int client_fd, const char* request) {
-    // Check for session token in the request
-    char *session_token = NULL;
-    const char *cookie_header = strstr(request, "Cookie: ");
-    if (cookie_header) {
-        cookie_header += 8; // Move past "Cookie: "
-        const char *token_start = strstr(cookie_header, "session_token=");
-        if (token_start) {
-            token_start += 14; // Move past "session_token="
-            const char *token_end = strchr(token_start, ';');
-            if (!token_end) {
-                token_end = cookie_header + strlen(cookie_header);
-            }
-            size_t token_len = token_end - token_start;
-            session_token = strndup(token_start, token_len);
-        }
-    }
-
-    if (!session_token) {
-        // No session token found, redirect to login
-        char response[512];
-        snprintf(response, sizeof(response),
-                 "HTTP/1.1 302 Found\r\n"
-                 "Location: /login\r\n"
-                 "Content-Length: 0\r\n"
-                 "\r\n");
-        ssize_t bytes_written = write(client_fd, response, strlen(response));
-        if (bytes_written < 0) {
-            perror("write error");
-        }
-        return;
-    }
-
-    int session_valid = check_user_session(session_token); // Pass NULL for db
-    if (session_valid != SQLITE_OK) {
-        // Session is invalid
-        char response[512];
-        snprintf(response, sizeof(response),
-                 "HTTP/1.1 302 Found\r\n"
-                 "Location: /login\r\n"
-                 "Content-Length: 0\r\n"
-                 "\r\n");
-        ssize_t bytes_written = write(client_fd, response, strlen(response));
-        if (bytes_written < 0) {
-            perror("write error");
-        }
-        free((void *)session_token);
-        return;
-    }
-
-    // session token is valid, proceed to serve the guestbook list
-    free((void *)session_token);
-
+void get_guestbook_list(int client_fd) {
     sqlite3 *db;
     sqlite3_stmt *stmt;
-    const char *sql = "SELECT id, name, email, website, message, verified, deleted, created_at FROM guestbook ORDER BY created_at DESC";
+    const char *sql = "SELECT id, name, website, message, verified, deleted, created_at FROM guestbook ORDER BY created_at DESC";
     
     if (sqlite3_open("app.db", &db) != SQLITE_OK) {
         perror("sqlite3_open failed");
@@ -701,21 +648,19 @@ void get_guestbook_list(int client_fd, const char* request) {
         cJSON *entry = cJSON_CreateObject();
         int id = sqlite3_column_int(stmt, 0);
         const char *name = (const char *)sqlite3_column_text(stmt, 1);
-        const char *email = (const char *)sqlite3_column_text(stmt, 2);
         const char *website = (const char *)sqlite3_column_text(stmt, 3);
         const char *message = (const char *)sqlite3_column_text(stmt, 4);
         int verified = sqlite3_column_int(stmt, 5);
         int deleted = sqlite3_column_int(stmt, 6);
-        int created_at = sqlite3_column_int(stmt, 7);
+        const char *created_at = (const char *)sqlite3_column_text(stmt, 7);
 
         cJSON_AddNumberToObject(entry, "id", id);
         cJSON_AddStringToObject(entry, "name", name);
-        cJSON_AddStringToObject(entry, "email", email);
         cJSON_AddStringToObject(entry, "website", website);
         cJSON_AddStringToObject(entry, "message", message);
         cJSON_AddBoolToObject(entry, "verified", verified);
         cJSON_AddBoolToObject(entry, "deleted", deleted);
-        cJSON_AddNumberToObject(entry, "created_at", created_at);
+        cJSON_AddStringToObject(entry, "created_at", created_at ? created_at : "");
         cJSON_AddItemToArray(json, entry);
     }
     sqlite3_finalize(stmt);
@@ -731,6 +676,7 @@ void get_guestbook_list(int client_fd, const char* request) {
              "HTTP/1.1 200 OK\r\n"
              "Content-Type: application/json\r\n"
              "Content-Length: %zu\r\n"
+             "Access-Control-Allow-Origin: *\r\n" // TODO: Adjust CORS policy as needed
              "\r\n", strlen(json_string));
     ssize_t bytes_written = write(client_fd, header, header_len);
     if (bytes_written < 0) {
@@ -763,6 +709,7 @@ void post_guestbook_entry(int client_fd, const char* request) {
                  "HTTP/1.1 400 Bad Request\r\n"
                  "Content-Type: application/json\r\n"
                  "Content-Length: %lu\r\n"
+                 "Access-Control-Allow-Origin: *\r\n" // TODO: Adjust CORS policy as needed
                  "\r\n"
                  "%s", strlen(error_body), error_body);
         int bytes_written = write(client_fd, response, strlen(response));
@@ -773,7 +720,10 @@ void post_guestbook_entry(int client_fd, const char* request) {
     }
 
     body += 4; // Move past "\r\n\r\n"
-    // Parse json data
+
+    // Parse JSON body: {"name": "...", "website": "...", "message": "..."}
+    char name[128] = {0}, website[256] = {0}, message[1024] = {0};
+
     cJSON *json = cJSON_Parse(body);
     if (!json) {
         const char *error_body = "{\"error\": \"Invalid JSON\"}";
@@ -782,6 +732,7 @@ void post_guestbook_entry(int client_fd, const char* request) {
                  "HTTP/1.1 400 Bad Request\r\n"
                  "Content-Type: application/json\r\n"
                  "Content-Length: %lu\r\n"
+                 "Access-Control-Allow-Origin: *\r\n"
                  "\r\n"
                  "%s", strlen(error_body), error_body);
         int bytes_written = write(client_fd, response, strlen(response));
@@ -791,19 +742,40 @@ void post_guestbook_entry(int client_fd, const char* request) {
         return;
     }
 
-    const char *name = cJSON_GetObjectItemCaseSensitive(json, "name")->valuestring;
-    const char *email = cJSON_GetObjectItemCaseSensitive(json, "email")->valuestring;
-    const char *website = cJSON_GetObjectItemCaseSensitive(json, "website")->valuestring;
-    const char *message = cJSON_GetObjectItemCaseSensitive(json, "message")->valuestring;
+    const cJSON *jname = cJSON_GetObjectItemCaseSensitive(json, "name");
+    const cJSON *jwebsite = cJSON_GetObjectItemCaseSensitive(json, "website");
+    const cJSON *jmessage = cJSON_GetObjectItemCaseSensitive(json, "message");
 
-    if (!name || !message) {
-        cJSON_Delete(json);
+    printf("Received JSON: %s\n", cJSON_PrintUnformatted(json));
+    printf("Name: %s, Website: %s, Message: %s\n",
+           jname ? (jname->valuestring ? jname->valuestring : "NULL") : "NULL",
+           jwebsite ? (jwebsite->valuestring ? jwebsite->valuestring : "NULL") : "NULL",
+           jmessage ? (jmessage->valuestring ? jmessage->valuestring : "NULL") : "NULL");
+
+    if (cJSON_IsString(jname) && (jname->valuestring != NULL)) {
+        strncpy(name, jname->valuestring, sizeof(name) - 1);
+    }
+    if (cJSON_IsString(jwebsite) && (jwebsite->valuestring != NULL)) {
+        strncpy(website, jwebsite->valuestring, sizeof(website) - 1);
+    }
+    if (cJSON_IsString(jmessage) && (jmessage->valuestring != NULL)) {
+        strncpy(message, jmessage->valuestring, sizeof(message) - 1);
+    }
+
+    printf("Parsed Name: %s, Website: %s, Message: %s\n", name, website, message);
+
+    cJSON_Delete(json);
+
+    // Optionally: URL-decode fields here
+
+    if (name[0] == '\0' || message[0] == '\0') {
         const char *error_body = "{\"error\": \"Missing fields\"}";
         char response[512];
         snprintf(response, sizeof(response),
                  "HTTP/1.1 400 Bad Request\r\n"
                  "Content-Type: application/json\r\n"
                  "Content-Length: %lu\r\n"
+                 "Access-Control-Allow-Origin: *\r\n"
                  "\r\n"
                  "%s", strlen(error_body), error_body);
         int bytes_written = write(client_fd, response, strlen(response));
@@ -816,22 +788,21 @@ void post_guestbook_entry(int client_fd, const char* request) {
     // Insert into the database
     sqlite3 *db;
     sqlite3_stmt *stmt;
-    const char *sql = "INSERT INTO guestbook (name, email, website, message, verified, deleted) VALUES (?, ?, ?, ?, 0, 0)";
+    const char *sql = "INSERT INTO guestbook (name, website, message, verified, deleted, created_at) VALUES (?, ?, ?, 0, 0, strftime('%Y-%m-%d %H:%M:%S', 'now'))";
     if (sqlite3_open("app.db", &db) != SQLITE_OK) {
         perror("sqlite3_open failed");
-        cJSON_Delete(json);
         return;
     }
+
     if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) != SQLITE_OK) {
         fprintf(stderr, "sqlite3_prepare_v2 failed: %s\n", sqlite3_errmsg(db));
         sqlite3_close(db);
-        cJSON_Delete(json);
         return;
     }
+
     sqlite3_bind_text(stmt, 1, name, -1, SQLITE_STATIC);
-    sqlite3_bind_text(stmt, 2, email, -1, SQLITE_STATIC);
-    sqlite3_bind_text(stmt, 3, website, -1, SQLITE_STATIC);
-    sqlite3_bind_text(stmt, 4, message, -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 2, website, -1, SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 3, message, -1, SQLITE_STATIC);
 
     int rc = sqlite3_step(stmt);
 
@@ -843,32 +814,30 @@ void post_guestbook_entry(int client_fd, const char* request) {
              "HTTP/1.1 400 Bad Request\r\n"
              "Content-Type: application/json\r\n"
              "Content-Length: %lu\r\n"
+             "Access-Control-Allow-Origin: *\r\n"
              "\r\n"
              "%s", strlen(error_body), error_body);
         int bytes_written = write(client_fd, response, strlen(response));
         if (bytes_written < 0) {
             perror("write error");
         }
-
-        // cleanup
         sqlite3_finalize(stmt);
         sqlite3_close(db);
-        cJSON_Delete(json);
-        // Return early on error
         return;
     }
 
-    // cleanup
     sqlite3_finalize(stmt);
     sqlite3_close(db);
-    cJSON_Delete(json);
-    // Respond with success
-    char response[512];
+    // Return JSON response after successful submission
+    const char *success_body = "{\"success\": true}";
+    char response[256];
     snprintf(response, sizeof(response),
-             "HTTP/1.1 201 Created\r\n"
+             "HTTP/1.1 200 OK\r\n"
              "Content-Type: application/json\r\n"
-             "Content-Length: 0\r\n"
-             "\r\n");
+             "Access-Control-Allow-Origin: *\r\n"
+             "Content-Length: %lu\r\n"
+             "\r\n"
+             "%s", strlen(success_body), success_body);
     ssize_t bytes_written = write(client_fd, response, strlen(response));
     if (bytes_written < 0) {
         perror("write error");

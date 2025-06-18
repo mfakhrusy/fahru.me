@@ -10,6 +10,7 @@
         "ostream": "c",
         "streambuf": "c",
         "webui.h": "c",
-        "stdio.h": "c"
+        "stdio.h": "c",
+        "utils.h": "c"
     }
 }
