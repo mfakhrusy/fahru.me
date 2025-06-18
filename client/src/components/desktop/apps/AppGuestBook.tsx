@@ -1,6 +1,3 @@
-import { useDispatch } from "react-redux";
-import { AppLayout } from "@/components/desktop/apps/layout/AppLayout";
-import { setActiveDesktopApp } from "@/store/desktop";
 import {
   Button,
   Flex,
@@ -12,8 +9,11 @@ import {
   Textarea,
 } from "@chakra-ui/react";
 import { useCallback, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
+import { AppLayout } from "@/components/desktop/apps/layout/AppLayout";
 import type { AppDispatch, RootState } from "@/store";
+import { setActiveDesktopApp } from "@/store/desktop";
 import { fetchGuestbook } from "@/store/guestbook";
 
 export const AppGuestBook = () => {
@@ -67,7 +67,7 @@ export const AppGuestBook = () => {
           w={"50%"}
           h={"100%"}
           flexDir="column"
-          backgroundImage={`url(/pink-flower-pattern.svg)`}
+          backgroundImage={"url(/pink-flower-pattern.svg)"}
           p={3}
         >
           <Flex bgColor={"white"} p={3} mb={3} borderRadius="10px">
@@ -94,7 +94,7 @@ export const AppGuestBook = () => {
               </FormControl>
               <FormControl flexDir={"column"} display={"flex"} px={2}>
                 <FormLabel mb={0} mt={2} fontSize={"xs"} htmlFor="website">
-                  Your website (this will be shown to everyone here, it's
+                  Your website (this will be shown to everyone here;
                   optional)
                 </FormLabel>
                 <Input

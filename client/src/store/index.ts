@@ -1,8 +1,8 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import connectionReducer from "./connection";
 import desktopReducer from "./desktop";
-import taskbarReducer from "./taskbar";
 import guestbookReducer from "./guestbook";
+import taskbarReducer from "./taskbar";
 
 const rootReducer = combineReducers({
   connection: connectionReducer,
