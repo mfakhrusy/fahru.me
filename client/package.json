@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev -p 3090",
     "build": "next build",
+    "build:cloudflare": "opennextjs-cloudflare build",
     "start": "next start",
     "pretty": "prettier --write .",
     "lint": "next lint",
