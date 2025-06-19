@@ -8,7 +8,10 @@
     "start": "next start",
     "pretty": "prettier --write .",
     "lint": "next lint",
-    "lint:fix": "next lint --fix"
+    "lint:fix": "next lint --fix",
+    "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
+    "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
+    "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts"
   },
   "dependencies": {
     "@chakra-ui/icons": "^2.0.19",
@@ -16,6 +19,7 @@
     "@chakra-ui/system": "^2.5.7",
     "@emotion/react": "^11.10.8",
     "@emotion/styled": "^11.10.8",
+    "@opennextjs/cloudflare": "^1.3.0",
     "@reduxjs/toolkit": "^1.9.5",
     "date-fns": "^2.30.0",
     "framer-motion": "^10.12.10",
@@ -47,6 +51,7 @@
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-react": "^7.29.3",
     "prettier": "^2.4.1",
-    "typescript": "^5.0.4"
+    "typescript": "^5.0.4",
+    "wrangler": "^4.20.3"
   }
 }
