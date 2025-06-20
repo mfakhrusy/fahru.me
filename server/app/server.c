@@ -44,9 +44,26 @@ void start_server(int port, request_handler_t handler) {
             continue;
         }
 
-        int read_bytes = read(client_fd, buffer, sizeof(buffer) - 1);
-        if (read_bytes > 0) {
-            buffer[read_bytes] = '\0';
+        // Read request in chunks until end of headers (for HTTP)
+        int total_read = 0;
+        int read_bytes;
+        int header_end = 0;
+        memset(buffer, 0, sizeof(buffer));
+        while ((read_bytes = read(client_fd, buffer + total_read, sizeof(buffer) - total_read - 1)) > 0) {
+            total_read += read_bytes;
+            buffer[total_read] = '\0';
+            // Look for end of HTTP headers: "\r\n\r\n"
+            if (strstr(buffer, "\r\n\r\n") != NULL) {
+                header_end = 1;
+                break;
+            }
+            if (total_read >= sizeof(buffer) - 1) {
+                // Buffer full, stop reading
+                break;
+            }
+        }
+        if (total_read > 0) {
+            buffer[total_read] = '\0';
             handler(client_fd, buffer);
         }
 
