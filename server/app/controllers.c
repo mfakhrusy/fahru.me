@@ -33,6 +33,11 @@ void post_login(int client_fd, const char* request) {
 
     // Find body (skip HTTP headers)
     const char *body = strstr(request, "\r\n\r\n");
+    int body_offset = 4;
+    if (!body) {
+        body = strstr(request, "\n\n");
+        body_offset = 2;
+    }
     if (!body) {
         const char *error_body = "<html><body>Bad request</body></html>";
         snprintf(response, sizeof(response),
@@ -47,7 +52,7 @@ void post_login(int client_fd, const char* request) {
         }
         return;
     }
-    body += 4; // Move past "\r\n\r\n"
+    body += body_offset; // Move past header/body separator
 
     // Parse form data: username=...&password=...
     char *username_start = strstr(body, "username=");
