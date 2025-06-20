@@ -10,7 +10,8 @@ void start_server(int port, request_handler_t handler) {
     int server_fd, client_fd;
     struct sockaddr_in addr;
     int opt = 1;
-    char buffer[1024] = {0};
+    // Increase buffer size to 4KB for longer requests
+    char buffer[4096] = {0};
 
     server_fd = socket(AF_INET, SOCK_STREAM, 0);
     if (server_fd == 0) {
