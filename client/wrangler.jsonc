@@ -8,5 +8,8 @@
   "assets": {
     "directory": ".open-next/assets",
     "binding": "ASSETS"
+  },
+  "vars": {
+    "NEXT_PUBLIC_API_HOST": "https://server.fahru.me"
   }
 }
