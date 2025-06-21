@@ -18,7 +18,11 @@
       "custom_domain": true
     },
     {
-      "pattern": "fakhrusy.com",
+      "pattern": "fahru.me",
+      "custom_domain": true
+    },
+    {
+      "pattern": "www.fahru.me",
       "custom_domain": true
     }
   ]
