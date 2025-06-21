@@ -24,6 +24,14 @@
     {
       "pattern": "www.fahru.me",
       "custom_domain": true
+    },
+    {
+      "pattern": "fakhrusy.com",
+      "custom_domain": true
+    },
+    {
+      "pattern": "www.fakhrusy.com",
+      "custom_domain": true
     }
   ]
 }
