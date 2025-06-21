@@ -186,11 +186,7 @@ void get_login(int client_fd, const char* request) {
         const char *token_start = strstr(cookie_header, "session_token=");
         if (token_start) {
             token_start += 14; // Move past "session_token="
-            const char *token_end = strchr(token_start, ';');
-            if (!token_end) {
-                token_end = cookie_header + strlen(cookie_header);
-            }
-            size_t token_len = token_end - token_start;
+            size_t token_len = 64; // sha-256 hash is 64 characters long
             session_token = strndup(token_start, token_len);
         }
     }
@@ -426,11 +422,7 @@ void get_guestbook_page(int client_fd, const char* request) {
         const char *token_start = strstr(cookie_header, "session_token=");
         if (token_start) {
             token_start += 14; // Move past "session_token="
-            const char *token_end = strchr(token_start, ';');
-            if (!token_end) {
-                token_end = cookie_header + strlen(cookie_header);
-            }
-            size_t token_len = token_end - token_start;
+            size_t token_len = 64; // sha-256 hash is 64 characters long
             session_token = strndup(token_start, token_len);
         }
     }
