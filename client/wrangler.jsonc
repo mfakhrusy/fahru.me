@@ -16,6 +16,10 @@
     {
       "pattern": "cf.fahru.me",
       "custom_domain": true
+    },
+    {
+      "pattern": "fakhrusy.com",
+      "custom_domain": true
     }
   ]
 }
