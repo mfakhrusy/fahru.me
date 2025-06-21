@@ -11,5 +11,11 @@
   },
   "vars": {
     "NEXT_PUBLIC_API_HOST": "https://server.fahru.me"
-  }
+  },
+  "routes": [
+    {
+      "pattern": "cf.fahru.me",
+      "custom_domain": true
+    }
+  ]
 }
