@@ -910,30 +910,36 @@ void post_guestbook_entry(int client_fd, const char* request) {
 }
 
 void verify_guestbook_entry(int client_fd, const char* request) {
-    // Find body (skip HTTP headers)
-    const char *body = strstr(request, "\r\n\r\n");
-    if (!body) {
+    // Expecting URL like: POST /guestbook/verify?id=123 HTTP/1.1
+    // Extract the id from the URL query string
+
+    // Find the first line of the HTTP request
+    const char *first_line_end = strstr(request, "\r\n");
+    if (!first_line_end) {
         const char *error_body = "{\"error\": \"Bad request\"}";
         char response[512];
         snprintf(response, sizeof(response),
                  "HTTP/1.1 400 Bad Request\r\n"
                  "Content-Type: application/json\r\n"
                  "Content-Length: %lu\r\n"
-                 "Access-Control-Allow-Origin: *\r\n" // TODO: Adjust CORS policy as needed
+                 "Access-Control-Allow-Origin: *\r\n"
                  "\r\n"
                  "%s", strlen(error_body), error_body);
-        int bytes_written = write(client_fd, response, strlen(response));
-        if (bytes_written < 0) {
-            perror("write error");
-        }
+        write(client_fd, response, strlen(response));
         return;
     }
-    body += 4; // Move past "\r\n\r\n"
 
-    // Parse JSON body: {"id": ...}
-    cJSON *json = cJSON_Parse(body);
-    if (!json) {
-        const char *error_body = "{\"error\": \"Invalid JSON\"}";
+    // Copy the first line to a buffer
+    char line[512] = {0};
+    size_t line_len = (size_t)(first_line_end - request);
+    if (line_len >= sizeof(line)) line_len = sizeof(line) - 1;
+    strncpy(line, request, line_len);
+    line[line_len] = '\0';
+
+    // Find the path (skip method)
+    char *path = strchr(line, ' ');
+    if (!path) {
+        const char *error_body = "{\"error\": \"Bad request\"}";
         char response[512];
         snprintf(response, sizeof(response),
                  "HTTP/1.1 400 Bad Request\r\n"
@@ -942,17 +948,15 @@ void verify_guestbook_entry(int client_fd, const char* request) {
                  "Access-Control-Allow-Origin: *\r\n"
                  "\r\n"
                  "%s", strlen(error_body), error_body);
-        int bytes_written = write(client_fd, response, strlen(response));
-        if (bytes_written < 0) {
-            perror("write error");
-        }
+        write(client_fd, response, strlen(response));
         return;
     }
+    path++; // skip space
 
-    const cJSON *jid = cJSON_GetObjectItemCaseSensitive(json, "id");
-    if (!cJSON_IsNumber(jid)) {
-        cJSON_Delete(json);
-        const char *error_body = "{\"error\": \"Missing or invalid id\"}";
+    // Find the '?' for query string
+    char *query = strchr(path, '?');
+    if (!query) {
+        const char *error_body = "{\"error\": \"Missing id parameter\"}";
         char response[512];
         snprintf(response, sizeof(response),
                  "HTTP/1.1 400 Bad Request\r\n"
@@ -961,21 +965,58 @@ void verify_guestbook_entry(int client_fd, const char* request) {
                  "Access-Control-Allow-Origin: *\r\n"
                  "\r\n"
                  "%s", strlen(error_body), error_body);
-        int bytes_written = write(client_fd, response, strlen(response));
-        if (bytes_written < 0) {
-            perror("write error");
-        }
+        write(client_fd, response, strlen(response));
         return;
     }
+    query++; // skip '?'
 
-    int id = jid->valueint;
-    cJSON_Delete(json);
+    // Look for id= in the query string
+    char *id_str = strstr(query, "id=");
+    if (!id_str) {
+        const char *error_body = "{\"error\": \"Missing id parameter\"}";
+        char response[512];
+        snprintf(response, sizeof(response),
+                 "HTTP/1.1 400 Bad Request\r\n"
+                 "Content-Type: application/json\r\n"
+                 "Content-Length: %lu\r\n"
+                 "Access-Control-Allow-Origin: *\r\n"
+                 "\r\n"
+                 "%s", strlen(error_body), error_body);
+        write(client_fd, response, strlen(response));
+        return;
+    }
+    id_str += 3; // skip "id="
+
+    // Extract the id value (until '&' or space or end)
+    char id_buf[32] = {0};
+    int i = 0;
+    while (id_str[i] && id_str[i] != '&' && id_str[i] != ' ' && i < (int)(sizeof(id_buf) - 1)) {
+        id_buf[i] = id_str[i];
+        i++;
+    }
+    id_buf[i] = '\0';
+
+    // Convert id to integer
+    int id = atoi(id_buf);
+    if (id <= 0) {
+        const char *error_body = "{\"error\": \"Invalid id parameter\"}";
+        char response[512];
+        snprintf(response, sizeof(response),
+                 "HTTP/1.1 400 Bad Request\r\n"
+                 "Content-Type: application/json\r\n"
+                 "Content-Length: %lu\r\n"
+                 "Access-Control-Allow-Origin: *\r\n"
+                 "\r\n"
+                 "%s", strlen(error_body), error_body);
+        write(client_fd, response, strlen(response));
+        return;
+    }
 
     // Update the database to mark the entry as verified
     sqlite3 *db;
     sqlite3_stmt *stmt;
     const char *sql = "UPDATE guestbook SET verified = 1 WHERE id = ?";
-    
+
     if (sqlite3_open("app.db", &db) != SQLITE_OK) {
         perror("sqlite3_open failed");
         return;
@@ -1001,10 +1042,7 @@ void verify_guestbook_entry(int client_fd, const char* request) {
                  "Access-Control-Allow-Origin: *\r\n"
                  "\r\n"
                  "%s", strlen(error_body), error_body);
-        int bytes_written = write(client_fd, response, strlen(response));
-        if (bytes_written < 0) {
-            perror("write error");
-        }
+        write(client_fd, response, strlen(response));
         sqlite3_finalize(stmt);
         sqlite3_close(db);
         return;
@@ -1023,10 +1061,7 @@ void verify_guestbook_entry(int client_fd, const char* request) {
              "Content-Length: %lu\r\n"
              "\r\n"
              "%s", strlen(success_body), success_body);
-    ssize_t bytes_written = write(client_fd, response, strlen(response));
-    if (bytes_written < 0) {
-        perror("write error");
-    }
+    write(client_fd, response, strlen(response));
 }
 
 void delete_guestbook_entry(int client_fd, const char* request) {
