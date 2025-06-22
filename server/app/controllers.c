@@ -629,6 +629,27 @@ void get_guestbook_page(int client_fd, const char* request) {
         "<script>"
         "const entries = JSON.parse(`%s`);"
         "const list = document.getElementById('guestbook-list');"
+        "function verifyEntry(id, btn) {"
+        "  btn.disabled = true;"
+        "  fetch(`/guestbook/verify/${id}`, {"
+        "    method: 'POST',"
+        "    headers: { 'Content-Type': 'application/json' }"
+        "  }).then(resp => resp.json()).then(data => {"
+        "    if (data.success) {"
+        "      btn.textContent = 'Verified';"
+        "      btn.style.background = '#218838';"
+        "      btn.style.cursor = 'default';"
+        "      btn.disabled = true;"
+        "      btn.closest('.guestbook-entry').querySelector('.status').innerHTML = '<span style=\"color: green;\">(Verified)</span>';"
+        "    } else {"
+        "      btn.disabled = false;"
+        "      alert('Verification failed');"
+        "    }"
+        "  }).catch(() => {"
+        "    btn.disabled = false;"
+        "    alert('Verification failed');"
+        "  });"
+        "}"
         "entries.forEach(entry => {"
         "  const item = document.createElement('li');"
         "  item.className = 'guestbook-entry' + (entry.deleted ? ' deleted' : '');"
@@ -649,7 +670,7 @@ void get_guestbook_page(int client_fd, const char* request) {
         "  }"
         "  html += '</span>';"
         "  if (!entry.verified && !entry.deleted) {"
-        "    html += '<br><button class=\"verify-btn\" onclick=\"alert(\\'Verify not implemented\\')\">Verify</button>';"
+        "    html += `<br><button class=\"verify-btn\" onclick=\"verifyEntry(${entry.id}, this)\">Verify</button>`;"
         "    html += '<button class=\"delete-btn\" onclick=\"alert(\\'Delete not implemented\\')\">Delete</button>';"
         "  }"
         "  item.innerHTML = html;"
@@ -910,8 +931,8 @@ void post_guestbook_entry(int client_fd, const char* request) {
 }
 
 void verify_guestbook_entry(int client_fd, const char* request) {
-    // Expecting URL like: POST /guestbook/verify?id=123 HTTP/1.1
-    // Extract the id from the URL query string
+    // Expecting URL like: POST /guestbook/verify/123 HTTP/1.1
+    // Extract the id from the URL path
 
     // Find the first line of the HTTP request
     const char *first_line_end = strstr(request, "\r\n");
@@ -955,14 +976,44 @@ void verify_guestbook_entry(int client_fd, const char* request) {
         if (bytes_written < 0) {
             perror("write error");
         }
-
         return;
     }
     path++; // skip space
 
-    // Find the '?' for query string
-    char *query = strchr(path, '?');
-    if (!query) {
+    // Find the second space (end of path)
+    char *path_end = strchr(path, ' ');
+    if (!path_end) path_end = path + strlen(path);
+
+    // Copy the path to a buffer
+    char path_buf[256] = {0};
+    size_t path_len = (size_t)(path_end - path);
+    if (path_len >= sizeof(path_buf)) path_len = sizeof(path_buf) - 1;
+    strncpy(path_buf, path, path_len);
+    path_buf[path_len] = '\0';
+
+    // Expecting path like /guestbook/verify/123
+    const char *prefix = "/guestbook/verify/";
+    size_t prefix_len = strlen(prefix);
+    if (strncmp(path_buf, prefix, prefix_len) != 0) {
+        const char *error_body = "{\"error\": \"Invalid path\"}";
+        char response[512];
+        snprintf(response, sizeof(response),
+                 "HTTP/1.1 400 Bad Request\r\n"
+                 "Content-Type: application/json\r\n"
+                 "Content-Length: %lu\r\n"
+                 "Access-Control-Allow-Origin: *\r\n"
+                 "\r\n"
+                 "%s", strlen(error_body), error_body);
+        ssize_t bytes_written = write(client_fd, response, strlen(response));
+        if (bytes_written < 0) {
+            perror("write error");
+        }
+        return;
+    }
+
+    // Extract the id after the prefix
+    const char *id_str = path_buf + prefix_len;
+    if (*id_str == '\0') {
         const char *error_body = "{\"error\": \"Missing id parameter\"}";
         char response[512];
         snprintf(response, sizeof(response),
@@ -978,38 +1029,17 @@ void verify_guestbook_entry(int client_fd, const char* request) {
         }
         return;
     }
-    query++; // skip '?'
 
-    // Look for id= in the query string
-    char *id_str = strstr(query, "id=");
-    if (!id_str) {
-        const char *error_body = "{\"error\": \"Missing id parameter\"}";
-        char response[512];
-        snprintf(response, sizeof(response),
-                 "HTTP/1.1 400 Bad Request\r\n"
-                 "Content-Type: application/json\r\n"
-                 "Content-Length: %lu\r\n"
-                 "Access-Control-Allow-Origin: *\r\n"
-                 "\r\n"
-                 "%s", strlen(error_body), error_body);
-        ssize_t bytes_written = write(client_fd, response, strlen(response));
-        if (bytes_written < 0) {
-            perror("write error");
-        }
-        return;
-    }
-    id_str += 3; // skip "id="
-
-    // Extract the id value (until '&' or space or end)
+    // Only allow digits for id
     char id_buf[32] = {0};
     int i = 0;
-    while (id_str[i] && id_str[i] != '&' && id_str[i] != ' ' && i < (int)(sizeof(id_buf) - 1)) {
+    while (id_str[i] && id_str[i] != '/' && i < (int)(sizeof(id_buf) - 1)) {
+        if (id_str[i] < '0' || id_str[i] > '9') break;
         id_buf[i] = id_str[i];
         i++;
     }
     id_buf[i] = '\0';
 
-    // Convert id to integer
     int id = atoi(id_buf);
     if (id <= 0) {
         const char *error_body = "{\"error\": \"Invalid id parameter\"}";
