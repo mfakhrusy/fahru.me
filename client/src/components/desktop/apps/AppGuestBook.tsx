@@ -126,6 +126,7 @@ export const AppGuestBook = () => {
           </Flex>
         </Flex>
         <Flex w={"50%"} h={"100%"}>
+          WIP (wont show anything yet)
           {/* <List>
             {guestlist.map((item) => {
               return (
