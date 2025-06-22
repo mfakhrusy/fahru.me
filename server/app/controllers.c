@@ -480,13 +480,21 @@ void get_guestbook_page(int client_fd, const char* request) {
         cJSON *entry = cJSON_CreateObject();
         int id = sqlite3_column_int(stmt, 0);
         const char *name = (const char *)sqlite3_column_text(stmt, 1);
-        const char *website = (const char *)sqlite3_column_text(stmt, 3);
-        const char *message = (const char *)sqlite3_column_text(stmt, 4);
+        const char *website = (const char *)sqlite3_column_text(stmt, 2);
 
-        int verified = sqlite3_column_int(stmt, 5);
-        int deleted = sqlite3_column_int(stmt, 6);
+        // if website doesn't contain http:// or https://, prepend it
+        if (website && strncmp(website, "http://", 7) != 0 && strncmp(website, "https://", 8) != 0) {
+            char website_with_protocol[512];
+            snprintf(website_with_protocol, sizeof(website_with_protocol), "http://%s", website);
+            website = website_with_protocol;
+        }
 
-        const char *created_at = (const char *)sqlite3_column_text(stmt, 7);
+        const char *message = (const char *)sqlite3_column_text(stmt, 3);
+
+        int verified = sqlite3_column_int(stmt, 4);
+        int deleted = sqlite3_column_int(stmt, 5);
+
+        const char *created_at = (const char *)sqlite3_column_text(stmt, 6);
 
         cJSON_AddNumberToObject(entry, "id", id);
         cJSON_AddStringToObject(entry, "name", name ? name : "");
@@ -530,6 +538,7 @@ void get_guestbook_page(int client_fd, const char* request) {
         "  font-family: Arial, sans-serif;"
         "  margin: 0;"
         "  padding: 0;"
+        "  background: #f5f5f5;"
         "}"
         "nav {"
         "  background: #007bff;"
@@ -544,6 +553,58 @@ void get_guestbook_page(int client_fd, const char* request) {
         "nav a:hover {"
         "  text-decoration: underline;"
         "}"
+        ".guestbook-container {"
+        "  max-width: 700px;"
+        "  margin: 40px auto;"
+        "  background: #fff;"
+        "  border-radius: 8px;"
+        "  box-shadow: 0 2px 8px rgba(0,0,0,0.08);"
+        "  padding: 32px 24px;"
+        "}"
+        "h1, h2 {"
+        "  text-align: center;"
+        "}"
+        "#guestbook-list {"
+        "  list-style: none;"
+        "  padding: 0;"
+        "  margin: 0;"
+        "}"
+        ".guestbook-entry {"
+        "  background: #f9f9f9;"
+        "  border: 1px solid #e0e0e0;"
+        "  border-radius: 6px;"
+        "  margin-bottom: 18px;"
+        "  padding: 18px 16px;"
+        "  transition: box-shadow 0.2s;"
+        "  box-shadow: 0 1px 3px rgba(0,0,0,0.03);"
+        "  position: relative;"
+        "}"
+        ".guestbook-entry strong {"
+        "  font-size: 1.1em;"
+        "}"
+        ".guestbook-entry .status {"
+        "  margin-left: 8px;"
+        "  font-size: 0.95em;"
+        "}"
+        ".guestbook-entry .deleted {"
+        "  color: #888;"
+        "  text-decoration: line-through;"
+        "}"
+        ".guestbook-entry .verify-btn {"
+        "  margin-top: 10px;"
+        "  padding: 6px 16px;"
+        "  background: #28a745;"
+        "  color: #fff;"
+        "  border: none;"
+        "  border-radius: 4px;"
+        "  cursor: pointer;"
+        "  font-size: 0.95em;"
+        "  transition: background 0.2s;"
+        "  display: inline-block;"
+        "}"
+        ".guestbook-entry .verify-btn:hover {"
+        "  background: #218838;"
+        "}"
         "</style>"
         "</head>"
         "<body>"
@@ -551,27 +612,37 @@ void get_guestbook_page(int client_fd, const char* request) {
         "<a href=\"/\">Home</a>"
         "<a href=\"/guestbook\">Guest book</a>"
         "</nav>"
+        "<div class=\"guestbook-container\">"
         "<h1>Guestbook page!</h1>"
         "<h2>Entries:</h2>"
-        "<ul id=\"guestbook-list\">"
-        "</ul>"
+        "<ul id=\"guestbook-list\"></ul>"
+        "</div>"
         "<script>"
         "const entries = JSON.parse(`%s`);"
         "const list = document.getElementById('guestbook-list');"
         "entries.forEach(entry => {"
         "  const item = document.createElement('li');"
-        "  item.innerHTML = `<strong>${entry.name}</strong> (${entry.email})<br>"
-        "                   <a href=\"${entry.website}\" target=\"_blank\">${entry.website}</a><br>"
-        "                   <p>${entry.message}</p>"
-        "                   <small>Created at: ${entry.created_at}</small>`;"
+        "  item.className = 'guestbook-entry' + (entry.deleted ? ' deleted' : '');"
+        "  let html = `<strong>${entry.name}</strong>`;"
+        "  if (entry.website) {"
+        "    html += ` &mdash; <a href=\"${entry.website}\" target=\"_blank\">${entry.website}</a>`;"
+        "  }"
+        "  html += `<br><p>${entry.message}</p>`;"
+        "  html += `<small>Created at: ${entry.created_at}</small>`;"
+        "  html += '<span class=\"status\">';"
         "  if (entry.verified) {"
-        "    item.innerHTML += ' <span style=\"color: green;\">(Verified)</span>';"
+        "    html += '<span style=\"color: green;\">(Verified)</span>';"
         "  } else {"
-        "    item.innerHTML += ' <span style=\"color: red;\">(Not Verified)</span>';"
+        "    html += '<span style=\"color: red;\">(Not Verified)</span>';"
         "  }"
         "  if (entry.deleted) {"
-        "    item.innerHTML += ' <span style=\"color: gray;\">(Deleted)</span>';"
+        "    html += ' <span style=\"color: gray;\">(Deleted)</span>';"
         "  }"
+        "  html += '</span>';"
+        "  if (!entry.verified && !entry.deleted) {"
+        "    html += '<br><button class=\"verify-btn\" onclick=\"alert(\\'Verify not implemented\\')\">Verify</button>';"
+        "  }"
+        "  item.innerHTML = html;"
         "  list.appendChild(item);"
         "});"
         "</script>"
