@@ -908,3 +908,243 @@ void post_guestbook_entry(int client_fd, const char* request) {
         perror("write error");
     }
 }
+
+void verify_guestbook_entry(int client_fd, const char* request) {
+    // Find body (skip HTTP headers)
+    const char *body = strstr(request, "\r\n\r\n");
+    if (!body) {
+        const char *error_body = "{\"error\": \"Bad request\"}";
+        char response[512];
+        snprintf(response, sizeof(response),
+                 "HTTP/1.1 400 Bad Request\r\n"
+                 "Content-Type: application/json\r\n"
+                 "Content-Length: %lu\r\n"
+                 "Access-Control-Allow-Origin: *\r\n" // TODO: Adjust CORS policy as needed
+                 "\r\n"
+                 "%s", strlen(error_body), error_body);
+        int bytes_written = write(client_fd, response, strlen(response));
+        if (bytes_written < 0) {
+            perror("write error");
+        }
+        return;
+    }
+    body += 4; // Move past "\r\n\r\n"
+
+    // Parse JSON body: {"id": ...}
+    cJSON *json = cJSON_Parse(body);
+    if (!json) {
+        const char *error_body = "{\"error\": \"Invalid JSON\"}";
+        char response[512];
+        snprintf(response, sizeof(response),
+                 "HTTP/1.1 400 Bad Request\r\n"
+                 "Content-Type: application/json\r\n"
+                 "Content-Length: %lu\r\n"
+                 "Access-Control-Allow-Origin: *\r\n"
+                 "\r\n"
+                 "%s", strlen(error_body), error_body);
+        int bytes_written = write(client_fd, response, strlen(response));
+        if (bytes_written < 0) {
+            perror("write error");
+        }
+        return;
+    }
+
+    const cJSON *jid = cJSON_GetObjectItemCaseSensitive(json, "id");
+    if (!cJSON_IsNumber(jid)) {
+        cJSON_Delete(json);
+        const char *error_body = "{\"error\": \"Missing or invalid id\"}";
+        char response[512];
+        snprintf(response, sizeof(response),
+                 "HTTP/1.1 400 Bad Request\r\n"
+                 "Content-Type: application/json\r\n"
+                 "Content-Length: %lu\r\n"
+                 "Access-Control-Allow-Origin: *\r\n"
+                 "\r\n"
+                 "%s", strlen(error_body), error_body);
+        int bytes_written = write(client_fd, response, strlen(response));
+        if (bytes_written < 0) {
+            perror("write error");
+        }
+        return;
+    }
+
+    int id = jid->valueint;
+    cJSON_Delete(json);
+
+    // Update the database to mark the entry as verified
+    sqlite3 *db;
+    sqlite3_stmt *stmt;
+    const char *sql = "UPDATE guestbook SET verified = 1 WHERE id = ?";
+    
+    if (sqlite3_open("app.db", &db) != SQLITE_OK) {
+        perror("sqlite3_open failed");
+        return;
+    }
+
+    if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) != SQLITE_OK) {
+        fprintf(stderr, "sqlite3_prepare_v2 failed: %s\n", sqlite3_errmsg(db));
+        sqlite3_close(db);
+        return;
+    }
+
+    sqlite3_bind_int(stmt, 1, id);
+
+    int rc = sqlite3_step(stmt);
+    if (rc != SQLITE_DONE) {
+        fprintf(stderr, "sqlite3_step failed: %s\n", sqlite3_errmsg(db));
+        const char *error_body = "{\"error\": \"Failed to verify entry\"}";
+        char response[512];
+        snprintf(response, sizeof(response),
+                 "HTTP/1.1 400 Bad Request\r\n"
+                 "Content-Type: application/json\r\n"
+                 "Content-Length: %lu\r\n"
+                 "Access-Control-Allow-Origin: *\r\n"
+                 "\r\n"
+                 "%s", strlen(error_body), error_body);
+        int bytes_written = write(client_fd, response, strlen(response));
+        if (bytes_written < 0) {
+            perror("write error");
+        }
+        sqlite3_finalize(stmt);
+        sqlite3_close(db);
+        return;
+    }
+
+    sqlite3_finalize(stmt);
+    sqlite3_close(db);
+
+    // Return JSON response after successful verification
+    const char *success_body = "{\"success\": true}";
+    char response[256];
+    snprintf(response, sizeof(response),
+             "HTTP/1.1 200 OK\r\n"
+             "Content-Type: application/json\r\n"
+             "Access-Control-Allow-Origin: *\r\n"
+             "Content-Length: %lu\r\n"
+             "\r\n"
+             "%s", strlen(success_body), success_body);
+    ssize_t bytes_written = write(client_fd, response, strlen(response));
+    if (bytes_written < 0) {
+        perror("write error");
+    }
+}
+
+void delete_guestbook_entry(int client_fd, const char* request) {
+    // Find body (skip HTTP headers)
+    const char *body = strstr(request, "\r\n\r\n");
+    if (!body) {
+        const char *error_body = "{\"error\": \"Bad request\"}";
+        char response[512];
+        snprintf(response, sizeof(response),
+                 "HTTP/1.1 400 Bad Request\r\n"
+                 "Content-Type: application/json\r\n"
+                 "Content-Length: %lu\r\n"
+                 "Access-Control-Allow-Origin: *\r\n" // TODO: Adjust CORS policy as needed
+                 "\r\n"
+                 "%s", strlen(error_body), error_body);
+        int bytes_written = write(client_fd, response, strlen(response));
+        if (bytes_written < 0) {
+            perror("write error");
+        }
+        return;
+    }
+    body += 4; // Move past "\r\n\r\n"
+
+    // Parse JSON body: {"id": ...}
+    cJSON *json = cJSON_Parse(body);
+    if (!json) {
+        const char *error_body = "{\"error\": \"Invalid JSON\"}";
+        char response[512];
+        snprintf(response, sizeof(response),
+                 "HTTP/1.1 400 Bad Request\r\n"
+                 "Content-Type: application/json\r\n"
+                 "Content-Length: %lu\r\n"
+                 "Access-Control-Allow-Origin: *\r\n"
+                 "\r\n"
+                 "%s", strlen(error_body), error_body);
+        int bytes_written = write(client_fd, response, strlen(response));
+        if (bytes_written < 0) {
+            perror("write error");
+        }
+        return;
+    }
+
+    const cJSON *jid = cJSON_GetObjectItemCaseSensitive(json, "id");
+    if (!cJSON_IsNumber(jid)) {
+        cJSON_Delete(json);
+        const char *error_body = "{\"error\": \"Missing or invalid id\"}";
+        char response[512];
+        snprintf(response, sizeof(response),
+                 "HTTP/1.1 400 Bad Request\r\n"
+                 "Content-Type: application/json\r\n"
+                 "Content-Length: %lu\r\n"
+                 "Access-Control-Allow-Origin: *\r\n"
+                 "\r\n"
+                 "%s", strlen(error_body), error_body);
+        int bytes_written = write(client_fd, response, strlen(response));
+        if (bytes_written < 0) {
+            perror("write error");
+        }
+        return;
+    }
+
+    int id = jid->valueint;
+    cJSON_Delete(json);
+
+    // Update the database to mark the entry as deleted
+    sqlite3 *db;
+    sqlite3_stmt *stmt;
+    const char *sql = "UPDATE guestbook SET deleted = 1 WHERE id = ?";
+
+    if (sqlite3_open("app.db", &db) != SQLITE_OK) {
+        perror("sqlite3_open failed");
+        return;
+    }
+
+    if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) != SQLITE_OK) {
+        fprintf(stderr, "sqlite3_prepare_v2 failed: %s\n", sqlite3_errmsg(db));
+        sqlite3_close(db);
+        return;
+    }
+
+    sqlite3_bind_int(stmt, 1, id);
+
+    int rc = sqlite3_step(stmt);
+    if (rc != SQLITE_DONE) {
+        fprintf(stderr, "sqlite3_step failed: %s\n", sqlite3_errmsg(db));
+        const char *error_body = "{\"error\": \"Failed to delete entry\"}";
+        char response[512];
+        snprintf(response, sizeof(response),
+                 "HTTP/1.1 400 Bad Request\r\n"
+                 "Content-Type: application/json\r\n"
+                 "Content-Length: %lu\r\n"
+                 "Access-Control-Allow-Origin: *\r\n"
+                 "\r\n"
+                 "%s", strlen(error_body), error_body);
+        int bytes_written = write(client_fd, response, strlen(response));
+        if (bytes_written < 0) {
+            perror("write error");
+        }
+        sqlite3_finalize(stmt);
+        sqlite3_close(db);
+        return;
+    }
+
+    sqlite3_finalize(stmt);
+    sqlite3_close(db);
+
+    // Return JSON response after successful deletion
+    const char *success_body = "{\"success\": true}";
+    char response[256];
+    snprintf(response, sizeof(response),
+             "HTTP/1.1 200 OK\r\n"
+             "Content-Type: application/json\r\n"
+             "Access-Control-Allow-Origin: *\r\n"
+             "Content-Length: %lu\r\n"
+             "\r\n"
+             "%s", strlen(success_body), success_body);
+    ssize_t bytes_written = write(client_fd, response, strlen(response));
+    if (bytes_written < 0) {
+        perror("write error");
+    }
+}
