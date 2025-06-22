@@ -7,6 +7,7 @@ type GuestbookEntry = {
   verified: boolean;
   deleted: boolean;
   created_at: string;
+  id: number;
 };
 
 type GuestbookState = {

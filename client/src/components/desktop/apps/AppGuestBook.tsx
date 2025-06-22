@@ -4,6 +4,7 @@ import {
   FormControl,
   FormLabel,
   Input,
+  Link,
   List,
   ListItem,
   Textarea,
@@ -94,8 +95,7 @@ export const AppGuestBook = () => {
               </FormControl>
               <FormControl flexDir={"column"} display={"flex"} px={2}>
                 <FormLabel mb={0} mt={2} fontSize={"xs"} htmlFor="website">
-                  Your website (this will be shown to everyone here;
-                  optional)
+                  Your website (this will be shown to everyone here; optional)
                 </FormLabel>
                 <Input
                   p={2}
@@ -119,23 +119,81 @@ export const AppGuestBook = () => {
                   required
                 />
               </FormControl>
-              <Button type="submit" variant={"solid"} bgColor="pink" m={3} disabled={loading}>
+              <Button
+                type="submit"
+                variant={"solid"}
+                bgColor="pink"
+                m={3}
+                disabled={loading}
+              >
                 Say hi!
               </Button>
             </form>
           </Flex>
         </Flex>
-        <Flex w={"50%"} h={"100%"}>
-          WIP (wont show anything yet)
-          {/* <List>
-            {guestlist.map((item) => {
-              return (
-                <ListItem>
-                  {item.name}
-                </ListItem>
-              )
-            })}
-          </List> */}
+        <Flex
+          w="50%"
+          h="100%"
+          flexDir="column"
+          bg="white"
+          p={4}
+          borderRadius="10px"
+          overflowY="auto"
+        >
+          <List spacing={3}>
+            {guestbookEntries.length === 0 && !loading && (
+              <ListItem color="gray.500" textAlign="center" py={8}>
+                No messages yet. Be the first to say hi!
+              </ListItem>
+            )}
+            {loading && (
+              <ListItem color="gray.400" textAlign="center" py={8}>
+                Loading messages...
+              </ListItem>
+            )}
+            {guestbookEntries
+            .filter((item) => !item.deleted && item.verified)
+            .map((item) => (
+              <ListItem
+                key={item.id}
+                p={4}
+                mb={2}
+                borderRadius="8px"
+                bg="gray.50"
+                boxShadow="sm"
+                border="1px solid"
+                borderColor="gray.100"
+              >
+                <Flex align="center" mb={1}>
+                  <span style={{ fontWeight: 600 }}>{item.name}</span>
+                  {item.website && (
+                    <Link
+                      href={item.website.includes("http") ? item.website : `https://${item.website}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      ml={2}
+                      color="pink.500"
+                      fontSize="sm"
+                      isExternal
+                    >
+                      ({item.website.replace(/^https?:\/\//, "")})
+                    </Link>
+                  )}
+                </Flex>
+                <Flex>
+                  <p
+                    style={{
+                      color: "#444",
+                      fontSize: "0.98em",
+                      wordBreak: "break-word",
+                    }}
+                  >
+                    {item.message}
+                  </p>
+                </Flex>
+              </ListItem>
+            ))}
+          </List>
         </Flex>
       </Flex>
     </AppLayout>
