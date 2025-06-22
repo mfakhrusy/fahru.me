@@ -2,9 +2,7 @@
   "main": ".open-next/worker.js",
   "name": "fahru-dot-me",
   "compatibility_date": "2025-03-25",
-  "compatibility_flags": [
-    "nodejs_compat"
-  ],
+  "compatibility_flags": ["nodejs_compat"],
   "assets": {
     "directory": ".open-next/assets",
     "binding": "ASSETS"
