@@ -650,6 +650,30 @@ void get_guestbook_page(int client_fd, const char* request) {
         "    alert('Verification failed');"
         "  });"
         "}"
+        "function deleteEntry(id, btn) {"
+        "  if (!confirm('Are you sure you want to delete this entry?')) return;"
+        "  btn.disabled = true;"
+        "  fetch(`/guestbook/delete/${id}`, {"
+        "    method: 'POST',"
+        "    headers: { 'Content-Type': 'application/json' }"
+        "  }).then(resp => resp.json()).then(data => {"
+        "    if (data.success) {"
+        "      btn.textContent = 'Deleted';"
+        "      btn.style.background = '#b52a37';"
+        "      btn.style.cursor = 'default';"
+        "      btn.disabled = true;"
+        "      const entryElem = btn.closest('.guestbook-entry');"
+        "      entryElem.classList.add('deleted');"
+        "      entryElem.querySelector('.status').innerHTML += ' <span style=\"color: gray;\">(Deleted)</span>';"
+        "    } else {"
+        "      btn.disabled = false;"
+        "      alert('Delete failed');"
+        "    }"
+        "  }).catch(() => {"
+        "    btn.disabled = false;"
+        "    alert('Delete failed');"
+        "  });"
+        "}"
         "entries.forEach(entry => {"
         "  const item = document.createElement('li');"
         "  item.className = 'guestbook-entry' + (entry.deleted ? ' deleted' : '');"
@@ -671,7 +695,7 @@ void get_guestbook_page(int client_fd, const char* request) {
         "  html += '</span>';"
         "  if (!entry.verified && !entry.deleted) {"
         "    html += `<br><button class=\"verify-btn\" onclick=\"verifyEntry(${entry.id}, this)\">Verify</button>`;"
-        "    html += '<button class=\"delete-btn\" onclick=\"alert(\\'Delete not implemented\\')\">Delete</button>';"
+        "    html += `<button class=\"delete-btn\" onclick=\"deleteEntry(${entry.id}, this)\">Delete</button>`;"
         "  }"
         "  item.innerHTML = html;"
         "  list.appendChild(item);"
@@ -1117,30 +1141,39 @@ void verify_guestbook_entry(int client_fd, const char* request) {
 }
 
 void delete_guestbook_entry(int client_fd, const char* request) {
-    // Find body (skip HTTP headers)
-    const char *body = strstr(request, "\r\n\r\n");
-    if (!body) {
+    // Expecting URL like: POST /guestbook/delete/123 HTTP/1.1
+    // Extract the id from the URL path
+
+    // Find the first line of the HTTP request
+    const char *first_line_end = strstr(request, "\r\n");
+    if (!first_line_end) {
         const char *error_body = "{\"error\": \"Bad request\"}";
         char response[512];
         snprintf(response, sizeof(response),
                  "HTTP/1.1 400 Bad Request\r\n"
                  "Content-Type: application/json\r\n"
                  "Content-Length: %lu\r\n"
-                 "Access-Control-Allow-Origin: *\r\n" // TODO: Adjust CORS policy as needed
+                 "Access-Control-Allow-Origin: *\r\n"
                  "\r\n"
                  "%s", strlen(error_body), error_body);
-        int bytes_written = write(client_fd, response, strlen(response));
+        ssize_t bytes_written = write(client_fd, response, strlen(response));
         if (bytes_written < 0) {
             perror("write error");
         }
         return;
     }
-    body += 4; // Move past "\r\n\r\n"
 
-    // Parse JSON body: {"id": ...}
-    cJSON *json = cJSON_Parse(body);
-    if (!json) {
-        const char *error_body = "{\"error\": \"Invalid JSON\"}";
+    // Copy the first line to a buffer
+    char line[512] = {0};
+    size_t line_len = (size_t)(first_line_end - request);
+    if (line_len >= sizeof(line)) line_len = sizeof(line) - 1;
+    strncpy(line, request, line_len);
+    line[line_len] = '\0';
+
+    // Find the path (skip method)
+    char *path = strchr(line, ' ');
+    if (!path) {
+        const char *error_body = "{\"error\": \"Bad request\"}";
         char response[512];
         snprintf(response, sizeof(response),
                  "HTTP/1.1 400 Bad Request\r\n"
@@ -1149,17 +1182,30 @@ void delete_guestbook_entry(int client_fd, const char* request) {
                  "Access-Control-Allow-Origin: *\r\n"
                  "\r\n"
                  "%s", strlen(error_body), error_body);
-        int bytes_written = write(client_fd, response, strlen(response));
+        ssize_t bytes_written = write(client_fd, response, strlen(response));
         if (bytes_written < 0) {
             perror("write error");
         }
         return;
     }
+    path++; // skip space
 
-    const cJSON *jid = cJSON_GetObjectItemCaseSensitive(json, "id");
-    if (!cJSON_IsNumber(jid)) {
-        cJSON_Delete(json);
-        const char *error_body = "{\"error\": \"Missing or invalid id\"}";
+    // Find the second space (end of path)
+    char *path_end = strchr(path, ' ');
+    if (!path_end) path_end = path + strlen(path);
+
+    // Copy the path to a buffer
+    char path_buf[256] = {0};
+    size_t path_len = (size_t)(path_end - path);
+    if (path_len >= sizeof(path_buf)) path_len = sizeof(path_buf) - 1;
+    strncpy(path_buf, path, path_len);
+    path_buf[path_len] = '\0';
+
+    // Expecting path like /guestbook/delete/123
+    const char *prefix = "/guestbook/delete/";
+    size_t prefix_len = strlen(prefix);
+    if (strncmp(path_buf, prefix, prefix_len) != 0) {
+        const char *error_body = "{\"error\": \"Invalid path\"}";
         char response[512];
         snprintf(response, sizeof(response),
                  "HTTP/1.1 400 Bad Request\r\n"
@@ -1168,15 +1214,59 @@ void delete_guestbook_entry(int client_fd, const char* request) {
                  "Access-Control-Allow-Origin: *\r\n"
                  "\r\n"
                  "%s", strlen(error_body), error_body);
-        int bytes_written = write(client_fd, response, strlen(response));
+        ssize_t bytes_written = write(client_fd, response, strlen(response));
         if (bytes_written < 0) {
             perror("write error");
         }
         return;
     }
 
-    int id = jid->valueint;
-    cJSON_Delete(json);
+    // Extract the id after the prefix
+    const char *id_str = path_buf + prefix_len;
+    if (*id_str == '\0') {
+        const char *error_body = "{\"error\": \"Missing id parameter\"}";
+        char response[512];
+        snprintf(response, sizeof(response),
+                 "HTTP/1.1 400 Bad Request\r\n"
+                 "Content-Type: application/json\r\n"
+                 "Content-Length: %lu\r\n"
+                 "Access-Control-Allow-Origin: *\r\n"
+                 "\r\n"
+                 "%s", strlen(error_body), error_body);
+        ssize_t bytes_written = write(client_fd, response, strlen(response));
+        if (bytes_written < 0) {
+            perror("write error");
+        }
+        return;
+    }
+
+    // Only allow digits for id
+    char id_buf[32] = {0};
+    int i = 0;
+    while (id_str[i] && id_str[i] != '/' && i < (int)(sizeof(id_buf) - 1)) {
+        if (id_str[i] < '0' || id_str[i] > '9') break;
+        id_buf[i] = id_str[i];
+        i++;
+    }
+    id_buf[i] = '\0';
+
+    int id = atoi(id_buf);
+    if (id <= 0) {
+        const char *error_body = "{\"error\": \"Invalid id parameter\"}";
+        char response[512];
+        snprintf(response, sizeof(response),
+                 "HTTP/1.1 400 Bad Request\r\n"
+                 "Content-Type: application/json\r\n"
+                 "Content-Length: %lu\r\n"
+                 "Access-Control-Allow-Origin: *\r\n"
+                 "\r\n"
+                 "%s", strlen(error_body), error_body);
+        ssize_t bytes_written = write(client_fd, response, strlen(response));
+        if (bytes_written < 0) {
+            perror("write error");
+        }
+        return;
+    }
 
     // Update the database to mark the entry as deleted
     sqlite3 *db;

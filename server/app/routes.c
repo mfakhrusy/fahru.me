@@ -56,7 +56,7 @@ void handle_request(int client_fd, const char *request) {
         post_guestbook_entry(client_fd, request);
     } else if (strcmp(method, "POST") == 0 && strncmp(path, "/guestbook/verify/", 18) == 0) {
         verify_guestbook_entry(client_fd, request);
-    } else if (strcmp(method, "POST") == 0 && strcmp(path, "/guestbook/delete") == 0) {
+    } else if (strcmp(method, "POST") == 0 && strncmp(path, "/guestbook/delete/", 18) == 0) {
         delete_guestbook_entry(client_fd, request);
     } else {
         not_found(client_fd);
