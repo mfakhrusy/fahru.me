@@ -622,7 +622,7 @@ void get_guestbook_page(int client_fd, const char* request) {
         "<a href=\"/guestbook\">Guest book</a>"
         "</nav>"
         "<div class=\"guestbook-container\">"
-        "<h1>Guestbook page!</h1>"
+        "<h1>Guestbook verification page</h1>"
         "<h2>Entries:</h2>"
         "<ul id=\"guestbook-list\"></ul>"
         "</div>"
