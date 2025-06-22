@@ -925,7 +925,10 @@ void verify_guestbook_entry(int client_fd, const char* request) {
                  "Access-Control-Allow-Origin: *\r\n"
                  "\r\n"
                  "%s", strlen(error_body), error_body);
-        write(client_fd, response, strlen(response));
+        ssize_t bytes_written = write(client_fd, response, strlen(response));
+        if (bytes_written < 0) {
+            perror("write error");
+        }
         return;
     }
 
@@ -948,7 +951,11 @@ void verify_guestbook_entry(int client_fd, const char* request) {
                  "Access-Control-Allow-Origin: *\r\n"
                  "\r\n"
                  "%s", strlen(error_body), error_body);
-        write(client_fd, response, strlen(response));
+        ssize_t bytes_written = write(client_fd, response, strlen(response));
+        if (bytes_written < 0) {
+            perror("write error");
+        }
+
         return;
     }
     path++; // skip space
@@ -965,7 +972,10 @@ void verify_guestbook_entry(int client_fd, const char* request) {
                  "Access-Control-Allow-Origin: *\r\n"
                  "\r\n"
                  "%s", strlen(error_body), error_body);
-        write(client_fd, response, strlen(response));
+        ssize_t bytes_written = write(client_fd, response, strlen(response));
+        if (bytes_written < 0) {
+            perror("write error");
+        }
         return;
     }
     query++; // skip '?'
@@ -982,7 +992,10 @@ void verify_guestbook_entry(int client_fd, const char* request) {
                  "Access-Control-Allow-Origin: *\r\n"
                  "\r\n"
                  "%s", strlen(error_body), error_body);
-        write(client_fd, response, strlen(response));
+        ssize_t bytes_written = write(client_fd, response, strlen(response));
+        if (bytes_written < 0) {
+            perror("write error");
+        }
         return;
     }
     id_str += 3; // skip "id="
@@ -1008,7 +1021,10 @@ void verify_guestbook_entry(int client_fd, const char* request) {
                  "Access-Control-Allow-Origin: *\r\n"
                  "\r\n"
                  "%s", strlen(error_body), error_body);
-        write(client_fd, response, strlen(response));
+        ssize_t bytes_written = write(client_fd, response, strlen(response));
+        if (bytes_written < 0) {
+            perror("write error");
+        }
         return;
     }
 
@@ -1042,7 +1058,10 @@ void verify_guestbook_entry(int client_fd, const char* request) {
                  "Access-Control-Allow-Origin: *\r\n"
                  "\r\n"
                  "%s", strlen(error_body), error_body);
-        write(client_fd, response, strlen(response));
+        ssize_t bytes_written = write(client_fd, response, strlen(response));
+        if (bytes_written < 0) {
+            perror("write error");
+        }
         sqlite3_finalize(stmt);
         sqlite3_close(db);
         return;
@@ -1061,7 +1080,10 @@ void verify_guestbook_entry(int client_fd, const char* request) {
              "Content-Length: %lu\r\n"
              "\r\n"
              "%s", strlen(success_body), success_body);
-    write(client_fd, response, strlen(response));
+    ssize_t bytes_written = write(client_fd, response, strlen(response));
+    if (bytes_written < 0) {
+        perror("write error");
+    }
 }
 
 void delete_guestbook_entry(int client_fd, const char* request) {
