@@ -7,7 +7,7 @@
     "build": "next build",
     "build:cloudflare": "opennextjs-cloudflare build",
     "start": "next start",
-    "pretty": "prettier --write .",
+    "pretty": "prettier --write . '!./.open-next'",
     "lint": "next lint",
     "lint:fix": "next lint --fix",
     "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
