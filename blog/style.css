@@ -1,0 +1,154 @@
+/* --- Global Styles & Variables --- */
+:root {
+    --primary-color: #0a0a0a;
+    --secondary-color: #5a5a5a;
+    --accent-color: #3d7eeb;
+    --background-color: #ffffff;
+    --surface-color: #f9f9f9;
+    --border-color: #eaeaea;
+    --code-bg-color: #2d2d2d;
+    --code-text-color: #f8f8f2;
+
+    --font-family-sans: 'Inter', sans-serif;
+    --font-family-mono: 'Source Code Pro', monospace;
+}
+
+body {
+    font-family: var(--font-family-sans);
+    line-height: 1.7;
+    color: var(--primary-color);
+    background-color: var(--background-color);
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+a {
+    color: var(--accent-color);
+    text-decoration: none;
+    transition: color 0.2s ease-in-out;
+}
+
+a:hover {
+    color: var(--primary-color);
+}
+
+h1, h2, h3 {
+    font-weight: 700;
+    line-height: 1.2;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+}
+
+/* --- Header & Footer --- */
+header {
+    border-bottom: 1px solid var(--border-color);
+    text-align: center;
+    padding-top: 4rem;
+    padding-bottom: 2rem;
+}
+
+header h1 {
+    font-size: 2.5rem;
+    margin: 0;
+}
+
+header h1 a {
+    color: var(--primary-color);
+}
+
+header .subtitle {
+    font-size: 1.1rem;
+    color: var(--secondary-color);
+    margin-top: 0.5rem;
+}
+
+footer {
+    text-align: center;
+    margin-top: 4rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border-color);
+    color: var(--secondary-color);
+    font-size: 0.9rem;
+}
+
+/* --- Post List (index.html) --- */
+.post-list h2 {
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.5rem;
+    margin-bottom: 2rem;
+}
+
+.post-preview {
+    margin-bottom: 3rem;
+}
+
+.post-preview h3 {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+}
+
+.post-preview h3 a {
+    color: var(--primary-color);
+}
+
+.post-preview h3 a:hover {
+    color: var(--accent-color);
+}
+
+.post-meta {
+    color: var(--secondary-color);
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+}
+
+.read-more {
+    display: inline-block;
+    margin-top: 1rem;
+    font-weight: 700;
+}
+
+/* --- Full Post (post.html) --- */
+.post-full .post-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.post-full h2 {
+    font-size: 2.2rem;
+    margin-bottom: 0.5rem;
+}
+
+.post-content p {
+    margin-bottom: 1.5rem;
+}
+
+/* --- Code Blocks --- */
+pre {
+    background-color: var(--code-bg-color);
+    color: var(--code-text-color);
+    font-family: var(--font-family-mono);
+    padding: 1.5rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin: 2rem 0;
+}
+
+code {
+    font-family: var(--font-family-mono);
+}
+
+/* For inline code */
+p > code, li > code {
+    background-color: #eef1f5;
+    padding: 0.2em 0.4em;
+    border-radius: 4px;
+    font-size: 85%;
+}
