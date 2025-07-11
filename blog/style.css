@@ -28,6 +28,10 @@ body {
     padding: 2rem;
 }
 
+.container.container-post {
+    padding-top: 0;
+}
+
 a {
     color: var(--accent-color);
     text-decoration: none;
@@ -116,6 +120,7 @@ footer {
 /* --- Full Post (post.html) --- */
 .post-full .post-header {
     text-align: center;
+    padding-top: 0;
     margin-bottom: 3rem;
 }
 
