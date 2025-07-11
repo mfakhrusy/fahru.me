@@ -111,12 +111,6 @@ footer {
     margin-bottom: 0.5rem;
 }
 
-.read-more {
-    display: inline-block;
-    margin-top: 1rem;
-    font-weight: 700;
-}
-
 /* --- Full Post (post.html) --- */
 .post-full .post-header {
     text-align: center;
