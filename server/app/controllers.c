@@ -106,11 +106,19 @@ void post_login(int client_fd, const char* request) {
                 const char *db_password_hash = (const char *)sqlite3_column_text(stmt, 0);
                 if (strcmp(password_hash, db_password_hash) == 0) {
                     found = 1;
+                } else {
+                    fprintf(stderr, "Invalid password for user: %s\n", username);
                 }
+            } else {
+                fprintf(stderr, "No user found with username: %s\n", username);
             }
             sqlite3_finalize(stmt);
+        } else {
+            perror("sqlite3_prepare_v2 failed 9");
         }
         sqlite3_close(db);
+    } else {
+        perror("sqlite3_open failed 8");
     }
 
     if (found) {
