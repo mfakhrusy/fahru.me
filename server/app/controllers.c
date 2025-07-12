@@ -466,7 +466,7 @@ void get_guestbook_page(int client_fd, const char* request) {
     sqlite3_stmt *stmt;
     const char *sql = "SELECT id, name, website, message, verified, deleted, created_at FROM guestbook ORDER BY created_at DESC";
     if (sqlite3_open("app.db", &db) != SQLITE_OK) {
-        perror("sqlite3_open failed");
+        perror("sqlite3_open failed 1");
         return;
     }
     if (sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) != SQLITE_OK) {
@@ -750,7 +750,7 @@ void get_guestbook_list(int client_fd) {
     const char *sql = "SELECT id, name, website, message, verified, deleted, created_at FROM guestbook ORDER BY created_at DESC";
     
     if (sqlite3_open("app.db", &db) != SQLITE_OK) {
-        perror("sqlite3_open failed");
+        perror("sqlite3_open failed 2");
         return;
     }
 
@@ -899,7 +899,7 @@ void post_guestbook_entry(int client_fd, const char* request) {
     sqlite3_stmt *stmt;
     const char *sql = "INSERT INTO guestbook (name, website, message, verified, deleted, created_at) VALUES (?, ?, ?, 0, 0, strftime('%Y-%m-%d %H:%M:%S', 'now'))";
     if (sqlite3_open("app.db", &db) != SQLITE_OK) {
-        perror("sqlite3_open failed");
+        perror("sqlite3_open failed 3");
         return;
     }
 
@@ -1087,7 +1087,7 @@ void verify_guestbook_entry(int client_fd, const char* request) {
     const char *sql = "UPDATE guestbook SET verified = 1 WHERE id = ?";
 
     if (sqlite3_open("app.db", &db) != SQLITE_OK) {
-        perror("sqlite3_open failed");
+        perror("sqlite3_open failed 4");
         return;
     }
 
@@ -1273,7 +1273,7 @@ void delete_guestbook_entry(int client_fd, const char* request) {
     const char *sql = "UPDATE guestbook SET deleted = 1 WHERE id = ?";
 
     if (sqlite3_open("app.db", &db) != SQLITE_OK) {
-        perror("sqlite3_open failed");
+        perror("sqlite3_open failed 5");
         return;
     }
 

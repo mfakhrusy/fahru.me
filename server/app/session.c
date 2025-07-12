@@ -27,7 +27,7 @@ int generate_session_token(char *out, size_t out_len) {
 int insert_session(sqlite3 *db, const char *username, const char *session_token) {
     int sqliteopen = sqlite3_open("app.db", &db);
     if (sqliteopen != SQLITE_OK) {
-        fprintf(stderr, "sqlite3_open failed: %s\n", sqlite3_errmsg(db));
+        fprintf(stderr, "sqlite3_open failed 6: %s\n", sqlite3_errmsg(db));
         return sqliteopen;
     }
 
@@ -72,7 +72,7 @@ int check_user_session(char *session_token) {
 
     sqlite3_open("app.db", &db);
     if (!db) {
-        fprintf(stderr, "sqlite3_open failed: %s\n", sqlite3_errmsg(db));
+        fprintf(stderr, "sqlite3_open failed 7: %s\n", sqlite3_errmsg(db));
         return SQLITE_ERROR;
     }
 
