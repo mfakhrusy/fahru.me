@@ -1,6 +1,5 @@
 import { ExternalLinkIcon } from "@chakra-ui/icons";
 import { Button, Flex, Heading, Text } from "@chakra-ui/react";
-import { Image } from "@chakra-ui/react";
 import { useState, useCallback } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
@@ -82,7 +81,7 @@ function IntroView({ hideIntro }: IntroViewProps) {
           w="180px"
           display="flex"
           alignItems="center"
-          href="https://blog.fakhrusy.com"
+          href="https://blog.fahru.me"
           target="_blank"
         >
           <Text as="span" mr={2}>
@@ -110,25 +109,13 @@ function MainView() {
   }
 
   return (
-    <Flex
-      alignItems="center"
-      justifyContent="center"
-      w="100%"
-      h={height}
-      flexDir="column"
-    >
-      <Image src="/images/under_construction.png" alt="under construction" />
-      <Text mt={4}>Under Construction</Text>
-    </Flex>
+    <iframe
+      style={{
+        width: "100%",
+        height,
+      }}
+      src="https://blog.fahru.me"
+      title="blog"
+    />
   );
-  // return (
-  //   <iframe
-  //     style={{
-  //       width: "100%",
-  //       height,
-  //     }}
-  //     src="https://blog.fakhrusy.com"
-  //     title="blog"
-  //   />
-  // );
 }
