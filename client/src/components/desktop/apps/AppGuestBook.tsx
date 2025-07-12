@@ -208,6 +208,7 @@ export const AppGuestBook = () => {
                     name="name"
                     placeholder="John Doe"
                     required
+                    autoComplete="off"
                   />
                 </FormControl>
                 <FormControl flexDir={"column"} display={"flex"} px={2}>
@@ -221,6 +222,7 @@ export const AppGuestBook = () => {
                     id="website"
                     name="website"
                     placeholder="https://fahru.me (example)"
+                    autoComplete="off"
                   />
                 </FormControl>
                 <FormControl flexDir={"column"} display={"flex"} px={2}>
