@@ -53,12 +53,15 @@ SERVICE_NAME="${EXECUTABLE_NAME}.service"
 SERVICE_FILE="/etc/systemd/system/${SERVICE_NAME}"
 
 # copy db file to the database directory if it exists and is not already there
+DB_FULL_PATH="${DB_DIR}${DB_FILENAME}"
+
 if [ -f "${DB_FILENAME}" ]; then
-    if [ ! -f "${DB_DIR}${DB_FILENAME}" ]; then
+    echo "Database file found: ${DB_FILENAME}"
+    if [ ! -f "${DB_FULL_PATH}" ]; then
         echo "Copying database file to ${DB_DIR}..."
         cp "${DB_FILENAME}" "${DB_DIR}"
-        chown nobody:nogroup "${DB_DIR}${DB_FILENAME}"
-        chmod 644 "${DB_DIR}${DB_FILENAME}"
+        chown nobody:nogroup "${DB_FULL_PATH}"
+        chmod 644 "${DB_FULL_PATH}"
     fi
 fi
 
