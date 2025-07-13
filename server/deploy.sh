@@ -7,10 +7,12 @@
 
 set -e # Exit immediately if a command exits with a non-zero status.
 
-# export .env to environment variables
+# source .env to environment variables
 if [ -f .env ]; then
     echo "Loading environment variables from .env file..."
-    export $(grep -v '^#' .env | xargs)
+    set -a
+    source .env
+    set +a
 else
     echo "Warning: .env file not found. Proceeding without environment variables."
 fi
