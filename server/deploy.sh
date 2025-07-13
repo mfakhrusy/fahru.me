@@ -7,7 +7,7 @@
 
 set -e # Exit immediately if a command exits with a non-zero status.
 
-# export .env to environment variables
+# export .env to environment variables for installation
 if [ -f .env ]; then
     echo "Loading environment variables from .env file..."
     export $(grep -v '^#' .env | xargs)
@@ -27,6 +27,16 @@ if [ ! -d "${DB_DIR}" ]; then
     chmod 755 "${DB_DIR}"
 else
     echo "Database directory already exists at ${DB_DIR}."
+fi
+
+# create the installation directory if it doesn't exist
+if [ ! -d "${INSTALL_DIR}" ]; then
+    echo "Creating installation directory at ${INSTALL_DIR}..."
+    mkdir -p "${INSTALL_DIR}"
+    chown nobody:nogroup "${INSTALL_DIR}"
+    chmod 755 "${INSTALL_DIR}"
+else
+    echo "Installation directory already exists at ${INSTALL_DIR}."
 fi
 
 if [[ $EUID -ne 0 ]]; then
