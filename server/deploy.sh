@@ -61,7 +61,7 @@ Description=Service for ${EXECUTABLE_NAME}
 After=network.target
 
 [Service]
-ExecStart=${INSTALL_PATH}
+ExecStart=${INSTALL_PATH} --production
 User=nobody
 Group=nogroup
 Restart=always

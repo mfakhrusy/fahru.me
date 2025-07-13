@@ -2,8 +2,6 @@
 
 set -e
 
-DB_FILE="app.db"
-
 # Load .env file
 if [ ! -f .env ]; then
   echo ".env file not found!"
@@ -20,8 +18,8 @@ fi
 PASSWORD_HASH=$(echo -n "$ADMIN_PASSWORD" | sha256sum | awk '{print $1}')
 
 # Create DB and table
-echo "Creating SQLite DB: $DB_FILE"
-sqlite3 "$DB_FILE" <<EOF
+echo "Creating SQLite DB: $DB_FILENAME"
+sqlite3 "$DB_FILENAME" <<EOF
 DROP TABLE IF EXISTS users;
 
 CREATE TABLE users (
@@ -37,7 +35,7 @@ INSERT INTO users (username, password_hash) VALUES (
 EOF
 
 # Add sessions table
-sqlite3 "$DB_FILE" <<EOF
+sqlite3 "$DB_FILENAME" <<EOF
 CREATE TABLE IF NOT EXISTS sessions (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   session_token TEXT UNIQUE NOT NULL,
@@ -47,7 +45,7 @@ CREATE TABLE IF NOT EXISTS sessions (
 EOF
 
 # add guestbook table
-sqlite3 "$DB_FILE" <<EOF
+sqlite3 "$DB_FILENAME" <<EOF
 CREATE TABLE IF NOT EXISTS guestbook (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   name TEXT NOT NULL,
