@@ -5,6 +5,7 @@
 #include <unistd.h>
 #include <time.h>
 #include <sqlite3.h>
+#include "db.h"
 
 int generate_session_token(char *out, size_t out_len) {
     if (out_len < 65) return -1; // 64 chars + null
@@ -25,11 +26,15 @@ int generate_session_token(char *out, size_t out_len) {
 }
 
 int insert_session(sqlite3 *db, const char *username, const char *session_token) {
-    int sqliteopen = sqlite3_open("app.db", &db);
+    char *db_name = get_db_name();
+    int sqliteopen = sqlite3_open(db_name, &db);
     if (sqliteopen != SQLITE_OK) {
+        free(db_name); // Free the db name if open fails
         fprintf(stderr, "sqlite3_open failed 6: %s\n", sqlite3_errmsg(db));
         return sqliteopen;
     }
+
+    free(db_name); // Free the db name after use
 
     const char *sql = "INSERT INTO sessions (session_token, username, expires_at) VALUES (?, ?, ?)";
     sqlite3_stmt *stmt;
@@ -70,11 +75,15 @@ int check_user_session(char *session_token) {
     sqlite3_stmt *stmt;
     const char *sql = "SELECT expires_at FROM sessions WHERE session_token = ?";
 
-    sqlite3_open("app.db", &db);
+    char *db_name = get_db_name();
+    sqlite3_open(db_name, &db);
     if (!db) {
         fprintf(stderr, "sqlite3_open failed 7: %s\n", sqlite3_errmsg(db));
+        free((void *)db_name); // Free the db name after use
         return SQLITE_ERROR;
     }
+
+    free((void *)db_name); // Free the db name after use
 
     if (!session_token) {
         fprintf(stderr, "Session token is NULL\n");

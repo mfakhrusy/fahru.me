@@ -8,27 +8,7 @@
 #include "controllers.h"
 #include "crypto.h"
 #include "session.h"
-
-char* _get_db_name() {
-    const char *db_path = getenv("DB_PATH");
-    const char *db_name = getenv("DB_FILENAME");
-    if (!db_name) {
-        fprintf(stderr, "DB_FILENAME environment variable not set\n");
-        return NULL;
-    }
-    if (!db_path) {
-        fprintf(stderr, "DB_PATH environment variable not set\n");
-        return NULL;
-    }
-    size_t len = strlen(db_path) + strlen(db_name) + 2; // 1 for possible '/', 1 for '\0'
-    char *full_db_path = malloc(len);
-    if (!full_db_path) {
-        fprintf(stderr, "Memory allocation failed for db path\n");
-        return NULL;
-    }
-    snprintf(full_db_path, len, "%s%s", db_path, db_name);
-    return full_db_path;
-}
+#include "db.h"
 
 void not_found(int client_fd) {
     char response[512];
@@ -120,7 +100,7 @@ void post_login(int client_fd, const char* request) {
     const char *sql = "SELECT password_hash FROM users WHERE username = ?";
     int found = 0;
 
-    const char *db_name = _get_db_name();
+    const char *db_name = get_db_name();
 
     if (sqlite3_open(db_name, &db) == SQLITE_OK) {
         free((void *)db_name); // Free the db name after use
@@ -498,7 +478,7 @@ void get_guestbook_page(int client_fd, const char* request) {
     sqlite3 *db;
     sqlite3_stmt *stmt;
     const char *sql = "SELECT id, name, website, message, verified, deleted, created_at FROM guestbook ORDER BY created_at DESC";
-    const char *db_name = _get_db_name();
+    const char *db_name = get_db_name();
     if (sqlite3_open(db_name, &db) != SQLITE_OK) {
         free((void *)db_name); // Free the db name after use
         perror("sqlite3_open failed 1");
@@ -786,7 +766,7 @@ void get_guestbook_list(int client_fd) {
     sqlite3_stmt *stmt;
     const char *sql = "SELECT id, name, website, message, verified, deleted, created_at FROM guestbook ORDER BY created_at DESC";
     
-    const char *db_name = _get_db_name();
+    const char *db_name = get_db_name();
     if (sqlite3_open(db_name, &db) != SQLITE_OK) {
         free((void *)db_name); // Free the db name after use
         perror("sqlite3_open failed 2");
@@ -939,7 +919,7 @@ void post_guestbook_entry(int client_fd, const char* request) {
     sqlite3 *db;
     sqlite3_stmt *stmt;
     const char *sql = "INSERT INTO guestbook (name, website, message, verified, deleted, created_at) VALUES (?, ?, ?, 0, 0, strftime('%Y-%m-%d %H:%M:%S', 'now'))";
-    const char *db_name = _get_db_name();
+    const char *db_name = get_db_name();
     if (sqlite3_open(db_name, &db) != SQLITE_OK) {
         free((void *)db_name); // Free the db name after use
         perror("sqlite3_open failed 3");
@@ -1131,7 +1111,7 @@ void verify_guestbook_entry(int client_fd, const char* request) {
     sqlite3_stmt *stmt;
     const char *sql = "UPDATE guestbook SET verified = 1 WHERE id = ?";
 
-    const char *db_name = _get_db_name();
+    const char *db_name = get_db_name();
     if (sqlite3_open(db_name, &db) != SQLITE_OK) {
         free((void *)db_name); // Free the db name after use
         perror("sqlite3_open failed 4");
@@ -1321,7 +1301,7 @@ void delete_guestbook_entry(int client_fd, const char* request) {
     sqlite3_stmt *stmt;
     const char *sql = "UPDATE guestbook SET deleted = 1 WHERE id = ?";
 
-    const char *db_name = _get_db_name();
+    const char *db_name = get_db_name();
     if (sqlite3_open(db_name, &db) != SQLITE_OK) {
         free((void *)db_name); // Free the db name after use
         perror("sqlite3_open failed 5");
