@@ -7,18 +7,16 @@
 
 set -e # Exit immediately if a command exits with a non-zero status.
 
-# source .env to environment variables
+# export .env to environment variables
 if [ -f .env ]; then
     echo "Loading environment variables from .env file..."
-    set -a
-    source .env
-    set +a
+    export $(grep -v '^#' .env | xargs)
 else
     echo "Warning: .env file not found. Proceeding without environment variables."
 fi
 
 # --- Configuration & Checks ---
-INSTALL_DIR="/usr/local/bin"
+INSTALL_DIR="/usr/local/bin/fahru-dot-me"
 DB_DIR="$DB_PATH"
 
 # create the database directory if it doesn't exist
@@ -67,6 +65,16 @@ if [ -f "${DB_FILENAME}" ]; then
     fi
 fi
 
+# copy env file to the installation directory
+if [ -f ".env" ]; then
+    echo "Copying .env file to ${INSTALL_DIR}..."
+    cp ".env" "${INSTALL_DIR}/.env"
+    chown nobody:nogroup "${INSTALL_DIR}/.env"
+    chmod 644 "${INSTALL_DIR}/.env"
+else
+    echo "Warning: .env file not found. Proceeding without copying."
+fi
+
 echo "Deploying '${EXECUTABLE_NAME}'..."
 
 # --- Deployment ---
@@ -92,6 +100,7 @@ User=nobody
 Group=nogroup
 Restart=always
 RestartSec=3
+EnvironmentFile=${INSTALL_DIR}/.env
 
 [Install]
 WantedBy=multi-user.target
