@@ -3,9 +3,17 @@
 # Deploys a pre-compiled binary as a systemd service.
 # Handles both initial setup and subsequent updates.
 #
-# Usage: sudo ./deploy_daemon.sh /path/to/binary
+# Usage: sudo ./deploy.sh /path/to/binary
 
 set -e # Exit immediately if a command exits with a non-zero status.
+
+# export .env to environment variables
+if [ -f .env ]; then
+    echo "Loading environment variables from .env file..."
+    export $(grep -v '^#' .env | xargs)
+else
+    echo "Warning: .env file not found. Proceeding without environment variables."
+fi
 
 # --- Configuration & Checks ---
 INSTALL_DIR="/usr/local/bin"
