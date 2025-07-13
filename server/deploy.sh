@@ -17,6 +17,17 @@ fi
 
 # --- Configuration & Checks ---
 INSTALL_DIR="/usr/local/bin"
+DB_DIR="$DB_PATH"
+
+# create the database directory if it doesn't exist
+if [ ! -d "${DB_DIR}" ]; then
+    echo "Creating database directory at ${DB_DIR}..."
+    mkdir -p "${DB_DIR}"
+    chown nobody:nogroup "${DB_DIR}"
+    chmod 755 "${DB_DIR}"
+else
+    echo "Database directory already exists at ${DB_DIR}."
+fi
 
 if [[ $EUID -ne 0 ]]; then
    echo "Error: This script must be run as root."
@@ -40,6 +51,16 @@ EXECUTABLE_NAME=$(basename "$SOURCE_BINARY")
 INSTALL_PATH="${INSTALL_DIR}/${EXECUTABLE_NAME}"
 SERVICE_NAME="${EXECUTABLE_NAME}.service"
 SERVICE_FILE="/etc/systemd/system/${SERVICE_NAME}"
+
+# copy db file to the database directory if it exists and is not already there
+if [ -f "${DB_FILENAME}" ]; then
+    if [ ! -f "${DB_DIR}${DB_FILENAME}" ]; then
+        echo "Copying database file to ${DB_DIR}..."
+        cp "${DB_FILENAME}" "${DB_DIR}"
+        chown nobody:nogroup "${DB_DIR}${DB_FILENAME}"
+        chmod 644 "${DB_DIR}${DB_FILENAME}"
+    fi
+fi
 
 echo "Deploying '${EXECUTABLE_NAME}'..."
 
