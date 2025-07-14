@@ -10,106 +10,112 @@ import {
   Text,
   Textarea,
 } from "@chakra-ui/react";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { AppLayout } from "@/components/desktop/apps/layout/AppLayout";
 import type { AppDispatch, RootState } from "@/store";
 import { setActiveDesktopApp } from "@/store/desktop";
-import { fetchGuestbook } from "@/store/guestbook";
+import {
+  fetchGuestbook,
+  getPendingGuestbookEntrySubmission,
+  removePendingGuestbookEntrySubmission,
+  setPendingGuestbookEntrySubmission,
+} from "@/store/guestbook";
 
 export const AppGuestBook = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const [submittedData, setSubmittedData] = useState<null | {
-    name: string;
-    website: string;
-    message: string;
-  }>(null);
-
   const onClose = () => dispatch(setActiveDesktopApp("DesktopMainView"));
+  const pendingGuestbookEntrySubmission = useSelector(
+    (state: RootState) => state.guestbook.pendingGuestbookEntrySubmission
+  );
 
   useEffect(() => {
     dispatch(fetchGuestbook());
-    // Check localStorage for submitted data
-    try {
-      const stored = localStorage.getItem("guestbookForm");
-      if (stored) {
-        const parsed = JSON.parse(stored);
-        if (parsed?.name && parsed?.message) {
-          setSubmittedData(parsed);
-        }
-      }
-    } catch (e) {
-      // Ignore localStorage errors
-    }
+    dispatch(getPendingGuestbookEntrySubmission());
   }, [dispatch]);
 
-  const handleSubmit = useCallback((event) => {
-    event.preventDefault();
-    const formData = new FormData(event.target);
-    const data = {
-      name: formData.get("name"),
-      website: formData.get("website"),
-      message: formData.get("message"),
-    };
-    try {
-      localStorage.setItem(
-        "guestbookForm",
-        JSON.stringify({
-          name: data.name,
-          website: data.website,
-          message: data.message,
-        })
-      );
-      setSubmittedData({
-        name: data.name as string,
-        website: data.website as string,
-        message: data.message as string,
-      });
-    } catch (e) {
-      // Ignore localStorage errors
-    }
-    fetch(`${process.env.NEXT_PUBLIC_API_HOST}/guestbook`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        // Optionally, you can update the guestlist state here to reflect the new entry
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
-  }, []);
+  const handleSubmit = useCallback(
+    (event) => {
+      event.preventDefault();
+      const formData = new FormData(event.target);
+      const data = {
+        name: formData.get("name"),
+        website: formData.get("website"),
+        message: formData.get("message"),
+      };
 
-  const { guestbookEntries, loading, error } = useSelector(
+      fetch(`${process.env.NEXT_PUBLIC_API_HOST}/guestbook`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      })
+        .then((response) => response.json())
+        .then(() => {
+          dispatch(
+            setPendingGuestbookEntrySubmission({
+              name: data.name as string,
+              website: data.website as string,
+              message: data.message as string,
+            })
+          );
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    },
+    [dispatch]
+  );
+
+  const { guestbookEntries, loading } = useSelector(
     (state: RootState) => state.guestbook
   );
 
-  // check if guestbookEntries contains the submittedData
+  // check if guestbookEntries contains the pendingGuestbookEntrySubmission
   useEffect(() => {
-    if (submittedData) {
-      const exists = guestbookEntries.some(
+    if (pendingGuestbookEntrySubmission) {
+      const existAndVerified = guestbookEntries.some(
         (entry) =>
-          entry.name === submittedData.name &&
-          entry.message === submittedData.message &&
-          entry.website === submittedData.website
+          entry.name === pendingGuestbookEntrySubmission.name &&
+          entry.message === pendingGuestbookEntrySubmission.message &&
+          entry.website === pendingGuestbookEntrySubmission.website &&
+          entry.verified
       );
 
-      // if exists, remove it from localStorage
-      if (exists) {
-        try {
-          localStorage.removeItem("guestbookForm");
-        } catch (e) {
-          // Ignore localStorage errors
-        }
-      }
+      const existAndNotVerified = guestbookEntries.some(
+        (entry) =>
+          entry.name === pendingGuestbookEntrySubmission.name &&
+          entry.message === pendingGuestbookEntrySubmission.message &&
+          entry.website === pendingGuestbookEntrySubmission.website &&
+          !entry.verified
+      );
 
+      const notExist = !existAndVerified && !existAndNotVerified;
+
+      // if exists, remove it from localStorage
+      if (existAndVerified) {
+        dispatch(removePendingGuestbookEntrySubmission());
+      } else if (existAndNotVerified) {
+        // if exists but not verified, do nothing
+        // this means the entry is still pending verification
+      } else if (notExist) {
+        // if not exist, retry posting the data
+        fetch(`${process.env.NEXT_PUBLIC_API_HOST}/guestbook`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(pendingGuestbookEntrySubmission),
+        })
+          .then((response) => response.json())
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+      }
     }
-  }, [guestbookEntries, submittedData]);
+  }, [dispatch, guestbookEntries, pendingGuestbookEntrySubmission]);
 
   return (
     <AppLayout onClose={onClose} title="Guest Book" noPadding>
@@ -132,8 +138,14 @@ export const AppGuestBook = () => {
           <Flex bgColor={"white"} p={3} mb={3} borderRadius="10px">
             Welcome! Please leave a message!
           </Flex>
-          <Flex bgColor="white" borderRadius={"5px"} minH="200px" align="center" justify="center">
-            {submittedData ? (
+          <Flex
+            bgColor="white"
+            borderRadius={"5px"}
+            minH="200px"
+            align="center"
+            justify="center"
+          >
+            {pendingGuestbookEntrySubmission ? (
               <Flex direction="column" align="center" w="100%" p={4}>
                 <Flex
                   bg="pink.50"
@@ -150,7 +162,8 @@ export const AppGuestBook = () => {
                   fontSize="md"
                   textAlign="center"
                 >
-                  Thank you! Your message has been submitted and is awaiting verification from the site owner.
+                  Thank you! Your message has been submitted and is awaiting
+                  verification from the site owner.
                 </Flex>
                 <Flex
                   direction="column"
@@ -163,30 +176,42 @@ export const AppGuestBook = () => {
                   boxShadow="sm"
                 >
                   <div>
-                    <strong>Name:</strong> {submittedData.name}
+                    <strong>Name:</strong>{" "}
+                    {pendingGuestbookEntrySubmission.name}
                   </div>
-                  {submittedData.website && (
+                  {pendingGuestbookEntrySubmission.website && (
                     <div>
                       <strong>Website:</strong>{" "}
                       <Link
                         href={
-                          submittedData.website.includes("http")
-                            ? submittedData.website
-                            : `https://${submittedData.website}`
+                          pendingGuestbookEntrySubmission.website.includes(
+                            "http"
+                          )
+                            ? pendingGuestbookEntrySubmission.website
+                            : `https://${pendingGuestbookEntrySubmission.website}`
                         }
                         target="_blank"
                         rel="noopener noreferrer"
                         color="pink.500"
                         isExternal
                       >
-                        {submittedData.website.replace(/^https?:\/\//, "")}
+                        {pendingGuestbookEntrySubmission.website.replace(
+                          /^https?:\/\//,
+                          ""
+                        )}
                       </Link>
                     </div>
                   )}
                   <div style={{ marginTop: 8 }}>
                     <strong>Message:</strong>
-                    <div style={{ color: "#444", fontSize: "0.98em", wordBreak: "break-word" }}>
-                      {submittedData.message}
+                    <div
+                      style={{
+                        color: "#444",
+                        fontSize: "0.98em",
+                        wordBreak: "break-word",
+                      }}
+                    >
+                      {pendingGuestbookEntrySubmission.message}
                     </div>
                   </div>
                 </Flex>
@@ -227,7 +252,8 @@ export const AppGuestBook = () => {
                 </FormControl>
                 <FormControl flexDir={"column"} display={"flex"} px={2}>
                   <FormLabel mb={0} mt={2} fontSize={"xs"} htmlFor="message">
-                    Say something! (required, this will be shown to everyone here)
+                    Say something! (required, this will be shown to everyone
+                    here)
                   </FormLabel>
                   <Textarea
                     p={2}
@@ -247,8 +273,15 @@ export const AppGuestBook = () => {
                 >
                   Say hi!
                 </Button>
-                <Text fontSize="xs" color="gray.500" textAlign="center" mb={2} mx={2}>
-                  Note: Your message will be verified by the site owner before it appears. Just to make sure it looks OK to be shown *smile*
+                <Text
+                  fontSize="xs"
+                  color="gray.500"
+                  textAlign="center"
+                  mb={2}
+                  mx={2}
+                >
+                  Note: Your message will be verified by the site owner before
+                  it appears. Just to make sure it looks OK to be shown *smile*
                 </Text>
               </form>
             )}

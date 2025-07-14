@@ -10,10 +10,22 @@ type GuestbookEntry = {
   id: number;
 };
 
+type LocalGuestbookEntry = {
+  name: string;
+  message: string;
+  website?: string;
+};
+
 type GuestbookState = {
   guestbookEntries: GuestbookEntry[];
   loading: boolean;
   error: string | null;
+  pendingGuestbookEntrySubmission: LocalGuestbookEntry | null;
+};
+
+type ActionSetupPendingGuestbookEntrySubmission = {
+  type: "guestbook/setupPendingGuestbookEntrySubmission";
+  payload: LocalGuestbookEntry;
 };
 
 // Async thunk to fetch guestbook entries
@@ -36,8 +48,39 @@ const guestbookSlice = createSlice({
     guestbookEntries: [],
     loading: false,
     error: null,
+    pendingGuestbookEntrySubmission: null,
   } as GuestbookState,
-  reducers: {},
+  reducers: {
+    getPendingGuestbookEntrySubmission: (state) => {
+      const localStorageData = localStorage.getItem("guestbookForm");
+      if (localStorageData) {
+        const parsedData = JSON.parse(localStorageData);
+        state.pendingGuestbookEntrySubmission = {
+          name: parsedData.name || "",
+          message: parsedData.message || "",
+          website: parsedData.website || null,
+        };
+      }
+    },
+    setPendingGuestbookEntrySubmission: (
+      state,
+      action: ActionSetupPendingGuestbookEntrySubmission
+    ) => {
+      localStorage.setItem(
+        "guestbookForm",
+        JSON.stringify({
+          name: action.payload.name,
+          message: action.payload.message,
+          website: action.payload.website || "",
+        })
+      );
+      state.pendingGuestbookEntrySubmission = action.payload;
+    },
+    removePendingGuestbookEntrySubmission: (state) => {
+      localStorage.removeItem("guestbookForm");
+      state.pendingGuestbookEntrySubmission = null;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchGuestbook.pending, (state) => {
@@ -54,5 +97,11 @@ const guestbookSlice = createSlice({
       });
   },
 });
+
+export const {
+  getPendingGuestbookEntrySubmission,
+  setPendingGuestbookEntrySubmission,
+  removePendingGuestbookEntrySubmission,
+} = guestbookSlice.actions;
 
 export default guestbookSlice.reducer;
