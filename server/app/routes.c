@@ -18,7 +18,7 @@ void handle_request(int client_fd, const char *request) {
             "{\"error\": \"Bad Request\"}";
         ssize_t bytes_written = write(client_fd, bad_request, strlen(bad_request));
         if (bytes_written < 0) {
-            perror("write error");
+            perror("write error r1");
         }
         close(client_fd);
         free((void *)request);
@@ -37,7 +37,7 @@ void handle_request(int client_fd, const char *request) {
             "\r\n";
         ssize_t bytes_written = write(client_fd, options_response, strlen(options_response));
         if (bytes_written < 0) {
-            perror("write error");
+            perror("write error r2");
         }
         close(client_fd);
         free((void *)request);

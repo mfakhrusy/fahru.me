@@ -22,7 +22,7 @@ void not_found(int client_fd) {
 
     ssize_t bytes_written = write(client_fd, response, strlen(response));
     if (bytes_written < 0) {
-        perror("write error");
+        perror("write error 1");
     }
 }
 
@@ -49,7 +49,7 @@ void post_login(int client_fd, const char* request) {
                  "%s", strlen(error_body), error_body);
         int bytes_written = write(client_fd, response, strlen(response));
         if (bytes_written < 0) {
-            perror("write error");
+            perror("write error 2");
         }
         return;
     }
@@ -68,7 +68,7 @@ void post_login(int client_fd, const char* request) {
                  "%s", strlen(error_body), error_body);
         int bytes_written = write(client_fd, response, strlen(response));
         if (bytes_written < 0) {
-            perror("write error");
+            perror("write error 3");
         }
         return;
     }
@@ -138,7 +138,7 @@ void post_login(int client_fd, const char* request) {
                      "%s", strlen(error_body), error_body);
             int bytes_written = write(client_fd, response, strlen(response));
             if (bytes_written < 0) {
-                perror("write error");
+                perror("write error 4");
             }
             return;
         }
@@ -154,7 +154,7 @@ void post_login(int client_fd, const char* request) {
                      "%s", strlen(error_body), error_body);
             int bytes_written = write(client_fd, response, strlen(response));
             if (bytes_written < 0) {
-                perror("write error");
+                perror("write error 5");
             }
             return;
         }
@@ -168,7 +168,7 @@ void post_login(int client_fd, const char* request) {
                  "\r\n", session_token);
         int bytes_written = write(client_fd, response, strlen(response));
         if (bytes_written < 0) {
-            perror("write error");
+            perror("write error 6");
         }
     } else {
         // Show login page again with error message
@@ -185,7 +185,7 @@ void post_login(int client_fd, const char* request) {
                  "%s", strlen(error_html), error_html);
         int bytes_written = write(client_fd, response, strlen(response));
         if (bytes_written < 0) {
-            perror("write error");
+            perror("write error 7");
         }
     }
 }
@@ -218,7 +218,7 @@ void get_login(int client_fd, const char* request) {
                  "\r\n");
         ssize_t bytes_written = write(client_fd, response, strlen(response));
         if (bytes_written < 0) {
-            perror("write error");
+            perror("write error 8");
         }
         return;
     }
@@ -292,7 +292,7 @@ void get_login(int client_fd, const char* request) {
 
     ssize_t bytes_written = write(client_fd, response, header_len);
     if (bytes_written < 0) {
-        perror("write error");
+        perror("write error 9");
         return;
     }
 
@@ -303,7 +303,7 @@ void get_login(int client_fd, const char* request) {
         memcpy(response, html_template + sent, chunk);
         bytes_written = write(client_fd, response, chunk);
         if (bytes_written < 0) {
-            perror("write error");
+            perror("write error 10");
             break;
         }
         sent += chunk;
@@ -334,7 +334,7 @@ void get_home(int client_fd, const char* request) {
                  "\r\n");
         ssize_t bytes_written = write(client_fd, response, strlen(response));
         if (bytes_written < 0) {
-            perror("write error");
+            perror("write error 11");
         }
         return;
     }
@@ -349,7 +349,7 @@ void get_home(int client_fd, const char* request) {
                  "\r\n");
         ssize_t bytes_written = write(client_fd, response, strlen(response));
         if (bytes_written < 0) {
-            perror("write error");
+            perror("write error 12");
         }
         free((void *)session_token);
         return;
@@ -408,7 +408,7 @@ void get_home(int client_fd, const char* request) {
 
     ssize_t bytes_written = write(client_fd, response, header_len);
     if (bytes_written < 0) {
-        perror("write error");
+        perror("write error 13");
         return;
     }
 
@@ -419,7 +419,7 @@ void get_home(int client_fd, const char* request) {
         memcpy(response, html_template + sent, chunk);
         bytes_written = write(client_fd, response, chunk);
         if (bytes_written < 0) {
-            perror("write error");
+            perror("write error 14");
             break;
         }
         sent += chunk;
@@ -450,7 +450,7 @@ void get_guestbook_page(int client_fd, const char* request) {
                  "\r\n");
         ssize_t bytes_written = write(client_fd, response, strlen(response));
         if (bytes_written < 0) {
-            perror("write error");
+            perror("write error 15");
         }
         return;
     }
@@ -465,7 +465,7 @@ void get_guestbook_page(int client_fd, const char* request) {
                  "\r\n");
         ssize_t bytes_written = write(client_fd, response, strlen(response));
         if (bytes_written < 0) {
-            perror("write error");
+            perror("write error 16");
         }
         free((void *)session_token);
         return;
@@ -741,7 +741,7 @@ void get_guestbook_page(int client_fd, const char* request) {
 
     ssize_t bytes_written = write(client_fd, header, header_len);
     if (bytes_written < 0) {
-        perror("write error");
+        perror("write error 17");
         free(html_buf);
         return;
     }
@@ -752,7 +752,7 @@ void get_guestbook_page(int client_fd, const char* request) {
         size_t chunk = ((size_t)html_len - sent > 2048) ? 2048 : ((size_t)html_len - sent);
         bytes_written = write(client_fd, html_buf + sent, chunk);
         if (bytes_written < 0) {
-            perror("write error");
+            perror("write error 18");
             break;
         }
         sent += chunk;
@@ -818,7 +818,7 @@ void get_guestbook_list(int client_fd) {
              "\r\n", strlen(json_string));
     ssize_t bytes_written = write(client_fd, header, header_len);
     if (bytes_written < 0) {
-        perror("write error");
+        perror("write error 19");
         free(json_string);
         return;
     }
@@ -829,7 +829,7 @@ void get_guestbook_list(int client_fd) {
         size_t chunk = (json_len - sent > 2048) ? 2048 : (json_len - sent);
         bytes_written = write(client_fd, json_string + sent, chunk);
         if (bytes_written < 0) {
-            perror("write error");
+            perror("write error 20");
             break;
         }
         sent += chunk;
@@ -852,7 +852,7 @@ void post_guestbook_entry(int client_fd, const char* request) {
                  "%s", strlen(error_body), error_body);
         int bytes_written = write(client_fd, response, strlen(response));
         if (bytes_written < 0) {
-            perror("write error");
+            perror("write error 21");
         }
         return;
     }
@@ -875,7 +875,7 @@ void post_guestbook_entry(int client_fd, const char* request) {
                  "%s", strlen(error_body), error_body);
         int bytes_written = write(client_fd, response, strlen(response));
         if (bytes_written < 0) {
-            perror("write error");
+            perror("write error 22");
         }
         return;
     }
@@ -910,7 +910,7 @@ void post_guestbook_entry(int client_fd, const char* request) {
                  "%s", strlen(error_body), error_body);
         int bytes_written = write(client_fd, response, strlen(response));
         if (bytes_written < 0) {
-            perror("write error");
+            perror("write error 23");
         }
         return;
     }
@@ -953,7 +953,7 @@ void post_guestbook_entry(int client_fd, const char* request) {
              "%s", strlen(error_body), error_body);
         int bytes_written = write(client_fd, response, strlen(response));
         if (bytes_written < 0) {
-            perror("write error");
+            perror("write error 24");
         }
         sqlite3_finalize(stmt);
         sqlite3_close(db);
@@ -974,7 +974,7 @@ void post_guestbook_entry(int client_fd, const char* request) {
              "%s", strlen(success_body), success_body);
     ssize_t bytes_written = write(client_fd, response, strlen(response));
     if (bytes_written < 0) {
-        perror("write error");
+        perror("write error 25");
     }
 }
 
@@ -996,7 +996,7 @@ void verify_guestbook_entry(int client_fd, const char* request) {
                  "%s", strlen(error_body), error_body);
         ssize_t bytes_written = write(client_fd, response, strlen(response));
         if (bytes_written < 0) {
-            perror("write error");
+            perror("write error 26");
         }
         return;
     }
@@ -1022,7 +1022,7 @@ void verify_guestbook_entry(int client_fd, const char* request) {
                  "%s", strlen(error_body), error_body);
         ssize_t bytes_written = write(client_fd, response, strlen(response));
         if (bytes_written < 0) {
-            perror("write error");
+            perror("write error 27");
         }
         return;
     }
@@ -1054,7 +1054,7 @@ void verify_guestbook_entry(int client_fd, const char* request) {
                  "%s", strlen(error_body), error_body);
         ssize_t bytes_written = write(client_fd, response, strlen(response));
         if (bytes_written < 0) {
-            perror("write error");
+            perror("write error 28");
         }
         return;
     }
@@ -1073,7 +1073,7 @@ void verify_guestbook_entry(int client_fd, const char* request) {
                  "%s", strlen(error_body), error_body);
         ssize_t bytes_written = write(client_fd, response, strlen(response));
         if (bytes_written < 0) {
-            perror("write error");
+            perror("write error 29");
         }
         return;
     }
@@ -1101,7 +1101,7 @@ void verify_guestbook_entry(int client_fd, const char* request) {
                  "%s", strlen(error_body), error_body);
         ssize_t bytes_written = write(client_fd, response, strlen(response));
         if (bytes_written < 0) {
-            perror("write error");
+            perror("write error 30");
         }
         return;
     }
@@ -1142,7 +1142,7 @@ void verify_guestbook_entry(int client_fd, const char* request) {
                  "%s", strlen(error_body), error_body);
         ssize_t bytes_written = write(client_fd, response, strlen(response));
         if (bytes_written < 0) {
-            perror("write error");
+            perror("write error 31");
         }
         sqlite3_finalize(stmt);
         sqlite3_close(db);
@@ -1164,7 +1164,7 @@ void verify_guestbook_entry(int client_fd, const char* request) {
              "%s", strlen(success_body), success_body);
     ssize_t bytes_written = write(client_fd, response, strlen(response));
     if (bytes_written < 0) {
-        perror("write error");
+        perror("write error 32");
     }
 }
 
@@ -1186,7 +1186,7 @@ void delete_guestbook_entry(int client_fd, const char* request) {
                  "%s", strlen(error_body), error_body);
         ssize_t bytes_written = write(client_fd, response, strlen(response));
         if (bytes_written < 0) {
-            perror("write error");
+            perror("write error 33");
         }
         return;
     }
@@ -1212,7 +1212,7 @@ void delete_guestbook_entry(int client_fd, const char* request) {
                  "%s", strlen(error_body), error_body);
         ssize_t bytes_written = write(client_fd, response, strlen(response));
         if (bytes_written < 0) {
-            perror("write error");
+            perror("write error 34");
         }
         return;
     }
@@ -1244,7 +1244,7 @@ void delete_guestbook_entry(int client_fd, const char* request) {
                  "%s", strlen(error_body), error_body);
         ssize_t bytes_written = write(client_fd, response, strlen(response));
         if (bytes_written < 0) {
-            perror("write error");
+            perror("write error 35");
         }
         return;
     }
@@ -1263,7 +1263,7 @@ void delete_guestbook_entry(int client_fd, const char* request) {
                  "%s", strlen(error_body), error_body);
         ssize_t bytes_written = write(client_fd, response, strlen(response));
         if (bytes_written < 0) {
-            perror("write error");
+            perror("write error 36");
         }
         return;
     }
@@ -1291,7 +1291,7 @@ void delete_guestbook_entry(int client_fd, const char* request) {
                  "%s", strlen(error_body), error_body);
         ssize_t bytes_written = write(client_fd, response, strlen(response));
         if (bytes_written < 0) {
-            perror("write error");
+            perror("write error 37");
         }
         return;
     }
@@ -1332,7 +1332,7 @@ void delete_guestbook_entry(int client_fd, const char* request) {
                  "%s", strlen(error_body), error_body);
         int bytes_written = write(client_fd, response, strlen(response));
         if (bytes_written < 0) {
-            perror("write error");
+            perror("write error 38");
         }
         sqlite3_finalize(stmt);
         sqlite3_close(db);
@@ -1354,6 +1354,6 @@ void delete_guestbook_entry(int client_fd, const char* request) {
              "%s", strlen(success_body), success_body);
     ssize_t bytes_written = write(client_fd, response, strlen(response));
     if (bytes_written < 0) {
-        perror("write error");
+        perror("write error 39");
     }
 }
