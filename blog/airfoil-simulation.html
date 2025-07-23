@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Understanding Asynchronous JavaScript - My Tech Blog</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Source+Code+Pro&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <header class="container">
+        <div class="header-content">
+            <h1><a href="/">std::fahru's finite space</a></h1>
+            <p class="subtitle">An assortment of emotions about the state of my mind</p>
+        </div>
+    </header>
+
+    <main class="container container-post">
+        <article class="post-full">
+            <header class="post-header">
+                <h2>This is a work in progress of me writing an article about building an airfoil simulator (in Rust)</h2>
+                <!-- <p class="post-meta">Published on July 11, 2025 by yours truly</p> -->
+            </header>
+
+            <div class="post-content">
+                <p>One concept that may not be generally known among the general masses is the concept of airfoils. What are those, really? Are those related to airplane? Yes!</p>
+                <figure>
+                    <img src="./assets/airfoil-simulation/airfoil_from_wiki.svg" alt="Diagram of an airfoil" class="content-image">
+                    <figcaption>
+                        <small>
+                            Airfoil. By <a href="//commons.wikimedia.org/wiki/User:Ariadacapo" title="User:Ariadacapo" target="_blank" rel="noreferrer noopener">Olivier Cleynen</a> (<span class="int-own-work" lang="en">Own work</span>), <a href="http://creativecommons.org/publicdomain/zero/1.0/deed.en" title="Creative Commons Zero, Public Domain Dedication" target="_blank" rel="noreferrer noopener">CC0</a>. <a href="https://commons.wikimedia.org/w/index.php?curid=16100403" target="_blank" rel="noreferrer noopener">View on Wikimedia Commons</a>
+                        </small>
+                    </figcaption>
+                </figure>
+                <p>To understand the picture above, you need to imagine cutting an airplane wing and look at it from the side, which is called the cross-section of the wing.</p>
+                <p>Many modern airplanes are using proprietary airfoil designs, but there is a great source of open-source airfoils that we can use to create our simulation. There's a website called <a href="https://web.archive.org/web/20250325091354/http://airfoiltools.com/" target="_blank" rel="noreferrer noopener">Airfoil Tools</a> that we can use to download many airfoil data.</p>
+                <p>To start with this project, I'm going to also go over about the basic ideas of computational fluid dynamics: what is it, and how does it work with airfoils?</p>
+                <p>First, an initial question: What does it mean by "simulating" an airfoil? Simulation usually involves creating a digital representation of something to make it easier to understand or demonstrate. That means, in the case of airfoils, we will simulate real airfoils in a virtual environment.</p>
+           </div>
+        </article>
+    </main>
+
+    <footer class="container">
+        <p>&#8508; Hi, there.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
+
