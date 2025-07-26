@@ -125,3 +125,99 @@
         height: 24rem; /* md:h-96 */
     }
 }
+
+/* Tab Navigation */
+.tab-nav {
+    display: flex;
+    border-bottom: 2px solid #374151;
+    margin-bottom: 1rem;
+}
+
+.tab-button {
+    background: none;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    color: #9ca3af;
+    font-weight: 500;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s ease;
+}
+
+.tab-button:hover {
+    color: #d1d5db;
+    background-color: #374151;
+}
+
+.tab-button.active {
+    color: #3b82f6;
+    border-bottom-color: #3b82f6;
+    background-color: #1f2937;
+}
+
+/* Tab Content */
+.tab-content {
+    min-height: 400px;
+}
+
+.tab-pane {
+    display: none;
+}
+
+.tab-pane.active {
+    display: block;
+}
+
+/* Data Tab Styles */
+.data-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.data-info {
+    color: #d1d5db;
+    font-weight: 500;
+}
+
+.table-container {
+    background-color: #111827;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    color: #d1d5db;
+    font-size: 0.875rem;
+}
+
+.data-table th {
+    background-color: #374151;
+    padding: 0.75rem;
+    text-align: left;
+    font-weight: 600;
+    color: #ffffff;
+    border-bottom: 2px solid #4b5563;
+    position: sticky;
+    top: 0;
+}
+
+.data-table td {
+    padding: 0.5rem 0.75rem;
+    border-bottom: 1px solid #374151;
+}
+
+.data-table tbody tr:hover {
+    background-color: #374151;
+}
+
+.data-table .no-data {
+    text-align: center;
+    color: #9ca3af;
+    font-style: italic;
+    padding: 2rem;
+}

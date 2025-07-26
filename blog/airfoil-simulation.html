@@ -57,9 +57,45 @@
                         </div>
                     </div>
 
-                    <!-- Canvas for Drawing -->
-                    <div class="canvas-container">
-                        <canvas id="airfoil-canvas" class="airfoil-canvas"></canvas>
+                    <!-- Tab Navigation -->
+                    <div class="tab-nav">
+                        <button class="tab-button active" data-tab="visualization">Visualization</button>
+                        <button class="tab-button" data-tab="data">Raw Data</button>
+                    </div>
+
+                    <!-- Tab Content -->
+                    <div class="tab-content">
+                        <!-- Visualization Tab -->
+                        <div id="visualization-tab" class="tab-pane active">
+                            <div class="canvas-container">
+                                <canvas id="airfoil-canvas" class="airfoil-canvas"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Data Tab -->
+                        <div id="data-tab" class="tab-pane">
+                            <div class="data-container">
+                                <div class="data-info">
+                                    <p id="point-count">No data loaded</p>
+                                </div>
+                                <div class="table-container">
+                                    <table id="data-table" class="data-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Point #</th>
+                                                <th>X Coordinate</th>
+                                                <th>Y Coordinate</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="data-table-body">
+                                            <tr>
+                                                <td colspan="3" class="no-data">Select an airfoil to view data</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
            </div>

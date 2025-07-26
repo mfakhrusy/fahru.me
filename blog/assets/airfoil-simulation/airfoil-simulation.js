@@ -2,8 +2,58 @@
 const airfoilSelect = document.getElementById('airfoil-select');
 const canvas = document.getElementById('airfoil-canvas');
 const ctx = canvas.getContext('2d');
+const dataTableBody = document.getElementById('data-table-body');
+const pointCount = document.getElementById('point-count');
 
 let lastParsedPoints = [];
+
+// --- Tab Management ---
+function initializeTabs() {
+    const tabButtons = document.querySelectorAll('.tab-button');
+    const tabPanes = document.querySelectorAll('.tab-pane');
+
+    tabButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const targetTab = button.getAttribute('data-tab');
+            
+            // Remove active class from all buttons and panes
+            tabButtons.forEach(btn => btn.classList.remove('active'));
+            tabPanes.forEach(pane => pane.classList.remove('active'));
+            
+            // Add active class to clicked button and corresponding pane
+            button.classList.add('active');
+            document.getElementById(`${targetTab}-tab`).classList.add('active');
+            
+            // Redraw canvas when switching to visualization tab
+            if (targetTab === 'visualization' && lastParsedPoints.length > 0) {
+                setTimeout(() => drawAirfoil(lastParsedPoints), 10);
+            }
+        });
+    });
+}
+
+// --- Data Table Management ---
+function populateDataTable(points) {
+    if (!points || points.length === 0) {
+        dataTableBody.innerHTML = '<tr><td colspan="3" class="no-data">No data available</td></tr>';
+        pointCount.textContent = 'No data loaded';
+        return;
+    }
+
+    pointCount.textContent = `${points.length} coordinate points`;
+    
+    const rows = points.map((point, index) => {
+        return `
+            <tr>
+                <td>${index + 1}</td>
+                <td>${point.x.toFixed(6)}</td>
+                <td>${point.y.toFixed(6)}</td>
+            </tr>
+        `;
+    }).join('');
+    
+    dataTableBody.innerHTML = rows;
+}
 
 /**
  * Parses airfoil data from a string.
@@ -128,9 +178,10 @@ function drawAirfoil(points) {
 airfoilSelect.addEventListener('change', async (event) => {
     const selectedAirfoil = event.target.value;
     if (!selectedAirfoil) {
-        // Clear canvas if no selection
+        // Clear canvas and data table if no selection
         lastParsedPoints = [];
         drawAirfoil([]);
+        populateDataTable([]);
         return;
     }
 
@@ -145,18 +196,26 @@ airfoilSelect.addEventListener('change', async (event) => {
         if (result) {
             lastParsedPoints = result.points;
             drawAirfoil(lastParsedPoints);
+            populateDataTable(lastParsedPoints);
         } else {
             lastParsedPoints = [];
-            drawAirfoil([]); // Clear canvas on error
+            drawAirfoil([]);
+            populateDataTable([]);
         }
     } catch (error) {
         console.error(`Error loading airfoil data: ${error.message}`);
         lastParsedPoints = [];
         drawAirfoil([]);
+        populateDataTable([]);
     }
 });
 
 // Redraw on window resize
 window.addEventListener('resize', () => {
     drawAirfoil(lastParsedPoints);
+});
+
+// Initialize tabs when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    initializeTabs();
 });
