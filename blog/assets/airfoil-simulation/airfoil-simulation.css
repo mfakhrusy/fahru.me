@@ -140,7 +140,6 @@
 }
 
 .log-output {
-    width: 100%;
     height: 10rem; /* h-40 */
     background-color: #111827; /* bg-gray-900 */
     border: 1px solid #374151; /* border-gray-700 */

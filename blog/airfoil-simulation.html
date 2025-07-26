@@ -51,8 +51,12 @@
                     <!-- Controls -->
                     <div class="controls-grid">
                         <div class="control-group">
-                            <label for="file-upload" class="control-label">Upload .dat File</label>
-                            <input type="file" id="file-upload" accept=".dat" class="file-input">
+                            <label for="airfoil-select" class="control-label">Select Airfoil</label>
+                            <select id="airfoil-select" class="control-input">
+                                <option value="">Choose an airfoil...</option>
+                                <option value="naca-0012">NACA 0012</option>
+                                <option value="naca-0015">NACA 0015</option>
+                            </select>
                         </div>
                     </div>
 
@@ -77,7 +81,7 @@
 
     <script>
         // --- DOM Element References ---
-        const fileInput = document.getElementById('file-upload');
+        const airfoilSelect = document.getElementById('airfoil-select');
         const canvas = document.getElementById('airfoil-canvas');
         const logOutput = document.getElementById('log-output');
         const ctx = canvas.getContext('2d');
@@ -226,16 +230,25 @@
         }
 
         // --- Event Listeners ---
-        fileInput.addEventListener('change', (event) => {
-            const file = event.target.files[0];
-            if (!file) {
+        airfoilSelect.addEventListener('change', async (event) => {
+            const selectedAirfoil = event.target.value;
+            if (!selectedAirfoil) {
+                // Clear canvas if no selection
+                lastParsedPoints = [];
+                drawAirfoil([]);
                 return;
             }
 
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                const data = e.target.result;
+            try {
                 clearLogs();
+                log(`Loading ${selectedAirfoil.toUpperCase()}...`);
+                
+                const response = await fetch(`./assets/airfoil-simulation/${selectedAirfoil}.dat`);
+                if (!response.ok) {
+                    throw new Error(`Failed to load airfoil data: ${response.statusText}`);
+                }
+                
+                const data = await response.text();
                 const result = parseAirfoilDat(data);
                 if (result) {
                     lastParsedPoints = result.points;
@@ -244,11 +257,11 @@
                     lastParsedPoints = [];
                     drawAirfoil([]); // Clear canvas on error
                 }
-            };
-            reader.onerror = () => {
-                log(`Error reading file: ${reader.error}`);
-            };
-            reader.readAsText(file);
+            } catch (error) {
+                log(`Error loading airfoil data: ${error.message}`);
+                lastParsedPoints = [];
+                drawAirfoil([]);
+            }
         });
         
         // Redraw on window resize
@@ -257,7 +270,7 @@
         });
 
         // Initial state message
-        log("Ready. Please select a .dat file to begin.");
+        log("Ready. Please select an airfoil from the dropdown to begin.");
     </script>
 </body>
 </html>
