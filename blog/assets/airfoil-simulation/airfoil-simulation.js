@@ -237,7 +237,7 @@ function drawAxes(minX, maxX, minY, maxY, scale, offsetX, offsetY) {
         // Label (position below the axis)
         ctx.textAlign = 'center';
         ctx.textBaseline = 'top';
-        ctx.fillText(x.toFixed(2), canvasX, xAxisY + 12);
+        ctx.fillText(x.toFixed(1), canvasX, xAxisY + 12);
     }
 
     // Draw Y-axis ticks and labels
@@ -254,7 +254,7 @@ function drawAxes(minX, maxX, minY, maxY, scale, offsetX, offsetY) {
         // Label (position to the left of the axis)
         ctx.textAlign = 'right';
         ctx.textBaseline = 'middle';
-        ctx.fillText(y.toFixed(3), yAxisX - 12, canvasY);
+        ctx.fillText(y.toFixed(2), yAxisX - 12, canvasY);
     }
 
     // Draw axis labels
