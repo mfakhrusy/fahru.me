@@ -132,23 +132,28 @@ function drawAirfoil(points) {
     const dataWidth = maxX - minX;
     const dataHeight = maxY - minY;
 
-    // Add padding
-    const padding = 50;
+    // Add padding for axes and labels
+    const padding = 80;
     const canvasWidth = canvas.width - 2 * padding;
     const canvasHeight = canvas.height - 2 * padding;
 
     // Calculate scale factor, keeping aspect ratio
     const scaleX = canvasWidth / dataWidth;
     const scaleY = canvasHeight / dataHeight;
-    const scale = Math.min(scaleX, scaleY) * 0.9; // Use 90% of available space
+    const scale = Math.min(scaleX, scaleY) * 0.8; // Use 80% of available space for airfoil
 
     const offsetX = padding + (canvasWidth - dataWidth * scale) / 2;
     const offsetY = padding + (canvasHeight - dataHeight * scale) / 2;
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Draw axes
+    drawAxes(minX, maxX, minY, maxY, scale, offsetX, offsetY);
+
+    // Draw airfoil
     ctx.beginPath();
     ctx.strokeStyle = '#0ea5e9'; // A nice blue color
-    ctx.lineWidth = 2;
+    ctx.lineWidth = 3;
 
     points.forEach((p, index) => {
         // Transform point from data coordinates to canvas coordinates
@@ -164,7 +169,7 @@ function drawAirfoil(points) {
 
     ctx.stroke();
     
-    // Optional: Draw chord line
+    // Optional: Draw chord line and fill
     const startPoint = points[0];
     const endPoint = points[points.length - 1];
     if (Math.abs(startPoint.y - endPoint.y) < 0.01) { // Heuristic for closed trailing edge
@@ -172,6 +177,120 @@ function drawAirfoil(points) {
          ctx.fillStyle = 'rgba(14, 165, 233, 0.1)';
          ctx.fill();
     }
+}
+
+/**
+ * Draws coordinate axes with tick marks and labels
+ */
+function drawAxes(minX, maxX, minY, maxY, scale, offsetX, offsetY) {
+    const dataWidth = maxX - minX;
+    const dataHeight = maxY - minY;
+    
+    // Calculate axis positions
+    const axisLeft = offsetX;
+    const axisRight = offsetX + dataWidth * scale;
+    const axisBottom = canvas.height - offsetY;
+    const axisTop = canvas.height - (offsetY + dataHeight * scale);
+    
+    // Calculate Y=0 position for X-axis
+    const zeroY = canvas.height - ((0 - minY) * scale + offsetY);
+    // Calculate X=0 position for Y-axis (if X=0 is within range)
+    const zeroX = minX <= 0 && maxX >= 0 ? (0 - minX) * scale + offsetX : axisLeft;
+    
+    // Axis style
+    ctx.strokeStyle = '#6b7280';
+    ctx.lineWidth = 2;
+    ctx.font = '12px monospace';
+    ctx.fillStyle = '#9ca3af';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+
+    // Draw X-axis at Y=0 (or at bottom if Y=0 is not in range)
+    const xAxisY = (minY <= 0 && maxY >= 0) ? zeroY : axisBottom;
+    ctx.beginPath();
+    ctx.moveTo(axisLeft - 10, xAxisY);
+    ctx.lineTo(axisRight + 10, xAxisY);
+    ctx.stroke();
+
+    // Draw Y-axis at X=0 (or at left if X=0 is not in range)
+    const yAxisX = (minX <= 0 && maxX >= 0) ? zeroX : axisLeft;
+    ctx.beginPath();
+    ctx.moveTo(yAxisX, axisBottom + 10);
+    ctx.lineTo(yAxisX, axisTop - 10);
+    ctx.stroke();
+
+    // Calculate nice tick intervals
+    const xTickInterval = calculateTickInterval(dataWidth);
+    const yTickInterval = calculateTickInterval(dataHeight);
+
+    // Draw X-axis ticks and labels
+    const xStart = Math.ceil(minX / xTickInterval) * xTickInterval;
+    for (let x = xStart; x <= maxX; x += xTickInterval) {
+        const canvasX = (x - minX) * scale + offsetX;
+        
+        // Tick mark
+        ctx.beginPath();
+        ctx.moveTo(canvasX, xAxisY);
+        ctx.lineTo(canvasX, xAxisY + 8);
+        ctx.stroke();
+        
+        // Label (position below the axis)
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'top';
+        ctx.fillText(x.toFixed(2), canvasX, xAxisY + 12);
+    }
+
+    // Draw Y-axis ticks and labels
+    const yStart = Math.ceil(minY / yTickInterval) * yTickInterval;
+    for (let y = yStart; y <= maxY; y += yTickInterval) {
+        const canvasY = canvas.height - ((y - minY) * scale + offsetY);
+        
+        // Tick mark
+        ctx.beginPath();
+        ctx.moveTo(yAxisX - 8, canvasY);
+        ctx.lineTo(yAxisX, canvasY);
+        ctx.stroke();
+        
+        // Label (position to the left of the axis)
+        ctx.textAlign = 'right';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(y.toFixed(3), yAxisX - 12, canvasY);
+    }
+
+    // Draw axis labels
+    ctx.fillStyle = '#d1d5db';
+    ctx.font = '14px sans-serif';
+    
+    // X-axis label (position below the axis)
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'top';
+    ctx.fillText('X Coordinate', (axisLeft + axisRight) / 2, xAxisY + 35);
+    
+    // Y-axis label (rotated, position to the left of the axis)
+    ctx.save();
+    ctx.translate(yAxisX - 50, (axisTop + axisBottom) / 2);
+    ctx.rotate(-Math.PI / 2);
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('Y Coordinate', 0, 0);
+    ctx.restore();
+}
+
+/**
+ * Calculate appropriate tick interval for axis
+ */
+function calculateTickInterval(range) {
+    const roughInterval = range / 8; // Aim for about 8 ticks
+    const magnitude = Math.pow(10, Math.floor(Math.log10(roughInterval)));
+    const normalized = roughInterval / magnitude;
+    
+    let interval;
+    if (normalized <= 1) interval = magnitude;
+    else if (normalized <= 2) interval = 2 * magnitude;
+    else if (normalized <= 5) interval = 5 * magnitude;
+    else interval = 10 * magnitude;
+    
+    return interval;
 }
 
 // --- Event Listeners ---
