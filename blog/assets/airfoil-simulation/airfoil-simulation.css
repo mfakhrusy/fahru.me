@@ -73,6 +73,7 @@
     padding: 0.5rem 1rem; /* px-4 py-2 */
     color: #ffffff; /* text-white */
     transition: all 0.15s ease-in-out;
+    border-right: 1rem solid transparent;
 }
 
 .control-input:focus {
