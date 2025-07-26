@@ -264,7 +264,6 @@ function drawAxes(minX, maxX, minY, maxY, scale, offsetX, offsetY) {
     // X-axis label (position below the axis)
     ctx.textAlign = 'center';
     ctx.textBaseline = 'top';
-    ctx.fillText('X Coordinate', (axisLeft + axisRight) / 2, xAxisY + 35);
     
     // Y-axis label (rotated, position to the left of the axis)
     ctx.save();
@@ -272,7 +271,6 @@ function drawAxes(minX, maxX, minY, maxY, scale, offsetX, offsetY) {
     ctx.rotate(-Math.PI / 2);
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillText('Y Coordinate', 0, 0);
     ctx.restore();
 }
 
