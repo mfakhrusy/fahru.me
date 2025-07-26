@@ -17,18 +17,6 @@
     }
 }
 
-/* Header */
-.visualizer-header {
-    text-align: center;
-}
-
-.visualizer-title {
-    font-size: 1.875rem; /* text-3xl */
-    font-weight: 700; /* font-bold */
-    color: #ffffff; /* text-white */
-    margin: 0;
-}
-
 @media (min-width: 768px) {
     .visualizer-title {
         font-size: 2.25rem; /* md:text-4xl */
