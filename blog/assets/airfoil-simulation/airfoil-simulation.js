@@ -133,14 +133,14 @@ function drawAirfoil(points) {
     const dataHeight = maxY - minY;
 
     // Add padding for axes and labels
-    const padding = 80;
+    const padding = 60;
     const canvasWidth = canvas.width - 2 * padding;
     const canvasHeight = canvas.height - 2 * padding;
 
     // Calculate scale factor, keeping aspect ratio
     const scaleX = canvasWidth / dataWidth;
     const scaleY = canvasHeight / dataHeight;
-    const scale = Math.min(scaleX, scaleY) * 0.8; // Use 80% of available space for airfoil
+    const scale = Math.min(scaleX, scaleY) * 0.95; // Use 95% of available space for airfoil
 
     const offsetX = padding + (canvasWidth - dataWidth * scale) / 2;
     const offsetY = padding + (canvasHeight - dataHeight * scale) / 2;
