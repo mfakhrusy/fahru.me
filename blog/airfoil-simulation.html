@@ -5,9 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Understanding Asynchronous JavaScript - My Tech Blog</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="./assets/airfoil-simulation/airfoil-simulation.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Source+Code+Pro&display=swap" rel="stylesheet">
+    <!-- <script src="https://cdn.tailwindcss.com"></script> -->
 </head>
 <body>
 
@@ -39,6 +41,36 @@
                 <p>Many modern airplanes are using proprietary airfoil designs, but there is a great source of open-source airfoils that we can use to create our simulation. There's a website called <a href="https://web.archive.org/web/20250325091354/http://airfoiltools.com/" target="_blank" rel="noreferrer noopener">Airfoil Tools</a> that we can use to download many airfoil data.</p>
                 <p>To start with this project, I'm going to also go over about the basic ideas of computational fluid dynamics: what is it, and how does it work with airfoils?</p>
                 <p>First, an initial question: What does it mean by "simulating" an airfoil? Simulation usually involves creating a digital representation of something to make it easier to understand or demonstrate. That means, in the case of airfoils, we will simulate real airfoils in a virtual environment.</p>
+                <p>Let us start with a simple tool to visualize an airfoil from a series of points.</p>
+                <div class="airfoil-visualizer">
+                    <!-- Header -->
+                    <div class="visualizer-header">
+                        <h1 class="visualizer-title">Airfoil Data Visualizer</h1>
+                    </div>
+
+                    <!-- Controls -->
+                    <div class="controls-grid">
+                        <div class="control-group">
+                            <label for="airfoil-name" class="control-label">Airfoil Name</label>
+                            <input type="text" id="airfoil-name" value="NACA 2412" class="control-input">
+                        </div>
+                        <div class="control-group">
+                            <label for="file-upload" class="control-label">Upload .dat File</label>
+                            <input type="file" id="file-upload" accept=".dat" class="file-input">
+                        </div>
+                    </div>
+
+                    <!-- Canvas for Drawing -->
+                    <div class="canvas-container">
+                        <canvas id="airfoil-canvas" class="airfoil-canvas"></canvas>
+                    </div>
+
+                    <!-- Log Output -->
+                    <div class="log-section">
+                        <h2 class="log-title">Parser Log</h2>
+                        <textarea id="log-output" readonly class="log-output"></textarea>
+                    </div>
+                </div>
            </div>
         </article>
     </main>
@@ -47,7 +79,196 @@
         <p>&#8508; Hi, there.</p>
     </footer>
 
-    <script src="script.js"></script>
+    <script>
+        // --- DOM Element References ---
+        const nameInput = document.getElementById('airfoil-name');
+        const fileInput = document.getElementById('file-upload');
+        const canvas = document.getElementById('airfoil-canvas');
+        const logOutput = document.getElementById('log-output');
+        const ctx = canvas.getContext('2d');
+
+        let lastParsedPoints = [];
+
+        // --- Logging Utility ---
+        function log(message) {
+            console.log(message);
+            logOutput.value += message + '\n';
+            logOutput.scrollTop = logOutput.scrollHeight; // Auto-scroll
+        }
+
+        function clearLogs() {
+            logOutput.value = '';
+        }
+
+        /**
+         * Parses airfoil data from a string, similar to the Rust function.
+         * @param {string} data - The string content of the .dat file.
+         * @param {string} name - The name of the airfoil.
+         * @returns {{airfoil: {name: string, points: {x: number, y: number}[]}, errorCount: number}|null} - The parsed airfoil object or null on failure.
+         */
+        function parseAirfoilDat(data, name) {
+            log(`Parsing airfoil data for: ${name}`);
+            
+            const airfoil = {
+                name: name,
+                points: []
+            };
+            let lineCount = 0;
+            let errorCount = 0;
+
+            const lines = data.split(/\r?\n/);
+
+            for (const line of lines) {
+                lineCount++;
+                const trimmed = line.trim();
+
+                // Skip empty lines and comments
+                if (trimmed === '' || trimmed.startsWith('#') || trimmed.startsWith(';')) {
+                    continue;
+                }
+                
+                // The first line might be the name, but we often ignore it and use the user-provided one.
+                // Some formats have coordinate counts, which we can also ignore by checking for non-numeric parts.
+                const parts = trimmed.split(/\s+/);
+                
+                if (parts.length >= 2) {
+                    const x = parseFloat(parts[0]);
+                    const y = parseFloat(parts[1]);
+
+                    if (!isNaN(x) && !isNaN(y)) {
+                        airfoil.points.push({ x, y });
+                    } else {
+                        // This might be a header line like "NACA 2412" or a line with text.
+                        // We log it but don't count it as a hard error if it's early in the file.
+                        if(airfoil.points.length > 0) { // Only count as error if we've already started parsing points
+                           errorCount++;
+                           log(`Warning: Could not parse line ${lineCount}: '${trimmed}'`);
+                        } else {
+                           log(`Info: Skipping header line ${lineCount}: '${trimmed}'`);
+                        }
+                    }
+                } else if (trimmed !== '') {
+                    errorCount++;
+                    log(`Warning: Invalid format on line ${lineCount}: '${trimmed}'`);
+                }
+            }
+
+            log(`Parsed ${airfoil.points.length} points from ${lineCount} lines (${errorCount} errors)`);
+            
+            if (airfoil.points.length === 0) {
+                log("Error: No valid points found in airfoil data.");
+                return null;
+            }
+
+            return { airfoil, errorCount };
+        }
+
+        /**
+         * Draws the airfoil shape on the canvas.
+         * @param {{x: number, y: number}[]} points - An array of airfoil coordinates.
+         */
+        function drawAirfoil(points) {
+            if (!points || points.length === 0) {
+                // Clear canvas if no points
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                return;
+            };
+
+            // Ensure canvas has a resolution for drawing
+            canvas.width = canvas.offsetWidth;
+            canvas.height = canvas.offsetHeight;
+            
+            // Find data bounds to scale and center the drawing
+            let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+            points.forEach(p => {
+                minX = Math.min(minX, p.x);
+                maxX = Math.max(maxX, p.x);
+                minY = Math.min(minY, p.y);
+                maxY = Math.max(maxY, p.y);
+            });
+
+            const dataWidth = maxX - minX;
+            const dataHeight = maxY - minY;
+
+            // Add padding
+            const padding = 50;
+            const canvasWidth = canvas.width - 2 * padding;
+            const canvasHeight = canvas.height - 2 * padding;
+
+            // Calculate scale factor, keeping aspect ratio
+            const scaleX = canvasWidth / dataWidth;
+            const scaleY = canvasHeight / dataHeight;
+            const scale = Math.min(scaleX, scaleY) * 0.9; // Use 90% of available space
+
+            const offsetX = padding + (canvasWidth - dataWidth * scale) / 2;
+            const offsetY = padding + (canvasHeight - dataHeight * scale) / 2;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.beginPath();
+            ctx.strokeStyle = '#0ea5e9'; // A nice blue color
+            ctx.lineWidth = 2;
+
+            points.forEach((p, index) => {
+                // Transform point from data coordinates to canvas coordinates
+                const canvasX = (p.x - minX) * scale + offsetX;
+                const canvasY = canvas.height - ((p.y - minY) * scale + offsetY); // Flip Y-axis
+
+                if (index === 0) {
+                    ctx.moveTo(canvasX, canvasY);
+                } else {
+                    ctx.lineTo(canvasX, canvasY);
+                }
+            });
+
+            ctx.stroke();
+            
+            // Optional: Draw chord line
+            const startPoint = points[0];
+            const endPoint = points[points.length - 1];
+            if (Math.abs(startPoint.y - endPoint.y) < 0.01) { // Heuristic for closed trailing edge
+                 ctx.closePath();
+                 ctx.fillStyle = 'rgba(14, 165, 233, 0.1)';
+                 ctx.fill();
+            }
+
+            log("Successfully rendered airfoil on canvas.");
+        }
+
+        // --- Event Listeners ---
+        fileInput.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (!file) {
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const data = e.target.result;
+                const name = nameInput.value || 'Untitled Airfoil';
+                clearLogs();
+                const result = parseAirfoilDat(data, name);
+                if (result) {
+                    lastParsedPoints = result.airfoil.points;
+                    drawAirfoil(lastParsedPoints);
+                } else {
+                    lastParsedPoints = [];
+                    drawAirfoil([]); // Clear canvas on error
+                }
+            };
+            reader.onerror = () => {
+                log(`Error reading file: ${reader.error}`);
+            };
+            reader.readAsText(file);
+        });
+        
+        // Redraw on window resize
+        window.addEventListener('resize', () => {
+            drawAirfoil(lastParsedPoints);
+        });
+
+        // Initial state message
+        log("Ready. Please select a .dat file to begin.");
+    </script>
 </body>
 </html>
 
