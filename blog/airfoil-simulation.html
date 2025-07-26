@@ -64,12 +64,6 @@
                     <div class="canvas-container">
                         <canvas id="airfoil-canvas" class="airfoil-canvas"></canvas>
                     </div>
-
-                    <!-- Log Output -->
-                    <div class="log-section">
-                        <h2 class="log-title">Parser Log</h2>
-                        <textarea id="log-output" readonly class="log-output"></textarea>
-                    </div>
                 </div>
            </div>
         </article>
@@ -83,21 +77,9 @@
         // --- DOM Element References ---
         const airfoilSelect = document.getElementById('airfoil-select');
         const canvas = document.getElementById('airfoil-canvas');
-        const logOutput = document.getElementById('log-output');
         const ctx = canvas.getContext('2d');
 
         let lastParsedPoints = [];
-
-        // --- Logging Utility ---
-        function log(message) {
-            console.log(message);
-            logOutput.value += message + '\n';
-            logOutput.scrollTop = logOutput.scrollHeight; // Auto-scroll
-        }
-
-        function clearLogs() {
-            logOutput.value = '';
-        }
 
         /**
          * Parses airfoil data from a string.
@@ -105,8 +87,6 @@
          * @returns {{points: {x: number, y: number}[], errorCount: number}|null} - The parsed points array or null on failure.
          */
         function parseAirfoilDat(data) {
-            log(`Parsing airfoil data...`);
-            
             const points = [];
             let lineCount = 0;
             let errorCount = 0;
@@ -134,24 +114,17 @@
                         points.push({ x, y });
                     } else {
                         // This might be a header line like "NACA 2412" or a line with text.
-                        // We log it but don't count it as a hard error if it's early in the file.
+                        // We don't count it as a hard error if it's early in the file.
                         if(points.length > 0) { // Only count as error if we've already started parsing points
                            errorCount++;
-                           log(`Warning: Could not parse line ${lineCount}: '${trimmed}'`);
-                        } else {
-                           log(`Info: Skipping header line ${lineCount}: '${trimmed}'`);
                         }
                     }
                 } else if (trimmed !== '') {
                     errorCount++;
-                    log(`Warning: Invalid format on line ${lineCount}: '${trimmed}'`);
                 }
             }
-
-            log(`Parsed ${points.length} points from ${lineCount} lines (${errorCount} errors)`);
             
             if (points.length === 0) {
-                log("Error: No valid points found in airfoil data.");
                 return null;
             }
 
@@ -225,8 +198,6 @@
                  ctx.fillStyle = 'rgba(14, 165, 233, 0.1)';
                  ctx.fill();
             }
-
-            log("Successfully rendered airfoil on canvas.");
         }
 
         // --- Event Listeners ---
@@ -240,9 +211,6 @@
             }
 
             try {
-                clearLogs();
-                log(`Loading ${selectedAirfoil.toUpperCase()}...`);
-                
                 const response = await fetch(`./assets/airfoil-simulation/${selectedAirfoil}.dat`);
                 if (!response.ok) {
                     throw new Error(`Failed to load airfoil data: ${response.statusText}`);
@@ -258,7 +226,7 @@
                     drawAirfoil([]); // Clear canvas on error
                 }
             } catch (error) {
-                log(`Error loading airfoil data: ${error.message}`);
+                console.error(`Error loading airfoil data: ${error.message}`);
                 lastParsedPoints = [];
                 drawAirfoil([]);
             }
@@ -268,9 +236,6 @@
         window.addEventListener('resize', () => {
             drawAirfoil(lastParsedPoints);
         });
-
-        // Initial state message
-        log("Ready. Please select an airfoil from the dropdown to begin.");
     </script>
 </body>
 </html>
