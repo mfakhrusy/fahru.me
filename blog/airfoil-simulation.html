@@ -51,10 +51,6 @@
                     <!-- Controls -->
                     <div class="controls-grid">
                         <div class="control-group">
-                            <label for="airfoil-name" class="control-label">Airfoil Name</label>
-                            <input type="text" id="airfoil-name" value="NACA 2412" class="control-input">
-                        </div>
-                        <div class="control-group">
                             <label for="file-upload" class="control-label">Upload .dat File</label>
                             <input type="file" id="file-upload" accept=".dat" class="file-input">
                         </div>
@@ -81,7 +77,6 @@
 
     <script>
         // --- DOM Element References ---
-        const nameInput = document.getElementById('airfoil-name');
         const fileInput = document.getElementById('file-upload');
         const canvas = document.getElementById('airfoil-canvas');
         const logOutput = document.getElementById('log-output');
@@ -101,18 +96,14 @@
         }
 
         /**
-         * Parses airfoil data from a string, similar to the Rust function.
+         * Parses airfoil data from a string.
          * @param {string} data - The string content of the .dat file.
-         * @param {string} name - The name of the airfoil.
-         * @returns {{airfoil: {name: string, points: {x: number, y: number}[]}, errorCount: number}|null} - The parsed airfoil object or null on failure.
+         * @returns {{points: {x: number, y: number}[], errorCount: number}|null} - The parsed points array or null on failure.
          */
-        function parseAirfoilDat(data, name) {
-            log(`Parsing airfoil data for: ${name}`);
+        function parseAirfoilDat(data) {
+            log(`Parsing airfoil data...`);
             
-            const airfoil = {
-                name: name,
-                points: []
-            };
+            const points = [];
             let lineCount = 0;
             let errorCount = 0;
 
@@ -136,11 +127,11 @@
                     const y = parseFloat(parts[1]);
 
                     if (!isNaN(x) && !isNaN(y)) {
-                        airfoil.points.push({ x, y });
+                        points.push({ x, y });
                     } else {
                         // This might be a header line like "NACA 2412" or a line with text.
                         // We log it but don't count it as a hard error if it's early in the file.
-                        if(airfoil.points.length > 0) { // Only count as error if we've already started parsing points
+                        if(points.length > 0) { // Only count as error if we've already started parsing points
                            errorCount++;
                            log(`Warning: Could not parse line ${lineCount}: '${trimmed}'`);
                         } else {
@@ -153,14 +144,14 @@
                 }
             }
 
-            log(`Parsed ${airfoil.points.length} points from ${lineCount} lines (${errorCount} errors)`);
+            log(`Parsed ${points.length} points from ${lineCount} lines (${errorCount} errors)`);
             
-            if (airfoil.points.length === 0) {
+            if (points.length === 0) {
                 log("Error: No valid points found in airfoil data.");
                 return null;
             }
 
-            return { airfoil, errorCount };
+            return { points, errorCount };
         }
 
         /**
@@ -244,11 +235,10 @@
             const reader = new FileReader();
             reader.onload = (e) => {
                 const data = e.target.result;
-                const name = nameInput.value || 'Untitled Airfoil';
                 clearLogs();
-                const result = parseAirfoilDat(data, name);
+                const result = parseAirfoilDat(data);
                 if (result) {
-                    lastParsedPoints = result.airfoil.points;
+                    lastParsedPoints = result.points;
                     drawAirfoil(lastParsedPoints);
                 } else {
                     lastParsedPoints = [];
