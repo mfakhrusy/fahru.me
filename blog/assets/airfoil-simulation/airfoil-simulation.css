@@ -3,7 +3,6 @@
     width: 100%;
     max-width: 56rem; /* max-w-4xl */
     background-color: #1f2937; /* bg-gray-800 */
-    border-radius: 0.75rem; /* rounded-xl */
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); /* shadow-2xl */
     padding: 1.5rem; /* p-6 */
     display: flex;
@@ -231,9 +230,8 @@
     flex: 1;
     min-width: 320px;
     background: #fff;
-    border-radius: 1rem;
+    border: 1px solid #444444; /* border-gray-200 */
     padding: 1.25rem;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
     align-items: center;
