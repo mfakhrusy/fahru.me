@@ -27,6 +27,11 @@ function drawSquareShapeWithGridsAroundIt(ctx, width, height, gridSize) {
     ctx.fillStyle = 'white';
     ctx.fillRect(mainSquareX, mainSquareY, mainSquareSize, mainSquareSize);
 
+    // Draw border for the main square
+    ctx.strokeStyle = '#111111';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(mainSquareX, mainSquareY, mainSquareSize, mainSquareSize);
+
     // Draw smaller grid OUTSIDE the main square
     ctx.strokeStyle = '#b0b0b0';
     ctx.lineWidth = 1;
