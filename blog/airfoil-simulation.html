@@ -98,7 +98,111 @@
                         </div>
                     </div>
                 </div>
-           </div>
+                <p>Simulating airfoil actually means simulating the airflow around the airfoil shape. That means, we need to, somehow, express all of the empty points outside of the airfoil in <strong>the computational domain</strong>.</p>
+                <h3>The Computational Domain</h3>
+                <p>To express the computational domain, we use something called a <strong>grid</strong> or a <strong>mesh</strong>. Both terms sometimes used interchangeable, and they refer to a same principle: dividing the space (computational domain) into a small pieces</p>
+                <p>Let's improve our tools by implementing a grid system for our airfoil visualizer. Airfoil looks very complex though, maybe we can start with a simple square shape with a square grids around it.</p>
+                <div class="airfoil-visualizer">
+                    <canvas class="airfoil-canvas airfoil-canvas-grids" id="square-shape-grids"></canvas>
+                </div>
+                <p>The image above, while not perfect, represent a rough estimation on how the computational domain works. We basically need to simulate anything that we need for each of the smaller squares above. This usually involves calculating something for each square. This "something" depends on our goal. Since our goal is an airfoil, and airfoil simulation usually focuses when it's flying, the calculation involves some properties when the airfoil interact with airflow.</p>
+                <p>Square is easy though, maybe let's try circle shape next. Circle is harder because square grids cannot be easily placed around it, especially is the outer canvas is a square shape as we have above. But let's try anyway.</p>
+                <div class="airfoil-visualizer">
+                    <canvas class="airfoil-canvas airfoil-canvas-grids" id="circle-shape-grids"></canvas>
+                </div>
+                <p>Well, that is horrendous! Let's see if we can improve it by using a different system. One of the most obvious system we can try is the <strong>Polar Coordinate System</strong>, let's see how far we can go with this.</p>
+                <div class="polar-cartesian-container">
+                    <!-- Polar Coordinate System -->
+                    <div class="polar-cartesian-content">
+                        <h3>Polar Coordinates (r-θ)</h3>
+                        <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Grid: Concentric Circles -->
+                            <circle cx="200" cy="200" r="40" class="grid-line"/>
+                            <circle cx="200" cy="200" r="80" class="grid-line"/>
+                            <circle cx="200" cy="200" r="120" class="grid-line"/>
+                            <circle cx="200" cy="200" r="160" class="grid-line" fill="#123456"/>
+
+                            <!-- Axis -->
+                            <line x1="20" y1="200" x2="380" y2="200" class="axis-line"/>
+                            <line x1="200" y1="20" x2="200" y2="380" class="axis-line"/>
+                            
+                            <!-- Point P(r, θ) defined by r=140, θ=30° -->
+                            <g transform="translate(200, 200) rotate(-30)">
+                                <g transform="translate(140, 0)">
+                                    <line x1="-140" y1="0" x2="0" y2="0" class="radius-line"/>
+                                    <circle cx="0" cy="0" r="6" class="point"/>
+                                </g>
+                            </g>
+
+                            <!--
+                                This SVG <path> element draws a segment of an arc with the following properties:
+                                - Starts at coordinates (200, 200).
+                                - Draws a straight line to (240, 200).
+                                - Draws an arc with a radius of 40 units to (234.64, 180).
+                                - The arc uses the large-arc-flag and sweep-flag set to 0 and 1, respectively.
+                                - The path is closed back to the starting point.
+                                - The shape is filled with a blue color (#3b82f6) at 20% opacity.
+                                This path represent a highlighted region or a sector in a diagram
+                            -->
+                            <path d="M 200,200 L 240,200 A 40,40 0 0,1 234.64,180 Z" fill="#3b82f6" fill-opacity="0.2"/>
+                            <!--
+                                This SVG <path> element draws an arc representing an angle.
+                                - The arc starts at coordinates (240, 200).
+                                - It draws an elliptical arc with radii of 40 units in both x and y directions.
+                                - The arc sweeps from the starting point to (234.64, 180).
+                                - The class "angle-arc" can be used to style the arc via CSS.
+                            -->
+                            <path d="M 240,200 A 10,40 0 0,1 234.64,180" class="angle-arc"/>
+
+                            <!-- Labels -->
+                            <text x="205" y="218" class="label" style="fill: #cea1a1;">Origin</text>
+                            <text x="280" y="195" class="label" style="fill: #cea1a1;">Polar Axis</text>
+                            <text x="280" y="115" class="label" style="fill: #cea1a1;">P(<tspan class="label-variable">r</tspan>, <tspan class="label-variable">θ</tspan>)</text>
+                            <text x="270" y="150" class="label-variable" fill="#ef4444">r</text>
+                            <text x="250" y="190" class="label-variable" fill="#3b82f6">θ</text>
+                        </svg>
+                    </div>
+
+                    <!-- Cartesian Coordinate System -->
+                    <div class="polar-cartesian-content">
+                        <h3>Cartesian Coordinates (x-y)</h3>
+                        <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Grid: Vertical and Horizontal lines -->
+                            <path d="M 40 20 V 380 M 80 20 V 380 M 120 20 V 380 M 160 20 V 380 M 240 20 V 380 M 280 20 V 380 M 320 20 V 380 M 360 20 V 380" class="grid-line" />
+                            <path d="M 20 40 H 380 M 20 80 H 380 M 20 120 H 380 M 20 160 H 380 M 20 240 H 380 M 20 280 H 380 M 20 320 H 380 M 20 360 H 380" class="grid-line" />
+
+                            <!-- Axes -->
+                            <line x1="20" y1="200" x2="380" y2="200" class="axis-line"/>
+                            <line x1="200" y1="20" x2="200" y2="380" class="axis-line"/>
+
+                            <!-- Point P(x, y) -->
+                            <!-- Converted from Polar(r=140, θ=30°): -->
+                            <!-- x = r*cos(θ) = 140 * cos(30) = 140 * 0.866 = 121.24 -->
+                            <!-- y = r*sin(θ) = 140 * sin(30) = 140 * 0.5 = 70 -->
+                            <!-- SVG coordinates: x -> 200 + 121.24 = 321.24 -->
+                            <!-- SVG coordinates: y -> 200 - 70 = 130 -->
+                            <g id="pointP_cartesian" transform="translate(321.24, 130)">
+                                <circle cx="0" cy="0" r="6" class="point"/>
+                            </g>
+
+                            <!-- Projection Lines -->
+                            <line x1="321.24" y1="130" x2="321.24" y2="200" class="projection-line"/>
+                            <line x1="321.24" y1="130" x2="200" y2="130" class="projection-line"/>
+
+                            <!-- Labels -->
+                            <text x="205" y="218" class="label">Origin</text>
+                            <text x="370" y="195" class="label-variable">x-axis</text>
+                            <text x="205" y="35" class="label-variable">y-axis</text>
+                            <text x="325" y="125" class="label">P(<tspan class="label-variable">x</tspan>, <tspan class="label-variable">y</tspan>)</text>
+                            <text x="260" y="218" class="label-variable" fill="#10b981">x</text>
+                            <text x="185" y="165" class="label-variablae" fill="#10b981">y</text>
+                        </svg>
+                    </div>
+                </div>
+                <p>Let's redraw our simple grids with polar coordinates.</p>
+                <div class="airfoil-visualizer">
+                    <canvas class="airfoil-canvas airfoil-canvas-grids" id="circle-shape-grids-polar"></canvas>
+                </div>
         </article>
     </main>
 
@@ -106,8 +210,9 @@
         <p>&#8508; Hi, there.</p>
     </footer>
 
-    <script src="./assets/airfoil-simulation/airfoil-simulation.js"></script>
+    <script src="./assets/airfoil-simulation/1-airfoil-visualizer.js"></script>
+    <script src="./assets/airfoil-simulation/2-square-shape-grids.js"></script>
+    <script src="./assets/airfoil-simulation/3-circle-shape-grids.js"></script>
+    <script src="./assets/airfoil-simulation/4-circle-shape-grids-polar.js"></script>
 </body>
 </html>
-
-

@@ -14,6 +14,7 @@
 @media (min-width: 768px) {
     .airfoil-visualizer {
         padding: 2rem; /* md:p-8 */
+        margin-left: -2rem;
     }
 }
 
@@ -107,6 +108,13 @@
     border-radius: 0.375rem; /* rounded-md */
     background-color: #ffffff; /* bg-white */
 }
+
+.airfoil-canvas.airfoil-canvas-grids {
+    width: 500px;
+    height: 500px;
+    margin: auto;
+    border-radius: 0;
+}   
 
 @media (min-width: 768px) {
     .airfoil-canvas {
@@ -209,3 +217,82 @@
     font-style: italic;
     padding: 2rem;
 }
+
+.polar-cartesian-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    width: 100%;
+    max-width: 1200px;
+}
+
+.polar-cartesian-content {
+    flex: 1;
+    min-width: 320px;
+    background: #fff;
+    border-radius: 1rem;
+    padding: 1.25rem;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.polar-cartesian-content h2 {
+    margin-top: 0;
+    color: #1f2937;
+}
+
+.polar-cartesian-content svg {
+    width: 100%;
+    height: auto;
+}
+
+/* Shared Styles */
+.polar-cartesian-content .grid-line {
+    stroke: #d1d5db;
+    stroke-width: 1;
+    stroke-dasharray: 4 4;
+}
+
+.polar-cartesian-content .axis-line {
+    stroke: #4b5563;
+    stroke-width: 1.5;
+}
+
+.polar-cartesian-content .point {
+    fill: #ef4444;
+    stroke: #fff;
+    stroke-width: 2;
+}
+
+.polar-cartesian-content .label {
+    font-family: 'Computer Modern', serif;
+    font-size: 18px;
+    fill: #111827;
+}
+
+.polar-cartesian-content .label-variable {
+    font-style: italic;
+}
+
+/* Polar Specific */
+.polar-cartesian-content .radius-line {
+    stroke: #ef4444;
+    stroke-width: 2.5;
+}
+
+.polar-cartesian-content .angle-arc {
+    stroke: #3b82f6;
+    stroke-width: 2;
+    fill: none;
+}
+
+/* Cartesian Specific */
+.polar-cartesian-content .projection-line {
+    stroke: #10b981;
+    stroke-width: 2;
+    stroke-dasharray: 5 5;
+}
+
