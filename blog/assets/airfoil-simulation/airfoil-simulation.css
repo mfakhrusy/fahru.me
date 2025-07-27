@@ -3,7 +3,6 @@
     width: 100%;
     max-width: 56rem; /* max-w-4xl */
     background-color: #1f2937; /* bg-gray-800 */
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); /* shadow-2xl */
     padding: 1.5rem; /* p-6 */
     display: flex;
     flex-direction: column;
